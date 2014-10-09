@@ -1,3 +1,6 @@
-All the files herein the repository are the property of the copyright holders of this project. They files may be not copied, modified or re-used under any circumstances by anyone other than the copyright holders. The copyright holders reserve the right to re-license this project at their own discretion.
+All the files herein the repository are the property of the copyright holders
+of this project. They files may be not copied, modified or re-used under any
+circumstances by anyone other than the copyright holders. The copyright holders
+reserve the right to re-license this project at their own discretion.
 
 Copyright (c) 2014 - Ahmed El-Hajjar (cdahmedeh.net), Emilienne Pugin, Farrah Dean, Lalit Azad and Hind Alaskar
