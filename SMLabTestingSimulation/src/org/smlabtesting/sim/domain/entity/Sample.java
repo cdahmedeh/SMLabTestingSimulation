@@ -1,22 +1,42 @@
 package org.smlabtesting.sim.domain.entity;
 
+import static org.smlabtesting.sim.domain.entity.Racetrack.RacetrackState.Moving;
+
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.State;
 
 /**
- * The sample is the test tube holding a specimen of the patient.
- *  
+ * Maps to iC.Sample
+ *
  * @author Ahmed El-Hajjar
  */
 public class Sample extends Entity {
-	protected enum SampleState implements State {
-		Unloaded,
-		Moving,
-		Tested
-	}
+    // States
+    protected enum SampleState implements State {
+        Default;
+    }
 
-	@Override
-	public void process() {
-		//TODO: Implement me.
-	}
+    // Factories
+    public static Sample generateSample() {
+        return new Sample();
+    }
+    
+    // Constructs
+    public Sample() {}    
+    
+    // Entity API
+    @Override
+    public void process() {
+        // Initial state
+        if (noState()) {
+            setState(Moving);
+        }
+    }
+
+    @Override
+    public String getGlance() {
+        return String.format(
+                "[Sample]"
+        );
+    }
 }
