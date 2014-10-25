@@ -74,7 +74,7 @@ public class LoadUnloadMachine extends Entity {
             // If sample holder has a sample, remove it.
             if (sampleHolder.hasSample()) {
                 Sample removedSample = sampleHolder.removeSample();
-                simulation.remove(removedSample);
+                simulation.removeEntity(removedSample);
             }
 
             // If a new samples is in line to be processed, insert into holder.

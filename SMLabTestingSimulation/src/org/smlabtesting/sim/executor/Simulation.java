@@ -62,7 +62,7 @@ public class Simulation {
      *
      * @param entity The entity to remove.
      */
-    public void remove(final Entity entity) {
+    public void removeEntity(final Entity entity) {
         entitiesToRemove.add(entity);
     }
 

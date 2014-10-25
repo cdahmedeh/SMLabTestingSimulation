@@ -9,6 +9,7 @@ import java.util.Deque;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
+import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
 
 /**
  * Maps to _insert CM identifier here_
@@ -176,6 +177,19 @@ public class EntityTemplate extends Entity implements Queue<Entity> {
         if (isState(WastingTime)) {
             // do stuff over here...
         }
+        
+        /*
+         * Something that is VERY important. If during a processing step
+         * you need to create or remove an entity, make sure you add or remove
+         * it from the simulation.
+         * 
+         * 
+         * 
+         */
+        Sample sample = Sample.generateSample(); //creating an entity. 
+        getSimulation().addEntity(sample); // adding one to the simulation
+        getSimulation().removeEntity(sample); //to remove one from the simulation
+        
     }
 
     @Override
