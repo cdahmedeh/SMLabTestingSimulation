@@ -4,8 +4,8 @@ import static org.smlabtesting.sim.domain.entity.loadunload.LoadUnloadMachine.Lo
 import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
 
 import org.apache.commons.math3.distribution.TriangularDistribution;
-import org.smlabtesting.sim.domain.entity.Sample;
-import org.smlabtesting.sim.domain.entity.SampleHolder;
+import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
+import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.State;
 

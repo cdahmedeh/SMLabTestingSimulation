@@ -1,6 +1,6 @@
-package org.smlabtesting.sim.domain.entity;
+package org.smlabtesting.sim.domain.entity.sampleholder;
 
-import static org.smlabtesting.sim.domain.entity.SampleHolder.SampleHolderState.Default;
+import static org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder.SampleHolderState.Default;
 
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.State;

@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
-import org.smlabtesting.sim.domain.entity.Sample;
+import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;

@@ -7,8 +7,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
-import org.smlabtesting.sim.domain.entity.Racetrack;
 import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
+import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 
 /**
  * Maps to _insert CM identifier here_

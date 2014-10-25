@@ -1,7 +1,8 @@
-package org.smlabtesting.sim.domain.entity;
+package org.smlabtesting.sim.domain.entity.racetrack;
 
-import static org.smlabtesting.sim.domain.entity.Racetrack.RacetrackState.Moving;
+import static org.smlabtesting.sim.domain.entity.racetrack.Racetrack.RacetrackState.Moving;
 
+import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.State;
 import org.smlabtesting.types.OffsetList;

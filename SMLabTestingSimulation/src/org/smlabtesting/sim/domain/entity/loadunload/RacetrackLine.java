@@ -5,8 +5,8 @@ import static org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine.Racetr
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.smlabtesting.sim.domain.entity.Racetrack;
-import org.smlabtesting.sim.domain.entity.SampleHolder;
+import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
+import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;

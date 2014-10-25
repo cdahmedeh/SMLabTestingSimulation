@@ -1,11 +1,11 @@
 package org.smlabtesting.sim.executor;
 
-import org.smlabtesting.sim.domain.entity.Racetrack;
-import org.smlabtesting.sim.domain.entity.SampleHolder;
 import org.smlabtesting.sim.domain.entity.loadunload.LoadUnloadMachine;
 import org.smlabtesting.sim.domain.entity.loadunload.NewSamples;
 import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.loadunload.UnloadBuffer;
+import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
+import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 
 /**
  * This shows how to run a simulation.

@@ -1,6 +1,6 @@
-package org.smlabtesting.sim.domain.entity;
+package org.smlabtesting.sim.domain.entity.sampleholder;
 
-import static org.smlabtesting.sim.domain.entity.Racetrack.RacetrackState.Moving;
+import static org.smlabtesting.sim.domain.entity.sampleholder.Sample.SampleState.Default;
 
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.State;
@@ -29,7 +29,7 @@ public class Sample extends Entity {
     public void process() {
         // Initial state
         if (noState()) {
-            setState(Moving);
+            setState(Default);
         }
     }
 
