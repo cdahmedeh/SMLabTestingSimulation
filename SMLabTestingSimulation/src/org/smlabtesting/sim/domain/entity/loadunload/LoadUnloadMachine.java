@@ -24,9 +24,6 @@ public class LoadUnloadMachine extends Entity {
         Waiting, LoadUnloadProcessing;
     }
 
-    // Counters/Delays
-    private int cycleTime = 0; // Time left to finish current cycle in seconds.
-    
     // RNG
     private final TriangularDistribution cycleTimeDistribution = new TriangularDistribution(
             DEFAULT_RNG, CYCLE_TIME_BOUNDS[0], CYCLE_TIME_BOUNDS[1], CYCLE_TIME_BOUNDS[2]);
@@ -73,19 +70,13 @@ public class LoadUnloadMachine extends Entity {
                 if (newSamples.hasNext()) {
                     sampleHolder.putSample(newSamples.next());
                 }
-                
-                cycleTime = generateCycleTime(); // Simulate cycle time.
+        
+                pause(generateCycleTime()); // Simulate cycle time.
             }
         }
 
         // Loading/Unloading wait step.
         if (isState(LoadUnloadProcessing)) {
-            // Delay actual operation as per cycle time.
-            if (cycleTime > 0) {
-                cycleTime--;
-                return;
-            }
-
             // Queue to return to racetrack.
             racetrackLine.queue(sampleHolder);
             sampleHolder = null;            

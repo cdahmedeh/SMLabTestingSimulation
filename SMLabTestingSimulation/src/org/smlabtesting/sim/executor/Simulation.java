@@ -1,9 +1,6 @@
 package org.smlabtesting.sim.executor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.random.RandomGenerator;
@@ -43,7 +40,11 @@ public class Simulation {
         
         // Process the entities.
         for (final Entity entity: entities) {
-            entity.process();
+            if (entity.paused()) {
+                entity.count();
+            } else {
+                entity.process();
+            }
         }
 
         // Count time.
