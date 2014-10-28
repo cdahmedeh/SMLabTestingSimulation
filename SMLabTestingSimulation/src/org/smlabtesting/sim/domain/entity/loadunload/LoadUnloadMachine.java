@@ -35,7 +35,7 @@ public class LoadUnloadMachine extends Entity {
     private final NewSamples newSamples;
     private final UnloadBuffer unloadBuffer;
     private final RacetrackLine racetrackLine;
-    
+
     // Constructs
     public LoadUnloadMachine(final NewSamples newSamples, final UnloadBuffer unloadBuffer, final RacetrackLine racetrackLine) {
         this.newSamples = newSamples;
@@ -116,7 +116,5 @@ public class LoadUnloadMachine extends Entity {
     private int generateCycleTime() {
         return (int) cycleTimeDistribution.sample();
     }
-
-
 
 }

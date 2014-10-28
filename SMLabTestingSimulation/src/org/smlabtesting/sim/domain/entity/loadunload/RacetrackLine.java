@@ -4,10 +4,8 @@ import static org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine.Racetr
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
-import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Queue;
@@ -80,10 +78,5 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
     @Override
     public boolean hasVacancy() {
         return true; // Unlimited size.
-    }
-    
-    @Override
-    public Iterator<SampleHolder> iterator() {
-        return sampleHolders.iterator();
     }
 }

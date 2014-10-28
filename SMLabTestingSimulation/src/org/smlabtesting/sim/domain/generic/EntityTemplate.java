@@ -5,13 +5,11 @@ import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
-import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 
 /**
  * Maps to _insert CM identifier here_
@@ -225,11 +223,6 @@ public class EntityTemplate extends Entity implements Queue<Entity> {
     @Override
     public void queue(final Entity entity) {
         entityQueue.add(entity);
-    }
-    
-    @Override
-    public Iterator<Entity> iterator() {
-        return entityQueue.iterator();
     }
     
     // Public methods

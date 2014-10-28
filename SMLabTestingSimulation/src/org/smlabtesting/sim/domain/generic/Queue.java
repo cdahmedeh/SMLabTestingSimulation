@@ -1,7 +1,5 @@
 package org.smlabtesting.sim.domain.generic;
 
-import java.util.Iterator;
-
 /**
  * Queue entities should implement this.
  * 
@@ -37,12 +35,4 @@ public interface Queue<E extends Entity> {
      * @param entity The entity to queue.
      */
     public void queue(E entity);
-    
-    /**
-     * Returns an iterator for traversing through the elements in the queue.
-     * The first entity in line is at the head of the iterator.
-     * 
-     * @return Iterator object.
-     */
-    public Iterator<E> iterator();
 }

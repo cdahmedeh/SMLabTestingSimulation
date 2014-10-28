@@ -4,7 +4,6 @@ import static org.smlabtesting.sim.domain.entity.loadunload.NewSamples.NewSample
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
@@ -89,10 +88,5 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
     @Override
     public boolean hasVacancy() {
         return sampleHolders.size() < BUFFER_SLOTS;
-    }
-    
-    @Override
-    public Iterator<SampleHolder> iterator() {
-        return sampleHolders.iterator();
     }
 }

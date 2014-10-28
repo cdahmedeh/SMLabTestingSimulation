@@ -5,7 +5,6 @@ import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
@@ -105,11 +104,6 @@ public class NewSamples extends Entity implements Queue<Sample> {
     @Override
     public void queue(final Sample entity) {
         samples.add(entity);
-    }
-
-    @Override
-    public Iterator<Sample> iterator() {
-        return samples.iterator();
     }
     
     // Helper Methods
