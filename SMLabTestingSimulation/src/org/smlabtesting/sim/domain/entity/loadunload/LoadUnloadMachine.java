@@ -31,11 +31,14 @@ public class LoadUnloadMachine extends Entity {
     private final TriangularDistribution cycleTimeDistribution = new TriangularDistribution(
             DEFAULT_RNG, CYCLE_TIME_BOUNDS[0], CYCLE_TIME_BOUNDS[1], CYCLE_TIME_BOUNDS[2]);
 
+    // Containers
+    private SampleHolder sampleHolder = null;
+    
     // Relationships
     private final NewSamples newSamples;
     private final UnloadBuffer unloadBuffer;
     private final RacetrackLine racetrackLine;
-
+    
     // Constructs
     public LoadUnloadMachine(final NewSamples newSamples, final UnloadBuffer unloadBuffer, final RacetrackLine racetrackLine) {
         this.newSamples = newSamples;
@@ -54,36 +57,38 @@ public class LoadUnloadMachine extends Entity {
         // Idle until there is a holder waiting in unload buffer.
         if (isState(Waiting)) {
             if (unloadBuffer.hasNext()) {
+                // Do the load/unload processing
                 setState(LoadUnloadProcessing);
+                
+                // Retrieve next sample holder in line in unload buffer.
+                sampleHolder = unloadBuffer.next();
+
+                // If sample holder has a sample, remove it.
+                if (sampleHolder.hasSample()) {
+                    Sample removedSample = sampleHolder.removeSample();
+                    simulation.removeEntity(removedSample);
+                }
+
+                // If a new samples is in line to be processed, insert into holder.
+                if (newSamples.hasNext()) {
+                    sampleHolder.putSample(newSamples.next());
+                }
+                
                 cycleTime = generateCycleTime(); // Simulate cycle time.
-                return;
             }
         }
 
-        // Loading/Unloading processing step.
+        // Loading/Unloading wait step.
         if (isState(LoadUnloadProcessing)) {
             // Delay actual operation as per cycle time.
             if (cycleTime > 0) {
                 cycleTime--;
                 return;
             }
-            
-            // Retrieve next sample holder in line in unload buffer.
-            final SampleHolder sampleHolder = unloadBuffer.next();
-
-            // If sample holder has a sample, remove it.
-            if (sampleHolder.hasSample()) {
-                Sample removedSample = sampleHolder.removeSample();
-                simulation.removeEntity(removedSample);
-            }
-
-            // If a new samples is in line to be processed, insert into holder.
-            if (newSamples.hasNext()) {
-                sampleHolder.putSample(newSamples.next());
-            }
 
             // Queue to return to racetrack.
             racetrackLine.queue(sampleHolder);
+            sampleHolder = null;            
 
             setState(Waiting);
             return;
@@ -97,6 +102,18 @@ public class LoadUnloadMachine extends Entity {
                 getState()
         );
     }
+    
+    // Public Methods
+    
+    /**
+     * Retrieves the currently processed sample holder. Null if none is being
+     * processed.
+     * 
+     * @return A reference to the sample holder being processed.
+     */
+    public SampleHolder getSampleHolder() {
+        return sampleHolder;
+    }
 
     // Helper Methods
 
@@ -108,5 +125,7 @@ public class LoadUnloadMachine extends Entity {
     private int generateCycleTime() {
         return (int) cycleTimeDistribution.sample();
     }
+
+
 
 }

@@ -14,7 +14,7 @@ import org.smlabtesting.types.OffsetList;
  */
 public class Racetrack extends Entity {
     // Constants
-    public static final int LOAD_UNLOAD_ENTRANCE = 10; //These are the enter/exit points. TODO: Need to document in deliverable.
+    public static final int LOAD_UNLOAD_ENTRANCE = 2; //These are the enter/exit points. TODO: Need to document in deliverable.
     public static final int LOAD_UNLOAD_EXIT = 0;
     public static final int BELT_SLOTS_COUNT = 48;
     
@@ -92,5 +92,15 @@ public class Racetrack extends Entity {
      */
     public boolean isTaken(final int position) {
         return !isVacant(position);
+    }
+    
+    /**
+     * Gives a reference to the sample holder at this position. 
+     *
+     * @param position Zero-based index of the slot to look at.
+     * @param sampleHolder The holder in that slot. Null if none there.
+     */
+    public SampleHolder peek(final int position) {
+        return sampleHolders.get(position);
     }
 }

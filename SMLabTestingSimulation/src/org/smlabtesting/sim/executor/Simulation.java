@@ -1,7 +1,10 @@
 package org.smlabtesting.sim.executor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.Well19937a;
@@ -17,11 +20,11 @@ public class Simulation {
     public static final RandomGenerator DEFAULT_RNG = new Well19937a();
 
     // All the entities to be simulated. Should be sorted according to their relationships topologically.
-    private final List<Entity> entities = new ArrayList<>();
+    private final Set<Entity> entities = new LinkedHashSet<>();
     
     // Entities waiting to added/removed. To prevent iterators from failing.
-    private final List<Entity> entitiesToAdd = new ArrayList<>();
-    private final List<Entity> entitiesToRemove = new ArrayList<>();
+    private final Set<Entity> entitiesToAdd = new LinkedHashSet<>();
+    private final Set<Entity> entitiesToRemove = new LinkedHashSet<>();
 
     // The current discrete time point.
     private int time = 0;
