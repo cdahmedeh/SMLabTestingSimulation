@@ -93,14 +93,4 @@ public class Racetrack extends Entity {
     public boolean isTaken(final int position) {
         return !isVacant(position);
     }
-    
-    /**
-     * Gives a reference to the sample holder at this position. 
-     *
-     * @param position Zero-based index of the slot to look at.
-     * @param sampleHolder The holder in that slot. Null if none there.
-     */
-    public SampleHolder peek(final int position) {
-        return sampleHolders.get(position);
-    }
 }
