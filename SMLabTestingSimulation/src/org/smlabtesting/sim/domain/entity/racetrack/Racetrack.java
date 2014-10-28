@@ -14,7 +14,7 @@ import org.smlabtesting.types.OffsetList;
  */
 public class Racetrack extends Entity {
     // Constants
-    public static final int LOAD_UNLOAD_ENTRANCE = 2; //These are the enter/exit points. TODO: Need to document in deliverable.
+    public static final int LOAD_UNLOAD_ENTRANCE = 10; //These are the enter/exit points. TODO: Need to document in deliverable.
     public static final int LOAD_UNLOAD_EXIT = 0;
     public static final int BELT_SLOTS_COUNT = 48;
     
