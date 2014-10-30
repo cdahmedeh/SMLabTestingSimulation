@@ -23,7 +23,7 @@ public abstract class Entity {
     // Counts a duration to signify a state taking more than one processing step.
     private int time = 0;
     public void pause(int time) {this.time = time;}
-    public boolean paused() {return this.time == 0;}
+    public boolean paused() {return this.time > 0;}
     public void count() {this.time--;}    
     
     // A reference to the current simulation. Set by Simulation.
