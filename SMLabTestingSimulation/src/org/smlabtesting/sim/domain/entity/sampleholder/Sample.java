@@ -9,11 +9,6 @@ import org.smlabtesting.sim.domain.generic.State;
  * @author Ahmed El-Hajjar
  */
 public class Sample extends Entity {
-    // States
-    protected enum SampleState implements State {
-        Default;
-    }
-
     // Factories
     public static Sample generateSample() {
         return new Sample();

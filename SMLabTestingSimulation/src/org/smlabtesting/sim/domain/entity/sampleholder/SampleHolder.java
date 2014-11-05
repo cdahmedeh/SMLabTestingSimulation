@@ -9,12 +9,7 @@ import org.smlabtesting.sim.domain.generic.State;
  * @author Ahmed El-Hajjar
  */
 public class SampleHolder extends Entity {
-    // States
-    protected enum SampleHolderState implements State {
-        Default;
-    }
-
-    // Relationships
+    // Containers
     public Sample sample;
 
     // Entity API
