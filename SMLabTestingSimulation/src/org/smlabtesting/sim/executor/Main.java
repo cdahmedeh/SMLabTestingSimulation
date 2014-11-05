@@ -52,5 +52,7 @@ public class Main {
             // Printing is slow, but not anymore!
             printer.println(simulation.getGlance());
         }
+        
+        printer.close();
     }
 }
