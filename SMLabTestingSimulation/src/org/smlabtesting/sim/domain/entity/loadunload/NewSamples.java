@@ -90,11 +90,6 @@ public class NewSamples extends Entity implements Queue<Sample> {
     }
 
     @Override
-    public boolean hasVacancy() {
-        return true; // Queue is unlimited.
-    }
-    
-    @Override
     public void queue(final Sample entity) {
         samples.add(entity);
     }
