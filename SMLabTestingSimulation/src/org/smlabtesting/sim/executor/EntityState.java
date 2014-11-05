@@ -42,7 +42,7 @@ public class EntityState {
      * per simulation time advance.
      * 
      * The idea is to first check if any of the state handlers have 
-     * preconditions that warranty their start. Once that is the case, that
+     * preconditions that warrant their start. Once that is the case, that
      * handler is used to process the entity. Only one handler can be executed
      * at a time in a entity.
      */
