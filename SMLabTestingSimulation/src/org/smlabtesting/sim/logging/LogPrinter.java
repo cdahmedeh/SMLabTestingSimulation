@@ -24,12 +24,7 @@ public class LogPrinter {
      * @param string The string to print to the console.
      */
     public void println(final String string) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(string);
-            }
-        });
+        executor.execute(() -> System.out.println(string));
     }
     
     /**
