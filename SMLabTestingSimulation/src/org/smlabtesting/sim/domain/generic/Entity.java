@@ -44,4 +44,10 @@ public abstract class Entity {
     protected Simulation simulation = null;
     public Simulation getSimulation() {return simulation;}
     public void setSimulation(Simulation simulation) {this.simulation = simulation;}
+    
+    // Speed up hash code by pre-calculating a value on instantiation.
+    private static int idCounter = 0;
+    private int id = idCounter++;
+    @Override public int hashCode() {return id;}
+    @Override public boolean equals(Object obj) {return this.hashCode() == obj.hashCode();}
 }
