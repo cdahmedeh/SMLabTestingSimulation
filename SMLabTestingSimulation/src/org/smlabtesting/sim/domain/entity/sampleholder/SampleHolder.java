@@ -1,7 +1,6 @@
 package org.smlabtesting.sim.domain.entity.sampleholder;
 
 import org.smlabtesting.sim.domain.generic.Entity;
-import org.smlabtesting.sim.domain.generic.State;
 
 /**
  * Maps to R.SampleHolder
