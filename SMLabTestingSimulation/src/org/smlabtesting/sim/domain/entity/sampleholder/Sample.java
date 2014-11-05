@@ -24,10 +24,7 @@ public class Sample extends Entity {
     public Sample() {}    
     
     // Entity API
-    public Handler[] generateHandlers() {
-        return new Handler[]{};
-    };
-
+    
     @Override
     public String getGlance() {
         return String.format(

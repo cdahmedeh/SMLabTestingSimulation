@@ -24,12 +24,13 @@ public abstract class Entity {
     
     /**
      * Implement this method to return instances of state handlers for this 
-     * entity type. Return an empty array if the entity in question has no
-     * state handler. 
+     * entity type. By default, an entity has no state handlers.
      * 
      * @return An array of StateHandler instances.
      */
-    public abstract Handler[] generateHandlers();
+    public Handler[] generateHandlers() {
+        return new Handler[]{};
+    }
    
     /**
      * @return Should return a one liner about some basic information about this 

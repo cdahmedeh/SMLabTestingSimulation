@@ -19,10 +19,7 @@ public class SampleHolder extends Entity {
     public Sample sample;
 
     // Entity API
-    public Handler[] generateHandlers() {
-        return new Handler[]{};
-    };
-    
+
     @Override
     public String getGlance() {
         return String.format(
