@@ -6,6 +6,7 @@ import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.loadunload.UnloadBuffer;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
+import org.smlabtesting.sim.logging.LogPrinter;
 
 /**
  * This shows how to run a simulation.
@@ -13,8 +14,9 @@ import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
  * @author Ahmed El-Hajjar
  */
 public class Main {
-    public static int total = 0;;
-
+    // The printer used for threaded console logging.
+    public static final LogPrinter printer = new LogPrinter();
+    
     public static void main(final String[] args) {
         // Create an instance of the simulation run.
         Simulation simulation = new Simulation();
@@ -47,8 +49,8 @@ public class Main {
         while (simulation.getTime() < 3600) {
             simulation.process();
             
-            // Printing is slow.
-            System.out.println(simulation.getGlance());
+            // Printing is slow, but not anymore!
+            printer.println(simulation.getGlance());
         }
     }
 }
