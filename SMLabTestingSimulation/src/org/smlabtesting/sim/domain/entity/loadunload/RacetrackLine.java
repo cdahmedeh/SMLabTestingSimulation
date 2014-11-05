@@ -1,6 +1,6 @@
 package org.smlabtesting.sim.domain.entity.loadunload;
 
-import static org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine.RacetrackLineState.Default;
+import static org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine.RacetrackLineState.ExitRacetrackLine;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -8,6 +8,7 @@ import java.util.Deque;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
+import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;
 
@@ -20,7 +21,7 @@ import org.smlabtesting.sim.domain.generic.State;
 public class RacetrackLine extends Entity implements Queue<SampleHolder> {
     // States
     protected enum RacetrackLineState implements State {
-        Default;
+        ExitRacetrackLine;
     }
 
     // Containers
@@ -36,20 +37,24 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
 
     // Entity API
     @Override
-    public void process() {
-        // Initial State
-        if (noState()) {
-            setState(Default);
-        }
-        
-        // If there is a holder waiting to enter and it's possible to merge
-        // on the racetrack, then move the holder onto the racetrack. 
-        if (racetrack.isVacant(Racetrack.LOAD_UNLOAD_EXIT)) {
-            if (this.hasNext()) {
-                racetrack.setSlot(Racetrack.LOAD_UNLOAD_EXIT, this.next());                
-            }
-        }
-    }
+    public Handler[] generateHandlers() {
+        return new Handler[] {
+            new Handler(ExitRacetrackLine) {
+                @Override
+                public boolean condition() {
+                    // If there is a holder waiting to enter and it's possible to merge
+                    // on the racetrack.
+                    return racetrack.isVacant(Racetrack.LOAD_UNLOAD_EXIT) && hasNext();
+                }
+                
+                @Override
+                public void begin() {
+                    //Then move the holder onto the racetrack. 
+                    racetrack.setSlot(Racetrack.LOAD_UNLOAD_EXIT, next());
+                }
+            } 
+        };
+    };
     
     @Override
     public String getGlance() {

@@ -1,6 +1,6 @@
 package org.smlabtesting.sim.domain.entity.loadunload;
 
-import static org.smlabtesting.sim.domain.entity.loadunload.NewSamples.NewSamplesState.*;
+import static org.smlabtesting.sim.domain.entity.loadunload.NewSamples.NewSamplesState.Arrival;
 import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
 
 import java.util.ArrayDeque;
@@ -9,6 +9,7 @@ import java.util.Deque;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
 import org.smlabtesting.sim.domain.generic.Entity;
+import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;
 
@@ -32,12 +33,8 @@ public class NewSamples extends Entity implements Queue<Sample> {
 
     // States
     protected enum NewSamplesState implements State {
-        Default;
+        Arrival;
     }
-    
-    // Counters/Delays
-    private int runTime = 0; // Runtime in seconds. Used to count current hour of operation.
-    private int nextSampleIn = 0; // In how much seconds the next sample will arrive. 
     
     // RNG
     private NormalDistribution deviationDistribution = new NormalDistribution(
@@ -51,30 +48,26 @@ public class NewSamples extends Entity implements Queue<Sample> {
     public NewSamples() {}
     
     // Entity API
-    @Override
-    public void process() {
-        // Initial State
-        if (noState()) {
-            setState(Default);
-
-            // Prevent from always having a sample arriving in the first instant.
-            nextSampleIn = nextArrival();
-        }
     
-        // Is it time for a new sample to arrive? 
-        while (nextSampleIn == 0) {
-            nextSampleIn = nextArrival();
-            
-            Sample sample = Sample.generateSample();
-            samples.add(sample);
-            simulation.addEntity(sample);
-        }
-        
-        // Waiting for a new sample to arrive.
-        nextSampleIn--;
-        
-        // Counting run time...
-        runTime++;
+    @Override
+    public Handler[] generateHandlers() {
+        return new Handler[] {
+            new Handler(Arrival) {
+                @Override
+                public int duration() {
+                    
+                    return nextArrival();
+                }
+                
+                @Override
+                public void end() {
+                    // Create a sample.
+                    Sample sample = Sample.generateSample();
+                    samples.add(sample);
+                    simulation.addEntity(sample);
+                }
+            } 
+        };
     }
     
     @Override
@@ -117,7 +110,7 @@ public class NewSamples extends Entity implements Queue<Sample> {
      * @return In how much seconds the next sample is going to arrive in.
      */
     private int nextArrival() {
-        int currentHour = ( runTime / SECONDS_IN_HOUR ) % HOURS_IN_DAY;
+        int currentHour = ( getSimulation().getTime() / SECONDS_IN_HOUR ) % HOURS_IN_DAY;
         int randomOffset = (int) deviationDistribution.sample();
         return Math.max(0, SECONDS_IN_HOUR/INCOMING_SAMPLE_RATES[currentHour] + randomOffset);
     }

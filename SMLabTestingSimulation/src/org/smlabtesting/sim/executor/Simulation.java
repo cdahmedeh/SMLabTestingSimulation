@@ -8,7 +8,8 @@ import org.apache.commons.math3.random.Well19937a;
 import org.smlabtesting.sim.domain.generic.Entity;
 
 /**
- * An instance of a simulation run.
+ * An instance of a simulation run. This simulator uses the "Activity Scanning
+ * World View" as its execution model.
  *
  * @author Ahmed El-Hajjar
  */
@@ -17,11 +18,12 @@ public class Simulation {
     public static final RandomGenerator DEFAULT_RNG = new Well19937a();
 
     // All the entities to be simulated. Should be sorted according to their relationships topologically.
-    private final Set<Entity> entities = new LinkedHashSet<>();
+    // The entities are paired to their state using EntityState.
+    private final Set<EntityState> entities = new LinkedHashSet<>();
     
     // Entities waiting to added/removed. To prevent iterators from failing.
-    private final Set<Entity> entitiesToAdd = new LinkedHashSet<>();
-    private final Set<Entity> entitiesToRemove = new LinkedHashSet<>();
+    private final Set<EntityState> entitiesToAdd = new LinkedHashSet<>();
+    private final Set<EntityState> entitiesToRemove = new LinkedHashSet<>();
 
     // The current discrete time point.
     private int time = 0;
@@ -39,12 +41,8 @@ public class Simulation {
         entitiesToRemove.clear();
         
         // Process the entities.
-        for (final Entity entity: entities) {
-            if (entity.paused()) {
-                entity.count();
-            } else {
-                entity.process();
-            }
+        for (final EntityState entity: entities) {
+            entity.process();
         }
 
         // Count time.
@@ -58,7 +56,7 @@ public class Simulation {
      */
     public void addEntity(final Entity entity) {
         entity.setSimulation(this);
-        entitiesToAdd.add(entity);
+        entitiesToAdd.add(new EntityState(entity));
     }
    
     /**
@@ -67,7 +65,8 @@ public class Simulation {
      * @param entity The entity to remove.
      */
     public void removeEntity(final Entity entity) {
-        entitiesToRemove.add(entity);
+        // This works because EntityState uses the same hash code as Entity.
+        entitiesToRemove.add(new EntityState(entity));
     }
 
     /**
@@ -79,7 +78,7 @@ public class Simulation {
     public String getGlance() {
         final StringBuilder sb = new StringBuilder();
 
-        for (final Entity entity: entities) {
+        for (final EntityState entity: entities) {
             sb.append(entity.getGlance());
             sb.append('\n');
         }

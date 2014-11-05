@@ -1,12 +1,13 @@
 package org.smlabtesting.sim.domain.entity.loadunload;
 
-import static org.smlabtesting.sim.domain.entity.loadunload.LoadUnloadMachine.LoadUnloadMachineState.*;
+import static org.smlabtesting.sim.domain.entity.loadunload.LoadUnloadMachine.LoadUnloadMachineState.LoadUnloadProcessing;
 import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
 
 import org.apache.commons.math3.distribution.TriangularDistribution;
 import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
+import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.State;
 
 /**
@@ -21,7 +22,7 @@ public class LoadUnloadMachine extends Entity {
 
     // States
     protected enum LoadUnloadMachineState implements State {
-        Waiting, LoadUnloadProcessing;
+        LoadUnloadProcessing;
     }
 
     // RNG
@@ -43,54 +44,53 @@ public class LoadUnloadMachine extends Entity {
         this.racetrackLine = racetrackLine;
     }
 
-    // Entity API
     @Override
-    public void process() {
-        // Initial State
-        if (noState()) {
-            setState(Waiting);
-        }
-
-        // Idle until there is a holder waiting in unload buffer.
-        if (isState(Waiting)) {
-            if (unloadBuffer.hasNext()) {
-                // Do the load/unload processing
-                setState(LoadUnloadProcessing);
+    public Handler[] generateHandlers() {
+        return new Handler[] {
+            new Handler(LoadUnloadProcessing) {
+                @Override
+                public boolean condition() {
+                    // Idle until there is a holder waiting in unload buffer.
+                    return unloadBuffer.hasNext();
+                }
                 
-                // Retrieve next sample holder in line in unload buffer.
-                sampleHolder = unloadBuffer.next();
+                @Override
+                public void begin() {
+                    // Retrieve next sample holder in line in unload buffer.
+                    sampleHolder = unloadBuffer.next();
 
-                // If sample holder has a sample, remove it.
-                if (sampleHolder.hasSample()) {
-                    Sample removedSample = sampleHolder.removeSample();
-                    simulation.removeEntity(removedSample);
+                    // If sample holder has a sample, remove it.
+                    if (sampleHolder.hasSample()) {
+                        Sample removedSample = sampleHolder.removeSample();
+                        simulation.removeEntity(removedSample);
+                    }
+
+                    // If a new samples is in line to be processed, insert into holder.
+                    if (newSamples.hasNext()) {
+                        sampleHolder.putSample(newSamples.next());
+                    }
                 }
-
-                // If a new samples is in line to be processed, insert into holder.
-                if (newSamples.hasNext()) {
-                    sampleHolder.putSample(newSamples.next());
+                
+                @Override
+                public int duration() {
+                    // Simulate cycle time.
+                    return generateCycleTime();
                 }
-        
-                pause(generateCycleTime()); // Simulate cycle time.
-            }
-        }
-
-        // Loading/Unloading wait step.
-        if (isState(LoadUnloadProcessing)) {
-            // Queue to return to racetrack.
-            racetrackLine.queue(sampleHolder);
-            sampleHolder = null;            
-
-            setState(Waiting);
-            return;
-        }
+                
+                @Override
+                public void end() {
+                    // Queue to return to racetrack.
+                    racetrackLine.queue(sampleHolder);
+                    sampleHolder = null;
+                }
+            } 
+        };
     }
     
     @Override
     public String getGlance() {
         return String.format(
-                "[LoadUnloadMachine] State: %s", 
-                getState()
+                "[LoadUnloadMachine]"
         );
     }
     

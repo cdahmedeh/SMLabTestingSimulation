@@ -1,9 +1,10 @@
 package org.smlabtesting.sim.domain.entity.racetrack;
 
-import static org.smlabtesting.sim.domain.entity.racetrack.Racetrack.RacetrackState.Moving;
+import static org.smlabtesting.sim.domain.entity.racetrack.Racetrack.RacetrackState.RacetrackMove;
 
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
+import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.State;
 import org.smlabtesting.types.OffsetList;
 
@@ -14,13 +15,17 @@ import org.smlabtesting.types.OffsetList;
  */
 public class Racetrack extends Entity {
     // Constants
-    public static final int LOAD_UNLOAD_ENTRANCE = 10; //These are the enter/exit points. TODO: Need to document in deliverable.
-    public static final int LOAD_UNLOAD_EXIT = 0;
     public static final int BELT_SLOTS_COUNT = 48;
+    
+    // Enter/Exit points for the load/unload machines and test cells.
+    public static final int LOAD_UNLOAD_EXIT = 0;
+    public static final int LOAD_UNLOAD_ENTRANCE = 4;
+    public static final int[] TEST_CELL_EXIT = {8, 16, 24, 32, 40};
+    public static final int[] TEST_CELL_ENTRACE = {12, 20, 28, 36, 44};
     
     // States
     protected enum RacetrackState implements State {
-        Moving;
+        RacetrackMove;
     }
 
     // Containers
@@ -28,16 +33,18 @@ public class Racetrack extends Entity {
 
     // Entity API
     @Override
-    public void process() {
-        // Initial state
-        if (noState()) {
-            setState(Moving);
-        }
-
-        // Move the belt one slot forward at every second.
-        sampleHolders.offset(1);
-    }
-
+    public Handler[] generateHandlers() {
+        return new Handler[] {
+            new Handler(RacetrackMove) {
+                @Override
+                public void begin() {
+                    // Move the belt one slot forward at every second.
+                    sampleHolders.offset(1);
+                }
+            } 
+        };
+    };
+        
     @Override
     public String getGlance() {
         return String.format(

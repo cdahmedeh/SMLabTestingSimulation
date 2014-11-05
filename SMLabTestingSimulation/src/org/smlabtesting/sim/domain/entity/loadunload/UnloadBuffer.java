@@ -1,6 +1,6 @@
 package org.smlabtesting.sim.domain.entity.loadunload;
 
-import static org.smlabtesting.sim.domain.entity.loadunload.NewSamples.NewSamplesState.Default;
+import static org.smlabtesting.sim.domain.entity.loadunload.UnloadBuffer.UnloadBufferState.EnterUnloadBuffer;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -8,6 +8,7 @@ import java.util.Deque;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
+import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;
 
@@ -23,7 +24,7 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
 
     // States
     protected enum UnloadBufferState implements State {
-        Default;
+        EnterUnloadBuffer;
     }
     
     // Containers
@@ -39,27 +40,29 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
 
     // Entity API
     @Override
-    public void process() {
-        // Initial State
-        if (noState()) {
-            setState(Default);
-        }
-        
-        // TODO: This isn't part of the correct simulated behavior. For testing
-        // purposes only.
-        
-        // As soon a sample holder get to the enty point of the load/unload
-        // machine, get it in. Just to prevent from the simulation from
-        // doing nothing. Not even the right place to do it.
-        if (racetrack.isTaken(Racetrack.LOAD_UNLOAD_ENTRANCE)) {
-            if (hasVacancy()) {
-                SampleHolder sampleHolder = racetrack.take(Racetrack.LOAD_UNLOAD_ENTRANCE);
-                queue(sampleHolder);
-            }
-        }
-        
-        // END TODO.
-    }
+    public Handler[] generateHandlers() {
+        return new Handler[] {
+            new Handler(EnterUnloadBuffer) {
+                @Override
+                public boolean condition() {
+                    // TODO: This isn't part of the correct simulated behavior. For testing
+                    // purposes only.
+                    //
+                    // As soon a sample holder get to the enty point of the load/unload
+                    // machine, get it in. Just to prevent from the simulation from
+                    // doing nothing. Not even the right place to do it.
+                    return racetrack.isTaken(Racetrack.LOAD_UNLOAD_ENTRANCE) && hasVacancy();
+                }
+                
+                @Override
+                public void begin() {
+                    //Then move the holder onto the racetrack. 
+                    SampleHolder sampleHolder = racetrack.take(Racetrack.LOAD_UNLOAD_ENTRANCE);
+                    queue(sampleHolder);
+                }
+            } 
+        };
+    };
     
     @Override
     public String getGlance() {

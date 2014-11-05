@@ -1,8 +1,7 @@
 package org.smlabtesting.sim.domain.entity.sampleholder;
 
-import static org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder.SampleHolderState.Default;
-
 import org.smlabtesting.sim.domain.generic.Entity;
+import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.State;
 
 /**
@@ -20,13 +19,9 @@ public class SampleHolder extends Entity {
     public Sample sample;
 
     // Entity API
-    @Override
-    public void process() {
-        // Initial State
-        if (noState()) {
-            setState(Default);
-        }
-    }
+    public Handler[] generateHandlers() {
+        return new Handler[]{};
+    };
     
     @Override
     public String getGlance() {
