@@ -58,17 +58,6 @@ public class LoadUnloadMachine extends Entity {
                 public void begin() {
                     // Retrieve next sample holder in line in unload buffer.
                     sampleHolder = unloadBuffer.next();
-
-                    // If sample holder has a sample, remove it.
-                    if (sampleHolder.hasSample()) {
-                        Sample removedSample = sampleHolder.removeSample();
-                        simulation.removeEntity(removedSample);
-                    }
-
-                    // If a new samples is in line to be processed, insert into holder.
-                    if (newSamples.hasNext()) {
-                        sampleHolder.putSample(newSamples.next());
-                    }
                 }
                 
                 @Override
@@ -79,6 +68,17 @@ public class LoadUnloadMachine extends Entity {
                 
                 @Override
                 public void end() {
+                    // If sample holder has a sample, remove it.
+                    if (sampleHolder.hasSample()) {
+                        Sample removedSample = sampleHolder.removeSample();
+                        simulation.removeEntity(removedSample);
+                    }
+
+                    // If a new samples is in line to be processed, insert into holder.
+                    if (newSamples.hasNext()) {
+                        sampleHolder.putSample(newSamples.next());
+                    }
+                    
                     // Queue to return to racetrack.
                     racetrackLine.queue(sampleHolder);
                     sampleHolder = null;
