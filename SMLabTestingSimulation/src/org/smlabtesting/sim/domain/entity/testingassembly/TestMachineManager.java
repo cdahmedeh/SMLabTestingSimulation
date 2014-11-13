@@ -26,7 +26,7 @@ public class TestMachineManager{
      }
      
      
-     public static  int assignEnterSlots(int slotNumber, int testCellNumber)
+     /*public static  int assignEnterSlots(int slotNumber, int testCellNumber)
      {
          return assignSlots(slotNumber, testCellNumber, enterSlots);
          
@@ -43,9 +43,9 @@ public class TestMachineManager{
          
        
          
-     }
+     }*/
      
-   
+   /*
      
      private List<TestingMachine> getMachineList(Integer i)
     {
@@ -71,7 +71,7 @@ public class TestMachineManager{
     {
      groupIDCounter++;
      return groupIDCounter;
-    }
+    }*/
     
   
   
