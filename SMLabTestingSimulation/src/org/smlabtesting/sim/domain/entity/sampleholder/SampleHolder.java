@@ -1,8 +1,6 @@
 package org.smlabtesting.sim.domain.entity.sampleholder;
 
 import org.smlabtesting.sim.domain.generic.Entity;
-import org.smlabtesting.sim.domain.generic.Handler;
-import org.smlabtesting.sim.domain.generic.State;
 
 /**
  * Maps to R.SampleHolder
@@ -10,19 +8,11 @@ import org.smlabtesting.sim.domain.generic.State;
  * @author Ahmed El-Hajjar
  */
 public class SampleHolder extends Entity {
-    // States
-    protected enum SampleHolderState implements State {
-        Default;
-    }
-
-    // Relationships
+    // Containers
     public Sample sample;
 
     // Entity API
-    public Handler[] generateHandlers() {
-        return new Handler[]{};
-    };
-    
+
     @Override
     public String getGlance() {
         return String.format(
