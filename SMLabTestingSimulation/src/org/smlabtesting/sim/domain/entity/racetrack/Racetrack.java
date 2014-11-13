@@ -2,6 +2,7 @@ package org.smlabtesting.sim.domain.entity.racetrack;
 
 import static org.smlabtesting.sim.domain.entity.racetrack.Racetrack.RacetrackState.RacetrackMove;
 
+import org.smlabtesting.sim.domain.entity.sampleholder.Sample;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Handler;
@@ -22,6 +23,7 @@ public class Racetrack extends Entity {
     public static final int LOAD_UNLOAD_ENTRANCE = 4;
     public static final int[] TEST_CELL_EXIT = {8, 16, 24, 32, 40};
     public static final int[] TEST_CELL_ENTRACE = {12, 20, 28, 36, 44};
+    
     
     // States
     protected enum RacetrackState implements State {
@@ -99,5 +101,10 @@ public class Racetrack extends Entity {
      */
     public boolean isTaken(final int position) {
         return !isVacant(position);
+    }
+    
+    public Sample getSample(int position)
+    {
+     return sampleHolders.get(position).sample;   
     }
 }

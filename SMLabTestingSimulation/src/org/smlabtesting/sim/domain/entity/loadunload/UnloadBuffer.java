@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
+import org.smlabtesting.sim.domain.entity.sampleholder.HolderGenerator;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Handler;
@@ -21,15 +22,16 @@ import org.smlabtesting.sim.domain.generic.State;
 public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
     // Constants
     private static final int BUFFER_SLOTS = 5; 
-
+    private static final int THRESHOLD_EMPTY_SAMPLES=3;
     // States
     protected enum UnloadBufferState implements State {
         EnterUnloadBuffer;
     }
     
+    
     // Containers
     private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>(BUFFER_SLOTS);
-
+    
     // Relationships
     private Racetrack racetrack;
 
@@ -38,6 +40,20 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
         this.racetrack = racetrack;
     }
 
+    private void generateEmptySampleHolders()
+    {
+        int emptySampleCounter=0;
+        for(SampleHolder holder: sampleHolders)
+            if(!holder.hasSample()) emptySampleCounter++;
+        
+        while( emptySampleCounter<THRESHOLD_EMPTY_SAMPLES)
+        {
+            queue(  HolderGenerator.generateSampleHolder()) ;
+            emptySampleCounter++;
+        }
+        
+    }
+    
     // Entity API
     @Override
     public Handler[] generateHandlers() {
@@ -50,15 +66,23 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
                     //
                     // As soon a sample holder get to the enty point of the load/unload
                     // machine, get it in. Just to prevent from the simulation from
-                    // doing nothing. Not even the right place to do it.
+                    // doing nothing. Not even the right place to do it
+                    
                     return racetrack.isTaken(Racetrack.LOAD_UNLOAD_ENTRANCE) && hasVacancy();
                 }
                 
+                // Entry point of the sampleHolders inside the queue for simulation
+                // checking if totalSampleHolders inside the queue are less than 70
+                // TODO: logic to remove the empty sampleHolders ,should decrease the counter
                 @Override
                 public void begin() {
                     //Then move the holder onto the racetrack. 
+                 
                     SampleHolder sampleHolder = racetrack.take(Racetrack.LOAD_UNLOAD_ENTRANCE);
                     queue(sampleHolder);
+                    generateEmptySampleHolders();
+                    
+                
                 }
             } 
         };

@@ -1,5 +1,7 @@
 package org.smlabtesting.sim.domain.entity.sampleholder;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,18 +15,42 @@ import org.smlabtesting.sim.domain.generic.State;
  * @author Ahmed El-Hajjar
  */
 public class Sample extends Entity {
+    
+    //attributes
+    private Priority priority = Priority.MEDIUM;
+    private TestSequence testsRemaining ;
+    private Timestamp startTime;
+    private int sampleId;
+    private static int counter=0;
     // States
     protected enum SampleState implements State {
         Default;
     }
 
+ // for medium or rush samples( High)
+    public enum Priority{
+        RUSH, MEDIUM; 
+    }
+    
+    
+    public Priority getSamplePriority(){
+        return priority;
+    }
+    public void setRushSample(){
+        priority = Priority.RUSH;
+    }
+    
     // Factories
     public static Sample generateSample() {
         return new Sample();
     }
     
     // Constructs
-    public Sample() {}    
+    public Sample() 
+    {
+        sampleId= counter++;
+        startTime = new Timestamp(System.currentTimeMillis());
+    }    
     
     // Entity API
     public Handler[] generateHandlers() {
@@ -34,10 +60,9 @@ public class Sample extends Entity {
     @Override
     public String getGlance() {
         return String.format(
-                "[Sample]"
+                "[Sample]" + sampleId +" [Generated Time:   "+ startTime+"]"
         );
     }
-    TestSequence testsRemaining ;
     
     // TestSequence is used for checking the testsequence associated with the sample
     // It has a retrycount for the testing done in the cell
@@ -50,77 +75,12 @@ public class Sample extends Entity {
         this.testsRemaining = new TestSequence(testRemaining);
     }
 
-    private class TestSequence
+    public TestSequence getRemainingTests()
     {
-        private final  LinkedList <TestNode> list = new LinkedList<TestNode>();
-    
-        TestSequence()
-        {
-            
-        }
-        
-        public TestNode getFirstTestSequence()
-        {
-            return list.getFirst();
-            
-        }
-        
-        
-        public TestNode removeFirstTestSequence()
-        {
-           return list.removeFirst();
-        }
-        
-        public void retryTest(int testNumber)
-        {
-            for(TestNode node: list)
-            {
-                if(node.getTestNumber().equals(testNumber))
-                   node.retryCount++;
-              
-            }
-        }
-        
-       
-        
-        TestSequence(List <Integer> requiredTests)
-        {
-            for( final Integer i : requiredTests)
-            {
-                TestNode node = new TestNode();
-                node.setTestNumber(i);
-                list.add(node);
+        return testsRemaining;
                 
-             }
-                
-        }
-        
-        /*
-         * TestNode contains the TestSequence Number, and the retryCount
-         * 
-         * */
-        private class TestNode 
-        {
-            private int retryCount;
-            private Integer testNumber;
-            
-            
-            public Integer getTestNumber() {
-                return testNumber;
-            }
-            public void setTestNumber(Integer testNumber) {
-                this.testNumber = testNumber;
-            }
-            public int getRetryCount() {
-                return retryCount;
-            }
-            public void setRetryCount(int retryCount) {
-                this.retryCount = retryCount;
-            }
-            
-        }
-
     }
+    
     
     
     

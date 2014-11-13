@@ -18,6 +18,17 @@ public class SampleHolder extends Entity {
     // Relationships
     public Sample sample;
 
+    private static int sampleHolderCounter;
+    private final static int thresholdCounter= 70;
+    
+    public SampleHolder()
+    {
+        if(sampleHolderCounter>= thresholdCounter)
+            throw new RuntimeException("Threshold for sample holder being reached");
+        
+        sampleHolderCounter++;
+    }
+    
     // Entity API
     public Handler[] generateHandlers() {
         return new Handler[]{};
@@ -26,7 +37,7 @@ public class SampleHolder extends Entity {
     @Override
     public String getGlance() {
         return String.format(
-                "[SampleHolder] Has sample?: %b", 
+                "[SampleHolder] Has sample?: %b  ", 
                 hasSample()
         );
     }

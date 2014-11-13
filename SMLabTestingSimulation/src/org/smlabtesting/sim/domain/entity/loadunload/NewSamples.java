@@ -62,9 +62,12 @@ public class NewSamples extends Entity implements Queue<Sample> {
                 @Override
                 public void end() {
                     // Create a sample.
-                    Sample sample = Sample.generateSample();
+                    // TODO: UNCOMMENT THIS
+                    /*
+                     * Sample sample = Sample.generateSample();
                     samples.add(sample);
                     simulation.addEntity(sample);
+                    */
                 }
             } 
         };
@@ -86,7 +89,9 @@ public class NewSamples extends Entity implements Queue<Sample> {
 
     @Override
     public Sample next() {
+        if(hasNext())
         return samples.pop();
+        return null;
     }
 
     @Override

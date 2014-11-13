@@ -11,6 +11,7 @@ import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;
+import org.smlabtesting.sim.logging.LogPrinter;
 
 /**
  * Maps to Q.Racetrack
@@ -24,12 +25,15 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
         ExitRacetrackLine;
     }
 
+    LogPrinter printer = new LogPrinter();
     // Containers
     private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>();
     
     // Relationships
     private Racetrack racetrack;
 
+    // how do we generate the load/ unload points for each testMachine group?
+    // keep it in a map, given the group id..
     // Constructs
     public RacetrackLine(Racetrack racetrack) {
         this.racetrack = racetrack;
@@ -50,7 +54,10 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
                 @Override
                 public void begin() {
                     //Then move the holder onto the racetrack. 
-                    racetrack.setSlot(Racetrack.LOAD_UNLOAD_EXIT, next());
+                    SampleHolder holder = next();
+                    printer.println(holder.getGlance() +" moving on to racetrack");
+                    
+                    racetrack.setSlot(Racetrack.LOAD_UNLOAD_EXIT, holder);
                 }
             } 
         };
@@ -72,12 +79,18 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
 
     @Override
     public SampleHolder next() {
-        return sampleHolders.pop();
+        if(hasNext())
+            return sampleHolders.pop();
+        
+        return null;
     }
 
     @Override
     public void queue(final SampleHolder entity) {
-        sampleHolders.add(entity);
+        if(entity!= null)
+            sampleHolders.add(entity);
+        //else 
+         //   throw new NullPointerException("Null entity cannot be added to the queue");
     }
 
     @Override
