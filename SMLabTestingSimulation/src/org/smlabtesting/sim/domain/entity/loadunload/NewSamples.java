@@ -64,7 +64,7 @@ public class NewSamples extends Entity implements Queue<Sample> {
                     // Create a sample.
                     Sample sample = Sample.generateSample();
                     samples.add(sample);
-                    simulation.addEntity(sample);
+//                    simulation.addEntity(sample);
                 }
             } 
         };

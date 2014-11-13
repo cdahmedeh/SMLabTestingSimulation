@@ -29,7 +29,7 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             final SampleHolder sampleHolder = new SampleHolder();
             racetrack.setSlot(i, sampleHolder);
-            simulation.addEntity(sampleHolder);
+//            simulation.addEntity(sampleHolder);
         }
 
         // Create the load/unload machine.
