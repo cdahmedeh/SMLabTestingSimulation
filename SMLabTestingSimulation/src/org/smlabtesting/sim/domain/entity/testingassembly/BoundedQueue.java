@@ -9,7 +9,7 @@ import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.Queue;
 
 // Make the BoundedQueue an entity, and keep it outside the TestMachine
-public  class BoundedQueue <E extends Entity > extends Entity implements  Queue<E>
+public  class BoundedQueue <E extends Entity > implements  Queue<E>
 {
 
     // infinite bounded size is set to 100
@@ -68,20 +68,6 @@ public  class BoundedQueue <E extends Entity > extends Entity implements  Queue<
     {
         return queue.size();
     }
-
-    @Override
-    public Handler[] generateHandlers() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getGlance() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    
 
    
 }
