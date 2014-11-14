@@ -79,4 +79,10 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
     public void queue(final SampleHolder entity) {
         sampleHolders.add(entity);
     }
+
+    @Override
+    public boolean hasVacancy() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

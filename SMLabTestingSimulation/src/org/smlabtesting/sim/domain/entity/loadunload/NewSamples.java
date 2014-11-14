@@ -109,4 +109,10 @@ public class NewSamples extends Entity implements Queue<Sample> {
         int randomOffset = (int) deviationDistribution.sample();
         return Math.max(0, SECONDS_IN_HOUR/INCOMING_SAMPLE_RATES[currentHour] + randomOffset);
     }
+
+    @Override
+    public boolean hasVacancy() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
