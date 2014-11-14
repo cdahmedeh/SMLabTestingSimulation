@@ -56,4 +56,8 @@ public class SampleHolder extends Entity {
         sample = null;
         return removedSample;
     }
+    
+    public Sample getSample(){
+        return this.sample;
+    }
 }

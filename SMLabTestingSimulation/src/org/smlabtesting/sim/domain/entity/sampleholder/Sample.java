@@ -1,5 +1,8 @@
 package org.smlabtesting.sim.domain.entity.sampleholder;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.smlabtesting.sim.domain.generic.Entity;
 
 /**
@@ -24,4 +27,17 @@ public class Sample extends Entity {
                 "[Sample]"
         );
     }
+    
+    List <Integer>  testSequence = new LinkedList<>();
+    
+    public boolean hasMatchingTestSequence(int i)
+    {
+        return testSequence.get(0) == i;
+    }
+    
+    public boolean hasCompletedSequence(){
+        return testSequence.size()==0;
+    }
+    
+    
 }

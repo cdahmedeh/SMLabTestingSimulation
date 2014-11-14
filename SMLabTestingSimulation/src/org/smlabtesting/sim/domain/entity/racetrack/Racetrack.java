@@ -18,10 +18,8 @@ public class Racetrack extends Entity {
     public static final int BELT_SLOTS_COUNT = 48;
     
     // Enter/Exit points for the load/unload machines and test cells.
-    public static final int LOAD_UNLOAD_EXIT = 0;
-    public static final int LOAD_UNLOAD_ENTRANCE = 4;
-    public static final int[] TEST_CELL_EXIT = {8, 16, 24, 32, 40};
-    public static final int[] TEST_CELL_ENTRACE = {12, 20, 28, 36, 44};
+    public static final int[] STATION_EXITS = {0, 8, 16, 24, 32, 40};
+    public static final int[] STATION_ENTRACES = {4, 12, 20, 28, 36, 44};
     
     // States
     protected enum RacetrackState implements State {
@@ -99,5 +97,10 @@ public class Racetrack extends Entity {
      */
     public boolean isTaken(final int position) {
         return !isVacant(position);
+    }
+    
+    public SampleHolder peek(final int position)
+    {
+        return sampleHolders.get(position);
     }
 }

@@ -1,6 +1,6 @@
-package org.smlabtesting.sim.domain.entity.loadunload;
+package org.smlabtesting.sim.domain.entity.testing;
 
-import static org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine.RacetrackLineState.ExitRacetrackLine;
+import static org.smlabtesting.sim.domain.entity.testing.TestCellBuffer.UnloadBufferState.EnterUnloadBuffer;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -13,48 +13,54 @@ import org.smlabtesting.sim.domain.generic.Queue;
 import org.smlabtesting.sim.domain.generic.State;
 
 /**
- * Maps to Q.Racetrack
+ * Maps to Q.TestCellBuffer
  * 
  * @author Ahmed El-Hajjar
  *
  */
-public class RacetrackLine extends Entity implements Queue<SampleHolder> {
-    // States
-    protected enum RacetrackLineState implements State {
-        ExitRacetrackLine;
-    }
+public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
+    // Constants
+    private static final int BUFFER_SLOTS = 3; 
 
-    // Containers
-    private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>();
+    private int stationid;
+    // States
+    protected enum UnloadBufferState implements State {
+        EnterUnloadBuffer;
+    }
     
+    // Containers
+    private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>(BUFFER_SLOTS);
+
     // Relationships
     private Racetrack racetrack;
 
-    private int stationid;
-
     // Constructs
-    public RacetrackLine(Racetrack racetrack, int id) {
+    public TestCellBuffer(Racetrack racetrack , int stationid) {
         this.racetrack = racetrack;
-        stationid = id;
+        this.stationid = stationid;
     }
 
     // Entity API
     @Override
     public Handler[] generateHandlers() {
         return new Handler[] {
-            new Handler(ExitRacetrackLine) {
+            new Handler(EnterUnloadBuffer) {
                 @Override
                 public boolean condition() {
-                    // If there is a holder waiting to enter and it's possible to merge
-                    // on the racetrack.
                     
-                    return ( racetrack.isVacant(Racetrack.STATION_EXITS[stationid]) && hasNext() )  ;
+                       int stationEntrace = Racetrack.STATION_ENTRACES[stationid];
+                       SampleHolder holder  = racetrack.peek(stationEntrace);
+                    return hasVacancy() && ( holder != null) && holder.hasSample() && holder.getSample().hasMatchingTestSequence(stationid);
+                    
+                            
                 }
                 
                 @Override
                 public void begin() {
                     //Then move the holder onto the racetrack. 
-                    racetrack.setSlot(Racetrack.STATION_EXITS[stationid], next());
+                    SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[0]);
+                    queue(sampleHolder);
+                    
                 }
             } 
         };
@@ -63,7 +69,7 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
     @Override
     public String getGlance() {
         return String.format(
-                "[RacetrackLine] Sample Holders waiting to enter racetrack: %d", 
+                "[UnloadBuffer] Holders waiting for processing: %d", 
                 sampleHolders.size()
         );
     }
@@ -86,7 +92,6 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
 
     @Override
     public boolean hasVacancy() {
-        // TODO Auto-generated method stub
-        return false;
+        return sampleHolders.size() < BUFFER_SLOTS;
     }
 }

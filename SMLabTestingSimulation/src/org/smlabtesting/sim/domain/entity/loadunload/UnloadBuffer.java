@@ -32,7 +32,8 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
 
     // Relationships
     private Racetrack racetrack;
-
+    private int emptySampleHolderCount =0;
+    private static int MAX_EMPTY_HOLDERS_SIZE= 3;
     // Constructs
     public UnloadBuffer(Racetrack racetrack) {
         this.racetrack = racetrack;
@@ -51,13 +52,20 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
                     // As soon a sample holder get to the enty point of the load/unload
                     // machine, get it in. Just to prevent from the simulation from
                     // doing nothing. Not even the right place to do it.
-                    return racetrack.isTaken(Racetrack.LOAD_UNLOAD_ENTRANCE) && hasVacancy();
+                    boolean condition1 =  racetrack.isTaken(Racetrack.STATION_ENTRACES[0]) && hasVacancy();
+                    SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRACES[0]);
+                    boolean condition2 = holder.hasSample()  && holder.getSample().hasCompletedSequence();
+                    boolean condition3 = !holder.hasSample() && ( emptySampleHolderCount < MAX_EMPTY_HOLDERS_SIZE);
+                    return condition1 && ( condition2 || condition3);
                 }
                 
                 @Override
                 public void begin() {
                     //Then move the holder onto the racetrack. 
-                    SampleHolder sampleHolder = racetrack.take(Racetrack.LOAD_UNLOAD_ENTRANCE);
+                    SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[0]);
+                    if(!sampleHolder.hasSample())
+                        emptySampleHolderCount++;
+                    
                     queue(sampleHolder);
                 }
             } 

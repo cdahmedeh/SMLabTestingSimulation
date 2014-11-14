@@ -39,7 +39,7 @@ public class Main {
         final UnloadBuffer unloadBuffer = new UnloadBuffer(racetrack);
         simulation.addEntity(unloadBuffer);
 
-        final RacetrackLine racetrackLine = new RacetrackLine(racetrack);
+        final RacetrackLine racetrackLine = new RacetrackLine(racetrack,     0 );
         simulation.addEntity(racetrackLine);
 
         final LoadUnloadMachine loadUnloadMachine = new LoadUnloadMachine(newSamples, unloadBuffer, racetrackLine);
