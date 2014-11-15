@@ -28,7 +28,9 @@ public interface Queue<E extends Entity> {
      * 
      * @return If there is room in the queue.
      */
-    public boolean hasVacancy();
+    public default boolean hasVacancy() {
+        return true; // Queue is unlimited.
+    }
     
     /**
      * Puts the provided entity in line in the queue.
