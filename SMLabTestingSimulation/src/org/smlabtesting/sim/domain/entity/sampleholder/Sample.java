@@ -1,6 +1,6 @@
 package org.smlabtesting.sim.domain.entity.sampleholder;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.smlabtesting.sim.domain.generic.Entity;
@@ -15,6 +15,9 @@ public class Sample extends Entity {
     public static Sample generateSample() {
         return new Sample();
     }
+
+    // Attributes
+    List<Integer> testSequence = new ArrayList<>();
     
     // Constructs
     public Sample() {}    
@@ -28,15 +31,24 @@ public class Sample extends Entity {
         );
     }
     
-    List <Integer>  testSequence = new LinkedList<>();
-    
-    public boolean hasMatchingTestSequence(int i)
-    {
-        return testSequence.get(0) == i;
+    /**
+     * Checks if the next test to be performed to for this sample corresponds
+     * to the provided station number.
+     * 
+     * @return true if the next test does correspond. false otherwise, or if
+     *         there are no more tests to perform
+     */
+    public boolean hasNextTest(int stationId) {
+        return !hasCompletedSequence() && testSequence.get(0) == stationId;
     }
-    
-    public boolean hasCompletedSequence(){
-        return testSequence.size()==0;
+
+    /**
+     * Checks if the sample has gone through all required tests.
+     * 
+     * @return true if the are no more tests to be done.
+     */
+    public boolean hasCompletedSequence() {
+        return testSequence.isEmpty();
     }
     
     
