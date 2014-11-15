@@ -30,12 +30,13 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
     // Relationships
     private Racetrack racetrack;
 
-    private int stationid;
+    // Identifiers
+    private int stationId;
 
     // Constructs
-    public RacetrackLine(Racetrack racetrack, int id) {
+    public RacetrackLine(Racetrack racetrack, int stationId) {
         this.racetrack = racetrack;
-        stationid = id;
+        this.stationId = stationId;
     }
 
     // Entity API
@@ -47,14 +48,13 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
                 public boolean condition() {
                     // If there is a holder waiting to enter and it's possible to merge
                     // on the racetrack.
-                    
-                    return ( racetrack.isVacant(Racetrack.STATION_EXITS[stationid]) && hasNext() )  ;
+                    return hasNext() && racetrack.isVacant(Racetrack.STATION_EXITS[stationId]);
                 }
                 
                 @Override
                 public void begin() {
                     //Then move the holder onto the racetrack. 
-                    racetrack.setSlot(Racetrack.STATION_EXITS[stationid], next());
+                    racetrack.setSlot(Racetrack.STATION_EXITS[stationId], next());
                 }
             } 
         };
@@ -82,11 +82,5 @@ public class RacetrackLine extends Entity implements Queue<SampleHolder> {
     @Override
     public void queue(final SampleHolder entity) {
         sampleHolders.add(entity);
-    }
-
-    @Override
-    public boolean hasVacancy() {
-        // TODO Auto-generated method stub
-        return false;
     }
 }
