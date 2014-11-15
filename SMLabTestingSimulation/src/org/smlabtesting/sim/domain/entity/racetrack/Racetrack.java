@@ -80,8 +80,8 @@ public class Racetrack extends Entity {
      * Takes the sample holder at the provided position out of the race track 
      * and returns its reference.
      *
-     * @param position Zero-based index of where to put the holder in.
-     * @param sampleHolder The holder to slot into the track.
+     * @param position Zero-based index of where to get the holder from.
+     * @param sampleHolder The holder that was removed from the track.
      */
     public SampleHolder take(final int position) {
         SampleHolder sampleHolder = sampleHolders.get(position);
@@ -98,9 +98,15 @@ public class Racetrack extends Entity {
     public boolean isTaken(final int position) {
         return !isVacant(position);
     }
-    
-    public SampleHolder peek(final int position)
-    {
+   
+    /**
+     * Gets a reference to the sample holder in that position on the racetrack
+     * without actually removing it from there.
+     *
+     * @param position Zero-based index of where to get the holder from.
+     * @param sampleHolder The holder at that postiion of the track.
+     */
+    public SampleHolder peek(final int position) {
         return sampleHolders.get(position);
     }
 }
