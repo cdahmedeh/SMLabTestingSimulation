@@ -29,6 +29,9 @@ public class LoadUnloadMachine extends Entity {
     private final TriangularDistribution cycleTimeDistribution = new TriangularDistribution(
             DEFAULT_RNG, CYCLE_TIME_BOUNDS[0], CYCLE_TIME_BOUNDS[1], CYCLE_TIME_BOUNDS[2]);
 
+    // Attributes
+    private boolean busy = false; //TODO: Unused.   
+    
     // Containers
     private SampleHolder sampleHolder = null;
     
@@ -36,8 +39,7 @@ public class LoadUnloadMachine extends Entity {
     private final NewSamples newSamples;
     private final UnloadBuffer unloadBuffer;
     private final RacetrackLine racetrackLine;
-    private  boolean isBusy;
-    
+
     // Constructs
     public LoadUnloadMachine(final NewSamples newSamples, final UnloadBuffer unloadBuffer, final RacetrackLine racetrackLine) {
         this.newSamples = newSamples;
@@ -52,7 +54,6 @@ public class LoadUnloadMachine extends Entity {
                 @Override
                 public boolean condition() {
                     // Idle until there is a holder waiting in unload buffer.
-                    
                     return unloadBuffer.hasNext();
                 }
                 
