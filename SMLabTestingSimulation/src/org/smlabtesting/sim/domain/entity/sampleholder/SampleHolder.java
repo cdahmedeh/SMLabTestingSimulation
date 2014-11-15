@@ -49,7 +49,7 @@ public class SampleHolder extends Entity {
      * The calling class is responsible from removing it from the simulation
      * processing.
      * 
-     * @return The removed sample.
+     * @return The removed sample. Null if no sample was in.
      */
     public Sample removeSample() {
         Sample removedSample = sample;
@@ -57,6 +57,12 @@ public class SampleHolder extends Entity {
         return removedSample;
     }
     
+    /**
+     * Retrieves a reference to the sample in this holder without removing it 
+     * from the holder.
+     * 
+     * @return A reference to the sample in the holder. Null if none.
+     */    
     public Sample getSample(){
         return this.sample;
     }
