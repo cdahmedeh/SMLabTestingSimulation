@@ -6,6 +6,8 @@ import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.loadunload.UnloadBuffer;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
+import org.smlabtesting.sim.domain.entity.testing.TestCellBuffer;
+import org.smlabtesting.sim.domain.entity.testing.TestingMachine;
 import org.smlabtesting.sim.logging.LogPrinter;
 
 /**
@@ -44,6 +46,21 @@ public class Main {
 
         final LoadUnloadMachine loadUnloadMachine = new LoadUnloadMachine(newSamples, unloadBuffer, racetrackLine);
         simulation.addEntity(loadUnloadMachine);
+        
+        // Create the test cells.
+        for (int stationId = 1; stationId <= 5; stationId++) {
+            final TestCellBuffer testCellBuffer = new TestCellBuffer(racetrack, stationId);
+            simulation.addEntity(testCellBuffer);
+
+            final RacetrackLine racetrackLine_ = new RacetrackLine(racetrack, stationId);
+            simulation.addEntity(racetrackLine_);
+
+            // Create testing machines in test cells.
+            for (int machineId = 0; machineId < 3; machineId++) {
+                final TestingMachine testingMachine = new TestingMachine(racetrackLine_, testCellBuffer, stationId, machineId);
+                simulation.addEntity(testingMachine);
+            }
+        }
 
         // Simulate for an hour seconds.
         while (simulation.getTime() < 3600) {

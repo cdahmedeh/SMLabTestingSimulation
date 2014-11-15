@@ -54,7 +54,7 @@ public class TestingMachine extends Entity {
     public Handler[] generateHandlers() {
         Handler testingHandler = new Handler(Testing) {
             public boolean condition() {
-                return status == Idle && (testCellBuffer.hasNext() || sampleHolder.hasSample());
+                return status == Idle && (testCellBuffer.hasNext() || sampleHolder != null);
             }
 
             public void begin() {

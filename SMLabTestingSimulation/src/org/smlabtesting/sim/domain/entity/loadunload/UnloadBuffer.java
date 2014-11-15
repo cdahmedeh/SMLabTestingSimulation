@@ -50,12 +50,13 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
             new Handler(EnterUnloadBuffer) {
                 @Override
                 public boolean condition() {
-                    boolean condition1 =  racetrack.isTaken(Racetrack.STATION_ENTRACES[0]) && hasVacancy();
-
                     SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRACES[0]);
-                    boolean condition2 = holder.hasSample()  && holder.getSample().hasCompletedSequence();
-                    boolean condition3 = !holder.hasSample() && emptySampleHolderCount < MAX_EMPTY_HOLDERS;
-                    return condition1 && ( condition2 || condition3);
+                    
+                    return racetrack.isTaken(Racetrack.STATION_ENTRACES[0]) && hasVacancy() 
+                            && (
+                                    holder.hasSample()  && holder.getSample().hasCompletedSequence() || 
+                                    !holder.hasSample() && emptySampleHolderCount < MAX_EMPTY_HOLDERS
+                               );
                 }
                 
                 @Override
