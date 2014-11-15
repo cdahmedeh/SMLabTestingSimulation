@@ -15,8 +15,8 @@ import org.smlabtesting.sim.domain.generic.State;
 /**
  * Maps to Q.TestCellBuffer
  * 
+ * @author Lalit Azad
  * @author Ahmed El-Hajjar
- *
  */
 public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
     // Constants

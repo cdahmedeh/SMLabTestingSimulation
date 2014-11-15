@@ -16,8 +16,8 @@ import org.smlabtesting.sim.domain.generic.State;
 /**
  * Maps to Q.NewSamples.
  * 
+ * @author Lalit Azad
  * @author Ahmed El-Hajjar
- *
  */
 public class NewSamples extends Entity implements Queue<Sample> {
     // Constants

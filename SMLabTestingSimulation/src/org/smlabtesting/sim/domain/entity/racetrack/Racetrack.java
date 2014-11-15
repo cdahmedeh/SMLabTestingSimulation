@@ -11,6 +11,7 @@ import org.smlabtesting.types.OffsetList;
 /**
  * Maps to R.Racetrack
  *
+ * @author Lalit Azad
  * @author Ahmed El-Hajjar
  */
 public class Racetrack extends Entity {

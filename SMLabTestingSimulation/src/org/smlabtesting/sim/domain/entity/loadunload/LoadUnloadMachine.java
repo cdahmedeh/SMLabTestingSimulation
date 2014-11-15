@@ -13,8 +13,8 @@ import org.smlabtesting.sim.domain.generic.State;
 /**
  * Maps to R.LoadUnloadMachine 
  * 
+ * @author Lalit Azad
  * @author Ahmed El-Hajjar
- *
  */
 public class LoadUnloadMachine extends Entity {
     // Constants

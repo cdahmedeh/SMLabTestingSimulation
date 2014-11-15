@@ -8,6 +8,12 @@ import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Handler;
 import org.smlabtesting.sim.domain.generic.State;
 
+/**
+ * Maps to RC.TestingMachine
+ * 
+ * @author Lalit Azad
+ * @author Ahmed El-Hajjar
+ */
 public class TestingMachine extends Entity {
     // States
     protected enum TestingMachineState implements State {

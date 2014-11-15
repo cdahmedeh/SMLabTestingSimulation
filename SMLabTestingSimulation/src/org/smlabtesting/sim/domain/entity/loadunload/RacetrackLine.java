@@ -15,6 +15,7 @@ import org.smlabtesting.sim.domain.generic.State;
 /**
  * Maps to Q.Racetrack
  * 
+ * @author Lalit Azad
  * @author Ahmed El-Hajjar
  *
  */

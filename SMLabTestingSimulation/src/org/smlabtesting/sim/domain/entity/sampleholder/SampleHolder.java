@@ -6,6 +6,7 @@ import org.smlabtesting.sim.domain.generic.Entity;
  * Maps to R.SampleHolder
  *
  * @author Ahmed El-Hajjar
+ * @author Lalit Azad
  */
 public class SampleHolder extends Entity {
     // Containers
