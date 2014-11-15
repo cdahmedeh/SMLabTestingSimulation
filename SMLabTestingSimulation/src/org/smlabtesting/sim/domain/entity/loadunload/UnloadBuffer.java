@@ -21,6 +21,7 @@ import org.smlabtesting.sim.domain.generic.State;
 public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
     // Constants
     private static final int BUFFER_SLOTS = 5; 
+    private static int MAX_EMPTY_HOLDERS = 3;
 
     // States
     protected enum UnloadBufferState implements State {
@@ -30,10 +31,12 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
     // Containers
     private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>(BUFFER_SLOTS);
 
+    // Attributes
+    private int emptySampleHolderCount = 0;
+    
     // Relationships
     private Racetrack racetrack;
-    private int emptySampleHolderCount =0;
-    private static int MAX_EMPTY_HOLDERS_SIZE= 3;
+
     // Constructs
     public UnloadBuffer(Racetrack racetrack) {
         this.racetrack = racetrack;
@@ -46,16 +49,11 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
             new Handler(EnterUnloadBuffer) {
                 @Override
                 public boolean condition() {
-                    // TODO: This isn't part of the correct simulated behavior. For testing
-                    // purposes only.
-                    //
-                    // As soon a sample holder get to the enty point of the load/unload
-                    // machine, get it in. Just to prevent from the simulation from
-                    // doing nothing. Not even the right place to do it.
                     boolean condition1 =  racetrack.isTaken(Racetrack.STATION_ENTRACES[0]) && hasVacancy();
+
                     SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRACES[0]);
                     boolean condition2 = holder.hasSample()  && holder.getSample().hasCompletedSequence();
-                    boolean condition3 = !holder.hasSample() && ( emptySampleHolderCount < MAX_EMPTY_HOLDERS_SIZE);
+                    boolean condition3 = !holder.hasSample() && emptySampleHolderCount < MAX_EMPTY_HOLDERS;
                     return condition1 && ( condition2 || condition3);
                 }
                 
@@ -63,9 +61,11 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
                 public void begin() {
                     //Then move the holder onto the racetrack. 
                     SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[0]);
-                    if(!sampleHolder.hasSample())
-                        emptySampleHolderCount++;
                     
+                    if(!sampleHolder.hasSample()) {
+                        emptySampleHolderCount++;
+                    }
+                        
                     queue(sampleHolder);
                 }
             } 
