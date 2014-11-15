@@ -55,7 +55,6 @@ public class NewSamples extends Entity implements Queue<Sample> {
             new Handler(Arrival) {
                 @Override
                 public int duration() {
-                    
                     return nextArrival();
                 }
                 
@@ -108,11 +107,5 @@ public class NewSamples extends Entity implements Queue<Sample> {
         int currentHour = ( getSimulation().getTime() / SECONDS_IN_HOUR ) % HOURS_IN_DAY;
         int randomOffset = (int) deviationDistribution.sample();
         return Math.max(0, SECONDS_IN_HOUR/INCOMING_SAMPLE_RATES[currentHour] + randomOffset);
-    }
-
-    @Override
-    public boolean hasVacancy() {
-        // TODO Auto-generated method stub
-        return false;
     }
 }
