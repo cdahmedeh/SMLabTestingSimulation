@@ -22,22 +22,24 @@ public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
     // Constants
     private static final int BUFFER_SLOTS = 3; 
 
-    private int stationid;
     // States
     protected enum UnloadBufferState implements State {
         EnterUnloadBuffer;
     }
+
+    // Identifiers
+    private final int stationId;
     
     // Containers
     private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>(BUFFER_SLOTS);
 
     // Relationships
-    private Racetrack racetrack;
+    private final Racetrack racetrack;
 
     // Constructs
-    public TestCellBuffer(Racetrack racetrack , int stationid) {
+    public TestCellBuffer(final Racetrack racetrack, final int stationId) {
         this.racetrack = racetrack;
-        this.stationid = stationid;
+        this.stationId = stationId;
     }
 
     // Entity API
@@ -47,20 +49,18 @@ public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
             new Handler(EnterUnloadBuffer) {
                 @Override
                 public boolean condition() {
-                    
-                       int stationEntrace = Racetrack.STATION_ENTRACES[stationid];
-                       SampleHolder holder  = racetrack.peek(stationEntrace);
-                    return hasVacancy() && ( holder != null) && holder.hasSample() && holder.getSample().hasMatchingTestSequence(stationid);
-                    
-                            
+                    SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRACES[stationId]);
+                    return hasVacancy()
+                            && (holder != null)
+                            && holder.hasSample()
+                            && holder.getSample().hasNextTest(stationId);
                 }
                 
                 @Override
                 public void begin() {
-                    //Then move the holder onto the racetrack. 
+                    //Then move the holder onto the buffer. 
                     SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[0]);
                     queue(sampleHolder);
-                    
                 }
             } 
         };
