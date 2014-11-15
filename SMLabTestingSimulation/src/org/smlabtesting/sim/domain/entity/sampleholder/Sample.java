@@ -2,6 +2,7 @@ package org.smlabtesting.sim.domain.entity.sampleholder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.smlabtesting.sim.domain.generic.Entity;
 
@@ -20,7 +21,9 @@ public class Sample extends Entity {
     List<Integer> testSequence = new ArrayList<>();
     
     // Constructs
-    public Sample() {}    
+    public Sample() {
+        IntStream.of(5,3,1,2,3,4,2,1).forEach(testSequence::add);
+    }    
     
     // Entity API
     

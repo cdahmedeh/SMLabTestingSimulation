@@ -60,7 +60,7 @@ public class TestingMachine extends Entity {
             public void begin() {
                 status = Testing;
 
-                if (testCellBuffer.hasNext() && sampleHolder.hasSample()) {
+                if (sampleHolder == null) {
                     sampleHolder = testCellBuffer.next();
                 }
 
@@ -82,8 +82,7 @@ public class TestingMachine extends Entity {
 
             public void end() {
                 if (testSuccess) {
-                    SampleHolder holder = sampleHolder;
-                    racetrackLine.queue(holder);
+                    racetrackLine.queue(sampleHolder);
                     sampleHolder = null;
                     status = Idle;
                     completedTests++;
@@ -131,25 +130,28 @@ public class TestingMachine extends Entity {
 
     @Override
     public String getGlance() {
-        return "[TestingMachine]";
+        return String.format(
+                "[TestingMachine] Currently %s",
+                status
+        );
     }
 
     // Private helper methods
     
     private int generateTestingTime() {
-        return 0;
+        return 100; //TODO: Hard-coded
     }
 
     private int generateRepairTime() {
-        return 0;
+        return 100; //TODO: Hard-coded
     }
 
     private int generateFailureTime() {
-        return 0;
+        return 1000; //TODO: Hard-coded
     }
 
     private int generateCleaningTime() {
-        return 0;
+        return 100; //TODO: Hard-coded
     }
     
 }

@@ -51,7 +51,7 @@ public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
                 public boolean condition() {
                     SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRACES[stationId]);
                     return hasVacancy()
-                            && (holder != null)
+                            && holder != null
                             && holder.hasSample()
                             && holder.getSample().hasNextTest(stationId);
                 }
@@ -59,7 +59,7 @@ public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
                 @Override
                 public void begin() {
                     //Then move the holder onto the buffer. 
-                    SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[0]);
+                    SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[stationId]);
                     queue(sampleHolder);
                 }
             } 
