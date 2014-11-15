@@ -1,11 +1,10 @@
-package org.smlabtesting.sim.domain.entity.loadunload;
+package org.smlabtesting.sim.domain.entity.racetrack;
 
-import static org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine.RacetrackLineState.ExitRacetrackLine;
+import static org.smlabtesting.sim.domain.entity.racetrack.RacetrackLine.RacetrackLineState.ExitRacetrackLine;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Handler;

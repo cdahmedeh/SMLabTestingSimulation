@@ -2,12 +2,12 @@ package org.smlabtesting.sim.executor;
 
 import org.smlabtesting.sim.domain.entity.loadunload.LoadUnloadMachine;
 import org.smlabtesting.sim.domain.entity.loadunload.NewSamples;
-import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.loadunload.UnloadBuffer;
 import org.smlabtesting.sim.domain.entity.racetrack.Racetrack;
+import org.smlabtesting.sim.domain.entity.racetrack.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
-import org.smlabtesting.sim.domain.entity.testing.TestCellBuffer;
-import org.smlabtesting.sim.domain.entity.testing.TestingMachine;
+import org.smlabtesting.sim.domain.entity.testcell.TestCellBuffer;
+import org.smlabtesting.sim.domain.entity.testcell.TestingMachine;
 import org.smlabtesting.sim.logging.LogPrinter;
 
 /**

@@ -1,8 +1,8 @@
-package org.smlabtesting.sim.domain.entity.testing;
+package org.smlabtesting.sim.domain.entity.testcell;
 
-import static org.smlabtesting.sim.domain.entity.testing.TestingMachine.TestingMachineState.*;
+import static org.smlabtesting.sim.domain.entity.testcell.TestingMachine.TestingMachineState.*;
 
-import org.smlabtesting.sim.domain.entity.loadunload.RacetrackLine;
+import org.smlabtesting.sim.domain.entity.racetrack.RacetrackLine;
 import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
 import org.smlabtesting.sim.domain.generic.Entity;
 import org.smlabtesting.sim.domain.generic.Handler;

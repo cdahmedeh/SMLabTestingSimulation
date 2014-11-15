@@ -1,6 +1,6 @@
-package org.smlabtesting.sim.domain.entity.testing;
+package org.smlabtesting.sim.domain.entity.testcell;
 
-import static org.smlabtesting.sim.domain.entity.testing.TestCellBuffer.UnloadBufferState.EnterUnloadBuffer;
+import static org.smlabtesting.sim.domain.entity.testcell.TestCellBuffer.UnloadBufferState.EnterUnloadBuffer;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
