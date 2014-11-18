@@ -27,13 +27,6 @@ public class Main {
         Racetrack racetrack = new Racetrack();
         simulation.addEntity(racetrack);
 
-        // Create some sample holders, put them in the racetrack, add them also to the simulation.
-        for (int i = 0; i < 10; i++) {
-            final SampleHolder sampleHolder = new SampleHolder();
-            racetrack.setSlot(i, sampleHolder);
-//            simulation.addEntity(sampleHolder);
-        }
-
         // Create the load/unload machine.
         final NewSamples newSamples = new NewSamples();
         simulation.addEntity(newSamples);
@@ -44,6 +37,13 @@ public class Main {
         final RacetrackLine racetrackLine = new RacetrackLine(racetrack, 0);
         simulation.addEntity(racetrackLine);
 
+        // Create some sample holders, put them in the racetrack line.
+        for (int i = 0; i < 70; i++) {
+            final SampleHolder sampleHolder = new SampleHolder();
+            racetrackLine.queue(sampleHolder);
+//            simulation.addEntity(sampleHolder);
+        }
+        
         final LoadUnloadMachine loadUnloadMachine = new LoadUnloadMachine(newSamples, unloadBuffer, racetrackLine);
         simulation.addEntity(loadUnloadMachine);
         
