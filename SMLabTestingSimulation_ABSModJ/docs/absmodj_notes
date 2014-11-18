@@ -1,0 +1,22 @@
+Should not have precondition as a static method. Cannot enforce implementation
+of static method because abstract static methods do not exist in Java.
+
+Avoid use of package default visbility for methods and variables. Avoid it
+espicially for classes. Classes should generally be public, if you need to hide
+a type, use inner classes.
+
+Using protected or package default variables still to similar to public, but
+does not allow other classes in other packages to use it. (Can't organize
+stuff into packages)
+
+Should not have protected methods as API methods, espicially since some of them
+will be called by the outside, notably the one for preconditions, and the
+starting events.
+
+No need to have abstract classes if the class has nothing, use an interface
+instead.
+
+Easy to put wrong entity when you have access to everything, relationships are 
+often not clear.
+
+Use instanceof instead of .class.isInstance(..)

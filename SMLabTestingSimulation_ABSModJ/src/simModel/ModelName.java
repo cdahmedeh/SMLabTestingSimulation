@@ -1,8 +1,16 @@
 package simModel;
 
-import absmodJ.SequelActivity;
+import simModel.action.SetupSimulation;
+import simModel.entity.LoadUnloadMachine;
+import simModel.entity.NewSamples;
+import simModel.entity.Racetrack;
+import simModel.entity.RacetrackLine;
+import simModel.entity.TestCellBuffer;
+import simModel.entity.TestingMachine;
+import simModel.entity.UnloadBuffer;
 import absmodJ.AOSimulationModel;
 import absmodJ.Behaviour;
+import absmodJ.SequelActivity;
 //
 // The Simulation model Class
 public class ModelName extends AOSimulationModel
@@ -27,6 +35,13 @@ public class ModelName extends AOSimulationModel
 
 	// Output object
 	protected Output output = new Output(this);
+	public Racetrack racetrack;
+	public NewSamples newSamples;
+	public UnloadBuffer unloadBuffer;
+	public RacetrackLine[] racetrackLine;
+	public LoadUnloadMachine loadUnloadMachine;
+	public TestCellBuffer[] testCellBuffer;
+	public TestingMachine[][] testingMachine;
 	
 	// Output values - define the public methods that return values
 	// required for experimentation.
@@ -46,7 +61,7 @@ public class ModelName extends AOSimulationModel
 		initAOSimulModel(t0time,tftime);   
 
 		     // Schedule the first arrivals and employee scheduling
-		Initialise init = new Initialise(this);
+		SetupSimulation init = new SetupSimulation(this);
 		scheduleAction(init);  // Should always be first one scheduled.
 		// Schedule other scheduled actions and acitvities here
 	}
@@ -57,7 +72,6 @@ public class ModelName extends AOSimulationModel
 	 */
 	protected void testPreconditions(Behaviour behObj)
 	{
-
 		// Check preconditions of Conditional Activities
 
 		// Check preconditions of Interruptions in Extended Activities
