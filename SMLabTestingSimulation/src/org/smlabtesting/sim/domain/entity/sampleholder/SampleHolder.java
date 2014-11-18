@@ -10,7 +10,7 @@ import org.smlabtesting.sim.domain.generic.Entity;
  */
 public class SampleHolder extends Entity {
     // Containers
-    public Sample sample;
+    private Sample sample;
 
     // Entity API
 
