@@ -2,8 +2,10 @@ package org.smlabtesting.sim.domain.entity.sampleholder;
 
 import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -22,7 +24,7 @@ public class Sample extends Entity {
     private static final int[] SEQUENCE_ID = {0,1,2,3,4,5,6,7,8};
     private static final double[] PROBABILITIES = {0.09, 0.13, 0.15, 0.12, 0.07, 0.11, 0.14, 0.06, 0.13}; 
     
-    private static final Integer[][] SEQUENCES = {
+    private static final int[][] SEQUENCES = {
         { 1, 2, 4, 5 },
         { 3, 4, 5 },
         { 1, 2, 3, 4 },
@@ -40,12 +42,12 @@ public class Sample extends Entity {
     // Factories
     public static Sample generateSample() {
         Sample sample = new Sample();
-        sample.testSequence.addAll(Arrays.asList(SEQUENCES[distribution.sample()])); // TODO: Needs to be reversed
+        IntStream.of(SEQUENCES[distribution.sample()]).forEach(sample.testSequence::add);
         return sample;
     }
 
     // Attributes
-    List<Integer> testSequence = new ArrayList<>();
+    Deque<Integer> testSequence = new ArrayDeque<>();
     
     // Constructs
     public Sample() {
@@ -68,7 +70,7 @@ public class Sample extends Entity {
      *         there are no more tests to perform
      */
     public boolean hasNextTest(int stationId) {
-        return !hasCompletedSequence() && testSequence.get(0) == stationId;
+        return !hasCompletedSequence() && testSequence.peek() == stationId;
     }
 
     /**
@@ -80,5 +82,12 @@ public class Sample extends Entity {
         return testSequence.isEmpty();
     }
     
+    /**
+     * Marks that the upcoming has been completed. Called by the testing machine
+     * when it finishes testing this sample.
+     */
+    public void completedNextTest() {
+        testSequence.pop();
+    }
     
 }
