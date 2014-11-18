@@ -20,7 +20,7 @@ public class Racetrack extends Entity {
     
     // Enter/Exit points for the load/unload machines and test cells.
     public static final int[] STATION_EXITS = {0, 8, 16, 24, 32, 40};
-    public static final int[] STATION_ENTRACES = {4, 12, 20, 28, 36, 44};
+    public static final int[] STATION_ENTRANCES = {4, 12, 20, 28, 36, 44};
     
     // States
     protected enum RacetrackState implements State {

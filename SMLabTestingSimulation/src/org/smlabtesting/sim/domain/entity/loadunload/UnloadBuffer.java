@@ -22,7 +22,7 @@ import org.smlabtesting.sim.domain.generic.State;
 public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
     // Constants
     private static final int BUFFER_SLOTS = 5; 
-    private static int MAX_EMPTY_HOLDERS = 3;
+    private static int MAX_EMPTY_HOLDERS = 5;
 
     // States
     protected enum UnloadBufferState implements State {
@@ -50,9 +50,9 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
             new Handler(EnterUnloadBuffer) {
                 @Override
                 public boolean condition() {
-                    SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRACES[0]);
+                    SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRANCES[0]);
                     
-                    return racetrack.isTaken(Racetrack.STATION_ENTRACES[0]) && hasVacancy() 
+                    return racetrack.isTaken(Racetrack.STATION_ENTRANCES[0]) && hasVacancy()
                             && (
                                     holder.hasSample()  && holder.getSample().hasCompletedSequence() || 
                                     !holder.hasSample() && emptySampleHolderCount < MAX_EMPTY_HOLDERS
@@ -62,7 +62,7 @@ public class UnloadBuffer extends Entity implements Queue<SampleHolder> {
                 @Override
                 public void begin() {
                     //Then move the holder onto the racetrack. 
-                    SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRACES[0]);
+                    SampleHolder sampleHolder = racetrack.take(Racetrack.STATION_ENTRANCES[0]);
                     
                     if(!sampleHolder.hasSample()) {
                         emptySampleHolderCount++;
