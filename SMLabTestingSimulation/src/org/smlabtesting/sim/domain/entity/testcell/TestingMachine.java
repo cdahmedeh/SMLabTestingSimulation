@@ -47,7 +47,7 @@ public class TestingMachine extends Entity {
     // Attributes
     private TestingMachineState status = Idle;
     private boolean testSuccess = false;
-    private int timeUntilFailure = Integer.MAX_VALUE;
+    private int timeUntilFailure = generateFailureTime();
     private int runTime = 0;
     private int completedTests = 0;
     
@@ -121,7 +121,7 @@ public class TestingMachine extends Entity {
             }
         };
 
-        Handler cleaningHandler = new Handler(Repair) {
+        Handler cleaningHandler = new Handler(Cleaning) {
             public boolean condition() {
                 return status == Cleaning;
             }
@@ -149,15 +149,21 @@ public class TestingMachine extends Entity {
     // Private helper methods
     
     private int generateTestingTime() {
-        return (int) TESTING_CYCLE_TIMES[machineId];
+        return (int) TESTING_CYCLE_TIMES[stationId];
     }
 
-    private int generateRepairTime() {
-        return MACHINE_MBTR[machineId]; //TODO: No randomization yet.
+    private int generateRepairTime() 
+    {
+        // Machine 2 rarely fails.
+        if (stationId == 2) {
+            return Integer.MAX_VALUE;
+        }
+        
+        return MACHINE_MBTR[stationId]; //TODO: No randomization yet.
     }
 
     private int generateFailureTime() {
-        return MACHINE_MBTF[machineId]; //TODO: No randomization yet.
+        return MACHINE_MBTF[stationId]; //TODO: No randomization yet.
     }
 
     private int generateCleaningTime() {
