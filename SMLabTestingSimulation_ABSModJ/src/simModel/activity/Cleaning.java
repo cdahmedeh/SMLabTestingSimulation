@@ -28,6 +28,8 @@ public class Cleaning extends ConditionalActivity {
 
 	@Override
 	public void startingEvent() {
+		//TODO: WHY DO WE NEED TO CHECK PRECONDITIONS SO WE CAN DO THEM AGAIN????!?!?!
+		model.testingMachine[stationId][machineId].status = TestingMachineState.InCleaning;
 	}
 
 	@Override

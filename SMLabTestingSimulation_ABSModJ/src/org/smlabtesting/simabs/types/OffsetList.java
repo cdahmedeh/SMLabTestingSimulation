@@ -109,7 +109,7 @@ public class OffsetList<E> implements List<E> {
 
             @Override
             public E next() {
-                return listData[originalOffset + nextCount++];
+                return listData[(originalOffset + nextCount++) % size()];
             }
 
             @Override

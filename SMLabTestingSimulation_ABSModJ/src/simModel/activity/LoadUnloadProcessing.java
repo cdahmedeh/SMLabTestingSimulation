@@ -13,12 +13,21 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(ModelName model) {
-		return model.unloadBuffer.hasNext();
+		// TODO: The busy wasn't needed for our version of the system.
+		return model.unloadBuffer.hasNext() && model.loadUnloadMachine.busy == false;
 	}
 
 	@Override
 	public void startingEvent() {
+		// TODO: The busy wasn't needed for our version of the system.
+		model.loadUnloadMachine.busy = true;
+		
         model.loadUnloadMachine.sampleHolder = model.unloadBuffer.next();
+        
+        // TODO: May have been forgetten....
+        if (!model.loadUnloadMachine.sampleHolder.hasSample()) {
+        	model.unloadBuffer.emptySampleHolderCount--;
+        }
 	}
 
 	@Override
@@ -43,6 +52,9 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         // Queue to return to racetrack.
         model.racetrackLine[0].queue(model.loadUnloadMachine.sampleHolder);
         model.loadUnloadMachine.sampleHolder = null;
+        
+     // TODO: The busy wasn't needed for our version of the system.
+        model.loadUnloadMachine.busy = false;
 
 	}	
 }

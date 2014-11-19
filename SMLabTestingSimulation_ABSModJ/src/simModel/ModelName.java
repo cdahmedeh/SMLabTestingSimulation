@@ -14,6 +14,7 @@ import simModel.entity.LoadUnloadMachine;
 import simModel.entity.NewSamples;
 import simModel.entity.Racetrack;
 import simModel.entity.RacetrackLine;
+import simModel.entity.SampleHolder;
 import simModel.entity.TestCellBuffer;
 import simModel.entity.TestingMachine;
 import simModel.entity.UnloadBuffer;
@@ -97,6 +98,9 @@ public class ModelName extends AOSimulationModel
 	private boolean scanPreconditions() {
 		boolean preconditions = false;
 		
+		//TODO: remove me
+		crazyPrint(this);
+		
 		if (EnterUnloadBuffer.precondition(this)) {
 			EnterUnloadBuffer enterUnloadBuffer = new EnterUnloadBuffer(this);
 			enterUnloadBuffer.actionEvent();
@@ -120,12 +124,12 @@ public class ModelName extends AOSimulationModel
 		
 		for (int i = 1; i < 6; i++) {
 			if (EnterTestCellBuffer.precondition(this, i)) {
-				EnterUnloadBuffer enterUnloadBuffer = new EnterUnloadBuffer(this);
-				enterUnloadBuffer.actionEvent();
+				EnterTestCellBuffer enterTestCellBuffer = new EnterTestCellBuffer(this, i);
+				enterTestCellBuffer.actionEvent();
 				preconditions = true;
 			}
 
-			for (int j = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
 				if (Testing.precondition(this, i, j)) {
 					Testing testing = new Testing(this, i, j);
 					testing.startingEvent();
@@ -152,9 +156,22 @@ public class ModelName extends AOSimulationModel
 		return preconditions;
 	}
 	
+	private void crazyPrint(ModelName modelName) {
+//		System.out.println(modelName.racetrack.sampleHolders.count());
+//		
+//		int c = 0;
+//		for (SampleHolder holder: modelName.racetrack.sampleHolders) {
+//			if (holder != null && holder.hasSample()) c++;
+//		}
+//		System.out.println(c);
+//		
+//		System.out.println(modelName.newSamples.samples.size());
+//		System.out.println(modelName.unloadBuffer.emptySampleHolderCount);
+	}
+
 	protected void eventOccured()
 	{
-		this.showSBL(); //TODO: Needs condition......
+//		this.showSBL(); //TODO: Needs condition......
 		// Can add other debug code to monitor the status of the system
 		// See examples for suggestions on setup logging
 

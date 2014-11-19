@@ -10,7 +10,7 @@ package simModel.entity;
 public class TestingMachine {
     // States
     public enum TestingMachineState {
-        Idle, Testing, Cleaning, Repair;
+        Idle, Testing, Cleaning, Repair, InRepair, InCleaning;
     }
     
     public static final int STATION_2_CLEANING_THRESHOLD = 300;

@@ -21,6 +21,8 @@ class Experiment
        
        // Loop for NUMRUN simulation runs for each case
        // Case 1
+       long start = System.currentTimeMillis();
+       
        System.out.println(" Case 1");
        for(i=0 ; i < NUMRUNS ; i++)
        {
@@ -29,5 +31,8 @@ class Experiment
           // See examples for hints on collecting output
           // and developping code for analysis
        }
+       
+       long end = System.currentTimeMillis();
+       System.out.println(end - start);
    }
 }
