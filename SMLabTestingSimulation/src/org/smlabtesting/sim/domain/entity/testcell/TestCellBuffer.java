@@ -1,6 +1,6 @@
 package org.smlabtesting.sim.domain.entity.testcell;
 
-import static org.smlabtesting.sim.domain.entity.testcell.TestCellBuffer.UnloadBufferState.EnterUnloadBuffer;
+import static org.smlabtesting.sim.domain.entity.testcell.TestCellBuffer.TestCellBufferState.EnterTestCellBuffer;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -23,8 +23,8 @@ public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
     private static final int BUFFER_SLOTS = 3; 
 
     // States
-    protected enum UnloadBufferState implements State {
-        EnterUnloadBuffer;
+    protected enum TestCellBufferState implements State {
+        EnterTestCellBuffer;
     }
 
     // Identifiers
@@ -46,7 +46,7 @@ public class TestCellBuffer extends Entity implements Queue<SampleHolder> {
     @Override
     public Handler[] generateHandlers() {
         return new Handler[] {
-            new Handler(EnterUnloadBuffer) {
+            new Handler(EnterTestCellBuffer) {
                 @Override
                 public boolean condition() {
                     SampleHolder holder = racetrack.peek(Racetrack.STATION_ENTRANCES[stationId]);
