@@ -30,7 +30,7 @@ public class RacetrackMove extends ScheduledActivity {
 	protected double duration() {
 		// TODO: In this system, it should be one, and not 0 unlike ours.
 		// (Maybe ours does not handle lengths correctly)
-		return 1;
+		return 0;
 	}
 	
 	@Override
