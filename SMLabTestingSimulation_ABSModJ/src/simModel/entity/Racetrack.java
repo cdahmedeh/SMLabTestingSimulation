@@ -1,12 +1,6 @@
 package simModel.entity;
 
-import static org.smlabtesting.sim.domain.entity.racetrack.Racetrack.RacetrackState.RacetrackMove;
-
-import org.smlabtesting.sim.domain.entity.sampleholder.SampleHolder;
-import org.smlabtesting.sim.domain.generic.Entity;
-import org.smlabtesting.sim.domain.generic.Handler;
-import org.smlabtesting.sim.domain.generic.State;
-import org.smlabtesting.types.OffsetList;
+import org.smlabtesting.simabs.types.OffsetList;
 
 /**
  * Maps to R.Racetrack
@@ -22,24 +16,8 @@ public class Racetrack {
     public static final int[] STATION_EXITS = {0, 8, 16, 24, 32, 40};
     public static final int[] STATION_ENTRANCES = {4, 12, 20, 28, 36, 44};
     
-    // States
-    protected enum RacetrackState implements State {
-        RacetrackMove;
-    }
-
     // Containers
     public final OffsetList<SampleHolder> sampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
-
-
-        
-    @Override
-    public String getGlance() {
-        return String.format(
-                "[Racetrack] Sample Holders: %d - Offset Position: %d", 
-                sampleHolders.count(),
-                sampleHolders.getOffset()
-        );
-    }
 
     // Public methods
     

@@ -15,7 +15,7 @@ public class Arrival extends ScheduledAction {
 	@Override
 	protected double timeSequence() {
 		//TODO: Is the next time, or the current time + next time?
-        return nextArrival();
+        return model.getClock() + model.rvp.nextArrival();
 	}
 
 	@Override

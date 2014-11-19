@@ -23,7 +23,7 @@ public class Cleaning extends ConditionalActivity {
 	
 	@Override
 	protected double duration() {
-		return generateCleaningTime();
+		return model.rvp.generateCleaningTime();
 	}
 
 	@Override

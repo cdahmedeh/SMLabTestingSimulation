@@ -23,7 +23,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	}
 
 	@Override
-	protected void actionEvent() {
+	public void actionEvent() {
 	       //Then move the holder onto the racetrack. 
         SampleHolder sampleHolder = model.racetrack.take(Racetrack.STATION_ENTRANCES[0]);
         

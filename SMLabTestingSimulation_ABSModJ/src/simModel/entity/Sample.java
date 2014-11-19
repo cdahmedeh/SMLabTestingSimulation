@@ -1,18 +1,13 @@
 package simModel.entity;
 
-import static org.smlabtesting.sim.executor.Simulation.DEFAULT_RNG;
-
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import org.apache.commons.math3.distribution.IntegerDistribution;
-import org.smlabtesting.sim.domain.generic.Entity;
-import org.smlabtesting.sim.executor.Simulation;
+import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.random.Well19937a;
 
 /**
  * Maps to iC.Sample
@@ -20,7 +15,9 @@ import org.smlabtesting.sim.executor.Simulation;
  * @author Ahmed El-Hajjar
  */
 public class Sample {
+	// TODO: BEGIN SHOULD MOVE
     // Constants
+	public static final RandomGenerator DEFAULT_RNG = new Well19937a();
     private static final int[] SEQUENCE_ID = {0,1,2,3,4,5,6,7,8};
     private static final double[] PROBABILITIES = {0.09, 0.13, 0.15, 0.12, 0.07, 0.11, 0.14, 0.06, 0.13}; 
     
@@ -45,22 +42,13 @@ public class Sample {
         IntStream.of(SEQUENCES[distribution.sample()]).forEach(sample.testSequence::add);
         return sample;
     }
+    
+    // TODO: END SHOULD MOVE
 
     // Attributes
     Deque<Integer> testSequence = new ArrayDeque<>();
     
-    // Constructs
-    public Sample() {
-    }    
-    
     // Entity API
-    
-    @Override
-    public String getGlance() {
-        return String.format(
-                "[Sample]"
-        );
-    }
     
     /**
      * Checks if the next test to be performed to for this sample corresponds

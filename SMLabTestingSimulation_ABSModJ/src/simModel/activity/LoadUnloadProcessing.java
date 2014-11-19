@@ -24,7 +24,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	@Override
 	public double duration() {
         // Simulate cycle time.
-        return generateCycleTime();
+        return model.rvp.generateCycleTime();
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 		// If sample holder has a sample, remove it.
         if (model.loadUnloadMachine.sampleHolder.hasSample()) {
             Sample removedSample = model.loadUnloadMachine.sampleHolder.removeSample();
-            simulation.removeEntity(removedSample);
+//            simulation.removeEntity(removedSample); //TODO: Is there an equivalent in ABSmodJ
         }
 
         // If a new samples is in line to be processed, insert into holder.

@@ -28,13 +28,18 @@ public class SetupSimulation extends ScheduledAction
 
 	public void actionEvent() 
 	{
+		// TODO: Why......?
+		model.racetrackLine = new RacetrackLine[6];
+		model.testCellBuffer = new TestCellBuffer[6];
+		model.testingMachine = new TestingMachine[6][3];
+		
         // Create the racetrack.
         model.racetrack = new Racetrack();
 
         // Create the load/unload machine.
         model.newSamples = new NewSamples();
         model.unloadBuffer = new UnloadBuffer();
-        model.racetrackLine[0] = new RacetrackLine(0);
+        model.racetrackLine[0] = new RacetrackLine();
         
         // Create some sample holders, put them in the racetrack line.
         for (int i = 0; i < 70; i++) {
@@ -46,12 +51,12 @@ public class SetupSimulation extends ScheduledAction
                 
         // Create the test cells.
         for (int stationId = 1; stationId <= 5; stationId++) {
-            model.testCellBuffer[stationId] = new TestCellBuffer(stationId);
-            model.racetrackLine[stationId] = new RacetrackLine(stationId);
+            model.testCellBuffer[stationId] = new TestCellBuffer();
+            model.racetrackLine[stationId] = new RacetrackLine();
         
             // Create testing machines in test cells.
             for (int machineId = 0; machineId < 3; machineId++) {
-                model.testingMachine[stationId][machineId] = new TestingMachine(stationId, machineId);
+                model.testingMachine[stationId][machineId] = new TestingMachine();
             }
         }
 	}

@@ -23,7 +23,7 @@ public class Repair extends ConditionalActivity {
 	
 	@Override
 	protected double duration() {
-		return generateRepairTime();
+		return model.rvp.generateRepairTime(stationId);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class Repair extends ConditionalActivity {
 
 	@Override
 	protected void terminatingEvent() {
-		model.testingMachine[stationId][machineId].timeUntilFailure = generateFailureTime();
+		model.testingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.generateFailureTime(stationId);
         model.testingMachine[stationId][machineId].status = TestingMachineState.Idle;
 	}
 }

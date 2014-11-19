@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-    <classpathentry kind="lib" path="lib/absmodjV2_2014907.jar">
-        <attributes>
-            <attribute name="javadoc_location" value="jar:platform:/resource/SMLabTestingSimulation_ABSModJ/lib/absmodjV2_2014907_doc.zip!/"/>
-        </attributes>
-    </classpathentry>
-    <classpathentry kind="lib" path="lib/colt.jar" sourcepath="lib/colt_src.zip"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/absmodjV2_2014907.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SMLabTestingSimulation_ABSModJ/lib/absmodjV2_2014907_doc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/colt.jar" sourcepath="lib/colt_src.zip"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.3.jar" sourcepath="lib/commons-math3-3.3-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -14,7 +14,8 @@ public class RacetrackMove extends ScheduledActivity {
 	@Override
 	protected double timeSequence() {
 		// TODO Should be every second
-		return 0;
+		// TODO Get clock is a bad idea, plus it's a double, plus it was protected.
+		return model.getClock() + 1;
 	}
 
 	@Override

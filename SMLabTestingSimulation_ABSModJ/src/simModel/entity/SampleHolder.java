@@ -1,6 +1,5 @@
 package simModel.entity;
 
-import org.smlabtesting.sim.domain.generic.Entity;
 
 /**
  * Maps to R.SampleHolder
@@ -8,19 +7,9 @@ import org.smlabtesting.sim.domain.generic.Entity;
  * @author Ahmed El-Hajjar
  * @author Lalit Azad
  */
-public class SampleHolder extends Entity {
+public class SampleHolder {
     // Containers
     public Sample sample;
-
-    // Entity API
-
-    @Override
-    public String getGlance() {
-        return String.format(
-                "[SampleHolder] Has sample?: %b", 
-                hasSample()
-        );
-    }
 
     // Public Methods
     

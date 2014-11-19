@@ -10,8 +10,8 @@ class Experiment
 {
    public static void main(String[] args)
    {
-       int i, NUMRUNS = 30; 
-       double startTime=0.0, endTime=660.0;
+       int i, NUMRUNS = 1; 
+       double startTime=0.0, endTime=30*24*3600;
        Seeds[] sds = new Seeds[NUMRUNS];
        ModelName mname;  // Simulation object
 

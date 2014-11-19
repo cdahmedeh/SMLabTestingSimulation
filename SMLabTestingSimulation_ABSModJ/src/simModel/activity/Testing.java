@@ -34,7 +34,7 @@ public class Testing extends ConditionalActivity {
         	model.testingMachine[stationId][machineId].sampleHolder = model.testCellBuffer[stationId].next();
         }
 
-        int testingTime = generateTestingTime();
+        int testingTime = (int) model.rvp.generateTestingTime(stationId);
 
         if (model.testingMachine[stationId][machineId].timeUntilFailure > testingTime) {
         	model.testingMachine[stationId][machineId].runTime = testingTime;
