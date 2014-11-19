@@ -26,8 +26,8 @@ public class TestingMachine extends Entity {
     
     // Constants
     private static final double[] TESTING_CYCLE_TIMES = DoubleStream.of(0, 0.77, 0.85 , 1.04, 1.24 , 1.7).map(i -> i * 60).toArray();
-    private static final int[] MACHINE_MBTF = IntStream.of(0, 14, -1, 9, 15, 16).map(i -> i * 3600).toArray();
-    private static final int[] MACHINE_MBTR = IntStream.of(0, 11, -1, 7, 14, 13).map(i -> i * 60).toArray();
+    private static final int[] MACHINE_MTBF = IntStream.of(0, 14, -1, 9, 15, 16).map(i -> i * 3600).toArray();
+    private static final int[] MACHINE_MTR = IntStream.of(0, 11, -1, 7, 14, 13).map(i -> i * 60).toArray();
     private static final int STATION_2_CLEANING_THRESHOLD = 300;
     
     // RNG
@@ -155,7 +155,7 @@ public class TestingMachine extends Entity {
     }
 
     private int generateRepairTime() {      
-        return MACHINE_MBTR[stationId]; //TODO: No randomization yet.
+        return MACHINE_MTR[stationId]; //TODO: No randomization yet.
     }
 
     private int generateFailureTime() {
@@ -164,7 +164,7 @@ public class TestingMachine extends Entity {
             return Integer.MAX_VALUE;
         }
         
-        return MACHINE_MBTF[stationId]; //TODO: No randomization yet.
+        return MACHINE_MTBF[stationId]; //TODO: No randomization yet.
     }
 
     private int generateCleaningTime() {
