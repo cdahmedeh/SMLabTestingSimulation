@@ -1,7 +1,6 @@
 package simModel.activity;
 
 import simModel.ModelName;
-import simModel.entity.TestingMachine;
 import simModel.entity.TestingMachine.TestingMachineState;
 import absmodJ.ConditionalActivity;
 
@@ -28,6 +27,9 @@ public class Repair extends ConditionalActivity {
 
 	@Override
 	public void startingEvent() {
+		//TODO: WHY DO WE NEED TO CHECK PRECONDITIONS SO WE CAN DO THEM AGAIN????!?!?!
+		model.testingMachine[stationId][machineId].status = TestingMachineState.InRepair;
+		
 	}
 
 	@Override

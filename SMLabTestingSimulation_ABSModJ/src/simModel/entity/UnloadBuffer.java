@@ -13,7 +13,7 @@ import java.util.Deque;
 public class UnloadBuffer {
     // Constants
     private static final int BUFFER_SLOTS = 5; 
-    public static int MAX_EMPTY_HOLDERS = 5;
+    public static int MAX_EMPTY_HOLDERS = 3;
 
     // Containers
     private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>(BUFFER_SLOTS);
