@@ -71,7 +71,7 @@ public class SetupSimulation extends ScheduledAction
                 model.rcTestingMachine[stationId][machineId] = new RCTestingMachine();
                 
                 // For machines that are not number 2, setup a failure time.
-                if (machineId == 2) {
+                if (stationId != 2) {
                 	model.rcTestingMachine[stationId][machineId].timeUntilFailure
                 		= model.rvp.uFailureDuration(stationId);
                 }

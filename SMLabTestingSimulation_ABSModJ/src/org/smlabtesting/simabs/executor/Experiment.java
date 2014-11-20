@@ -15,7 +15,7 @@ public class Experiment {
        int NUMRUNS = 1; 
        
        // Start times and end times in seconds.
-       double startTime=0.0, endTime=3600;
+       double startTime=0.0, endTime=3600*24;
        
        // Generate seeds per run.
        RandomSeedGenerator rsg = new RandomSeedGenerator();

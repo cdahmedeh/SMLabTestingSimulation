@@ -108,8 +108,12 @@ public class Testing extends ConditionalActivity {
             testingMachine.sampleHolder = null;
             testingMachine.status = Idle;
             
-            // Subtract the machine runtime from the failure time.
-            testingMachine.timeUntilFailure -= testingMachine.runTime; 
+            // Subtract the machine runtime from the failure time. Except for
+            // station number 2.
+            // TODO: Mark this in the CM.
+            if (stationId != 2) {
+                testingMachine.timeUntilFailure -= testingMachine.runTime;            	
+            }
             
             // Count the number of completed tests.
             testingMachine.completedTests++;
