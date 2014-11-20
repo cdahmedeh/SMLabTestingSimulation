@@ -1,20 +1,20 @@
 package simModel.action;
 
 import simModel.ModelName;
-import simModel.entity.Racetrack;
-import simModel.entity.SampleHolder;
+import simModel.entity.RQRacetrack;
+import simModel.entity.ICSampleHolder;
 import absmodJ.ConditionalAction;
 
 public class EnterUnloadBuffer extends ConditionalAction {
 	private ModelName model;
 
 	public static boolean precondition(ModelName model) {
-		SampleHolder holder = model.racetrack.peek(Racetrack.STATION_ENTRANCES[0]);
+		ICSampleHolder holder = model.rqRacetrack.peek(RQRacetrack.STATION_ENTRANCES[0]);
         
-        return model.racetrack.isTaken(Racetrack.STATION_ENTRANCES[0]) && model.unloadBuffer.hasVacancy()
+        return model.rqRacetrack.isTaken(RQRacetrack.STATION_ENTRANCES[0]) && model.qUnloadBuffer.hasVacancy()
                 && (
                         holder.hasSample()  && holder.getSample().hasCompletedSequence() || 
-                        !holder.hasSample() && model.unloadBuffer.emptySampleHolderCount < model.unloadBuffer.MAX_EMPTY_HOLDERS
+                        !holder.hasSample() && model.qUnloadBuffer.emptySampleHolderCount < model.qUnloadBuffer.MAX_EMPTY_HOLDERS
                    );
 	}
 	
@@ -24,13 +24,13 @@ public class EnterUnloadBuffer extends ConditionalAction {
 
 	@Override
 	public void actionEvent() {
-	       //Then move the holder onto the racetrack. 
-        SampleHolder sampleHolder = model.racetrack.take(Racetrack.STATION_ENTRANCES[0]);
+	       //Then move the holder onto the rqRacetrack. 
+        ICSampleHolder icSampleHolder = model.rqRacetrack.take(RQRacetrack.STATION_ENTRANCES[0]);
         
-        if(!sampleHolder.hasSample()) {
-        	model.unloadBuffer.emptySampleHolderCount++;
+        if(!icSampleHolder.hasSample()) {
+        	model.qUnloadBuffer.emptySampleHolderCount++;
         }
             
-        model.unloadBuffer.insertQue(sampleHolder);
+        model.qUnloadBuffer.insertQue(icSampleHolder);
 	}
 }

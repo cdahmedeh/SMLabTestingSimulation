@@ -1,7 +1,7 @@
 package simModel.activity;
 
 import simModel.ModelName;
-import simModel.entity.TestingMachine.TestingMachineState;
+import simModel.entity.RCTestingMachine.TestingMachineState;
 import absmodJ.ConditionalActivity;
 
 public class Repair extends ConditionalActivity {
@@ -17,7 +17,7 @@ public class Repair extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(ModelName model, int stationId, int machineId) {
-		return model.testingMachine[stationId][machineId].status == TestingMachineState.Repair;
+		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.Repair;
 	}
 	
 	@Override
@@ -28,13 +28,13 @@ public class Repair extends ConditionalActivity {
 	@Override
 	public void startingEvent() {
 		//TODO: WHY DO WE NEED TO CHECK PRECONDITIONS SO WE CAN DO THEM AGAIN????!?!?!
-		model.testingMachine[stationId][machineId].status = TestingMachineState.InRepair;
+		model.rcTestingMachine[stationId][machineId].status = TestingMachineState.InRepair;
 		
 	}
 
 	@Override
 	protected void terminatingEvent() {
-		model.testingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.generateFailureTime(stationId);
-        model.testingMachine[stationId][machineId].status = TestingMachineState.Idle;
+		model.rcTestingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.generateFailureTime(stationId);
+        model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Idle;
 	}
 }

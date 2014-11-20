@@ -10,31 +10,31 @@ import java.util.Deque;
  * @author Ahmed El-Hajjar
  *
  */
-public class UnloadBuffer {
+public class QUnloadBuffer {
     // Constants
     private static final int BUFFER_SLOTS = 5; 
     public static int MAX_EMPTY_HOLDERS = 3;
 
     // Containers
-    private final Deque<SampleHolder> sampleHolders = new ArrayDeque<SampleHolder>(BUFFER_SLOTS);
+    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(BUFFER_SLOTS);
 
     // Attributes
     public int emptySampleHolderCount = 0;
     
     // Queue API
     public boolean hasNext() {
-        return sampleHolders.peek() != null;
+        return icSampleHolders.peek() != null;
     }
 
-    public SampleHolder removeQue() {
-        return sampleHolders.pop();
+    public ICSampleHolder removeQue() {
+        return icSampleHolders.pop();
     }
 
-    public void insertQue(final SampleHolder entity) {
-        sampleHolders.add(entity);
+    public void insertQue(final ICSampleHolder entity) {
+        icSampleHolders.add(entity);
     }
 
     public boolean hasVacancy() {
-        return sampleHolders.size() < BUFFER_SLOTS;
+        return icSampleHolders.size() < BUFFER_SLOTS;
     }
 }

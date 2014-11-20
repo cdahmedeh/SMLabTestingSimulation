@@ -1,8 +1,8 @@
 package simModel.activity;
 
 import simModel.ModelName;
-import simModel.entity.TestingMachine;
-import simModel.entity.TestingMachine.TestingMachineState;
+import simModel.entity.RCTestingMachine;
+import simModel.entity.RCTestingMachine.TestingMachineState;
 import absmodJ.ConditionalActivity;
 
 public class Testing extends ConditionalActivity {
@@ -18,48 +18,48 @@ public class Testing extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(ModelName model, int stationId, int machineId) {
-		return model.testingMachine[stationId][machineId].status == TestingMachineState.Idle && (model.testCellBuffer[stationId].hasNext() || model.testingMachine[stationId][machineId].sampleHolder != null);
+		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.Idle && (model.qTestCellBuffer[stationId].hasNext() || model.rcTestingMachine[stationId][machineId].icSampleHolder != null);
 	}
 	
 	@Override
 	protected double duration() {
-		return model.testingMachine[stationId][machineId].runTime;
+		return model.rcTestingMachine[stationId][machineId].runTime;
 	}
 
 	@Override
 	public void startingEvent() {
-		model.testingMachine[stationId][machineId].status = TestingMachineState.Testing;
+		model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Testing;
 
-        if (model.testingMachine[stationId][machineId].sampleHolder == null) {
-        	model.testingMachine[stationId][machineId].sampleHolder = model.testCellBuffer[stationId].removeQue();
+        if (model.rcTestingMachine[stationId][machineId].icSampleHolder == null) {
+        	model.rcTestingMachine[stationId][machineId].icSampleHolder = model.qTestCellBuffer[stationId].removeQue();
         }
 
         int testingTime = (int) model.rvp.generateTestingTime(stationId);
 
-        if (model.testingMachine[stationId][machineId].timeUntilFailure > testingTime) {
-        	model.testingMachine[stationId][machineId].runTime = testingTime;
-        	model.testingMachine[stationId][machineId].testSuccess = true;
+        if (model.rcTestingMachine[stationId][machineId].timeUntilFailure > testingTime) {
+        	model.rcTestingMachine[stationId][machineId].runTime = testingTime;
+        	model.rcTestingMachine[stationId][machineId].testSuccess = true;
         } else {
-        	model.testingMachine[stationId][machineId].runTime = model.testingMachine[stationId][machineId].timeUntilFailure;
-        	model.testingMachine[stationId][machineId].testSuccess = false;
+        	model.rcTestingMachine[stationId][machineId].runTime = model.rcTestingMachine[stationId][machineId].timeUntilFailure;
+        	model.rcTestingMachine[stationId][machineId].testSuccess = false;
         }
 	}
 
 	@Override
 	protected void terminatingEvent() {
-		if (model.testingMachine[stationId][machineId].testSuccess) {
-			model.testingMachine[stationId][machineId].sampleHolder.getSample().completedNextTest();
+		if (model.rcTestingMachine[stationId][machineId].testSuccess) {
+			model.rcTestingMachine[stationId][machineId].icSampleHolder.getSample().completedNextTest();
             
-            model.racetrackLine[stationId].insertQue(model.testingMachine[stationId][machineId].sampleHolder);
-            model.testingMachine[stationId][machineId].sampleHolder = null;
-            model.testingMachine[stationId][machineId].status = TestingMachineState.Idle;
-            model.testingMachine[stationId][machineId].completedTests++;
+            model.qRacetrackLine[stationId].insertQue(model.rcTestingMachine[stationId][machineId].icSampleHolder);
+            model.rcTestingMachine[stationId][machineId].icSampleHolder = null;
+            model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Idle;
+            model.rcTestingMachine[stationId][machineId].completedTests++;
             
-            if (stationId == 2 && (model.testingMachine[stationId][machineId].completedTests % TestingMachine.STATION_2_CLEANING_THRESHOLD == 0)) {
-            	model.testingMachine[stationId][machineId].status = TestingMachineState.Cleaning;
+            if (stationId == 2 && (model.rcTestingMachine[stationId][machineId].completedTests % RCTestingMachine.STATION_2_CLEANING_THRESHOLD == 0)) {
+            	model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Cleaning;
             }
         } else {
-        	model.testingMachine[stationId][machineId].status = TestingMachineState.Repair;
+        	model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Repair;
         }
 	}
 }

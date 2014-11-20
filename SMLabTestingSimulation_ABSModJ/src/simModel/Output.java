@@ -2,13 +2,13 @@ package simModel;
 
 class Output 
 {
-    // Use OutputSequence class to define Trajectory and Sample Sequences
+    // Use OutputSequence class to define Trajectory and ICSample Sequences
     // Trajectory Sequences
 
-    // Sample Sequences
+    // ICSample Sequences
 
     // DSOVs available in the OutputSequence objects
-    // If seperate methods required to process Trajectory or Sample
+    // If seperate methods required to process Trajectory or ICSample
     // Sequences - add them here
 
     // SSOVs

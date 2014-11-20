@@ -10,14 +10,14 @@ import simModel.activity.LoadUnloadProcessing;
 import simModel.activity.RacetrackMove;
 import simModel.activity.Repair;
 import simModel.activity.Testing;
-import simModel.entity.LoadUnloadMachine;
-import simModel.entity.NewSamples;
-import simModel.entity.Racetrack;
-import simModel.entity.RacetrackLine;
-import simModel.entity.SampleHolder;
-import simModel.entity.TestCellBuffer;
-import simModel.entity.TestingMachine;
-import simModel.entity.UnloadBuffer;
+import simModel.entity.RCLoadUnloadMachine;
+import simModel.entity.QNewSamples;
+import simModel.entity.RQRacetrack;
+import simModel.entity.QRacetrackLine;
+import simModel.entity.ICSampleHolder;
+import simModel.entity.QTestCellBuffer;
+import simModel.entity.RCTestingMachine;
+import simModel.entity.QUnloadBuffer;
 import absmodJ.AOSimulationModel;
 import absmodJ.Behaviour;
 import absmodJ.SequelActivity;
@@ -30,13 +30,13 @@ public class ModelName extends AOSimulationModel
         // Define the parameters
 
 	/*-------------Entity Data Structures-------------------*/
-	public Racetrack racetrack;
-	public NewSamples newSamples;
-	public UnloadBuffer unloadBuffer;
-	public RacetrackLine[] racetrackLine;
-	public LoadUnloadMachine loadUnloadMachine;
-	public TestCellBuffer[] testCellBuffer;
-	public TestingMachine[][] testingMachine;
+	public RQRacetrack rqRacetrack;
+	public QNewSamples qNewSamples;
+	public QUnloadBuffer qUnloadBuffer;
+	public QRacetrackLine[] qRacetrackLine;
+	public RCLoadUnloadMachine rcLoadUnloadMachine;
+	public QTestCellBuffer[] qTestCellBuffer;
+	public RCTestingMachine[][] rcTestingMachine;
 	/* Group and Queue Entities */
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
@@ -160,7 +160,7 @@ public class ModelName extends AOSimulationModel
 //		System.out.println(modelName.racetrack.sampleHolders.count());
 //		
 //		int c = 0;
-//		for (SampleHolder holder: modelName.racetrack.sampleHolders) {
+//		for (ICSampleHolder holder: modelName.racetrack.sampleHolders) {
 //			if (holder != null && holder.hasSample()) c++;
 //		}
 //		System.out.println(c);

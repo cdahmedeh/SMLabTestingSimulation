@@ -1,14 +1,14 @@
 package simModel.action;
 
 import simModel.ModelName;
-import simModel.entity.LoadUnloadMachine;
-import simModel.entity.NewSamples;
-import simModel.entity.Racetrack;
-import simModel.entity.RacetrackLine;
-import simModel.entity.SampleHolder;
-import simModel.entity.TestCellBuffer;
-import simModel.entity.TestingMachine;
-import simModel.entity.UnloadBuffer;
+import simModel.entity.RCLoadUnloadMachine;
+import simModel.entity.QNewSamples;
+import simModel.entity.RQRacetrack;
+import simModel.entity.QRacetrackLine;
+import simModel.entity.ICSampleHolder;
+import simModel.entity.QTestCellBuffer;
+import simModel.entity.RCTestingMachine;
+import simModel.entity.QUnloadBuffer;
 import absmodJ.ScheduledAction;
 
 
@@ -29,34 +29,34 @@ public class SetupSimulation extends ScheduledAction
 	public void actionEvent() 
 	{
 		// TODO: Why......?
-		model.racetrackLine = new RacetrackLine[6];
-		model.testCellBuffer = new TestCellBuffer[6];
-		model.testingMachine = new TestingMachine[6][3];
+		model.qRacetrackLine = new QRacetrackLine[6];
+		model.qTestCellBuffer = new QTestCellBuffer[6];
+		model.rcTestingMachine = new RCTestingMachine[6][3];
 		
-        // Create the racetrack.
-        model.racetrack = new Racetrack();
+        // Create the rqRacetrack.
+        model.rqRacetrack = new RQRacetrack();
 
         // Create the load/unload machine.
-        model.newSamples = new NewSamples();
-        model.unloadBuffer = new UnloadBuffer();
-        model.racetrackLine[0] = new RacetrackLine();
+        model.qNewSamples = new QNewSamples();
+        model.qUnloadBuffer = new QUnloadBuffer();
+        model.qRacetrackLine[0] = new QRacetrackLine();
         
-        // Create some sample holders, put them in the racetrack line.
+        // Create some icSample holders, put them in the rqRacetrack line.
         for (int i = 0; i < 70; i++) {
-            SampleHolder sampleHolder = new SampleHolder();
-            model.racetrackLine[0].insertQue(sampleHolder);
+            ICSampleHolder icSampleHolder = new ICSampleHolder();
+            model.qRacetrackLine[0].insertQue(icSampleHolder);
         }
         
-        model.loadUnloadMachine = new LoadUnloadMachine();
+        model.rcLoadUnloadMachine = new RCLoadUnloadMachine();
                 
         // Create the test cells.
         for (int stationId = 1; stationId <= 5; stationId++) {
-            model.testCellBuffer[stationId] = new TestCellBuffer();
-            model.racetrackLine[stationId] = new RacetrackLine();
+            model.qTestCellBuffer[stationId] = new QTestCellBuffer();
+            model.qRacetrackLine[stationId] = new QRacetrackLine();
         
             // Create testing machines in test cells.
             for (int machineId = 0; machineId < 3; machineId++) {
-                model.testingMachine[stationId][machineId] = new TestingMachine();
+                model.rcTestingMachine[stationId][machineId] = new RCTestingMachine();
             }
         }
 	}

@@ -8,7 +8,7 @@ import org.smlabtesting.simabs.types.OffsetList;
  * @author Lalit Azad
  * @author Ahmed El-Hajjar
  */
-public class Racetrack {
+public class RQRacetrack {
     // Constants
     public static final int BELT_SLOTS_COUNT = 48;
     
@@ -17,47 +17,47 @@ public class Racetrack {
     public static final int[] STATION_ENTRANCES = {4, 12, 20, 28, 36, 44};
     
     // Containers
-    public final OffsetList<SampleHolder> sampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
+    public final OffsetList<ICSampleHolder> icSampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
 
     // Public methods
     
     /**
-     * Puts the provided sample holder into the the specified position. Make
+     * Puts the provided icSample holder into the the specified position. Make
      * sure that there is room for it first with isVacant(..).
      *
      * @param position Zero-based index of where to put the holder in.
-     * @param sampleHolder The holder to slot into the track.
+     * @param icSampleHolder The holder to slot into the track.
      */
-    public void setSlot(final int position, final SampleHolder sampleHolder) {
-        sampleHolders.set(position, sampleHolder);
+    public void setSlot(final int position, final ICSampleHolder icSampleHolder) {
+        icSampleHolders.set(position, icSampleHolder);
     }
    
     /**
-     * Checks if the specific position has room for a sample holder and not 
+     * Checks if the specific position has room for a icSample holder and not 
      * taken by any other.
      * 
      * @param position Zero-based index of where to verify vacancy.
      * @return True if a holder can be accodomated at that position.
      */
     public boolean isVacant(final int position) {
-        return sampleHolders.get(position) == null;
+        return icSampleHolders.get(position) == null;
     }
    
     /**
-     * Takes the sample holder at the provided position out of the race track 
+     * Takes the icSample holder at the provided position out of the race track 
      * and returns its reference.
      *
      * @param position Zero-based index of where to get the holder from.
-     * @param sampleHolder The holder that was removed from the track.
+     * @param icSampleHolder The holder that was removed from the track.
      */
-    public SampleHolder take(final int position) {
-        SampleHolder sampleHolder = sampleHolders.get(position);
-        sampleHolders.set(position, null);
-        return sampleHolder;
+    public ICSampleHolder take(final int position) {
+        ICSampleHolder icSampleHolder = icSampleHolders.get(position);
+        icSampleHolders.set(position, null);
+        return icSampleHolder;
     }
     
     /**
-     * Checks if the specific position a sample holder already in it. 
+     * Checks if the specific position a icSample holder already in it. 
      * 
      * @param position Zero-based index of position to verify.
      * @return True if a holder is already here.
@@ -67,13 +67,13 @@ public class Racetrack {
     }
    
     /**
-     * Gets a reference to the sample holder in that position on the racetrack
+     * Gets a reference to the icSample holder in that position on the rqRacetrack
      * without actually removing it from there.
      *
      * @param position Zero-based index of where to get the holder from.
-     * @param sampleHolder The holder at that postiion of the track.
+     * @param icSampleHolder The holder at that postiion of the track.
      */
-    public SampleHolder peek(final int position) {
-        return sampleHolders.get(position);
+    public ICSampleHolder peek(final int position) {
+        return icSampleHolders.get(position);
     }
 }

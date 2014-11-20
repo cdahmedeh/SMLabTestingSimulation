@@ -1,8 +1,8 @@
 package simModel.activity;
 
 import simModel.ModelName;
-import simModel.entity.TestingMachine;
-import simModel.entity.TestingMachine.TestingMachineState;
+import simModel.entity.RCTestingMachine;
+import simModel.entity.RCTestingMachine.TestingMachineState;
 import absmodJ.ConditionalActivity;
 
 public class Cleaning extends ConditionalActivity {
@@ -18,7 +18,7 @@ public class Cleaning extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(ModelName model, int stationId, int machineId) {
-		return model.testingMachine[stationId][machineId].status == TestingMachineState.Cleaning;
+		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.Cleaning;
 	}
 	
 	@Override
@@ -29,11 +29,11 @@ public class Cleaning extends ConditionalActivity {
 	@Override
 	public void startingEvent() {
 		//TODO: WHY DO WE NEED TO CHECK PRECONDITIONS SO WE CAN DO THEM AGAIN????!?!?!
-		model.testingMachine[stationId][machineId].status = TestingMachineState.InCleaning;
+		model.rcTestingMachine[stationId][machineId].status = TestingMachineState.InCleaning;
 	}
 
 	@Override
 	protected void terminatingEvent() {
-        model.testingMachine[stationId][machineId].status = TestingMachineState.Idle;
+        model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Idle;
 	}
 }

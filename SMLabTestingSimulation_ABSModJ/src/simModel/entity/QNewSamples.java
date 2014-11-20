@@ -12,20 +12,20 @@ import javax.swing.text.html.parser.Entity;
  * @author Lalit Azad
  * @author Ahmed El-Hajjar
  */
-public class NewSamples {
+public class QNewSamples {
     // Containers
-    public final Deque<Sample> samples = new ArrayDeque<Sample>();
+    public final Deque<ICSample> icSamples = new ArrayDeque<ICSample>();
 
     // Queue API
     public boolean hasNext() {
-        return samples.peek() != null;
+        return icSamples.peek() != null;
     }
 
-    public Sample removeQue() {
-        return samples.pop();
+    public ICSample removeQue() {
+        return icSamples.pop();
     }
 
-    public void insertQue(final Sample entity) {
-        samples.add(entity);
+    public void insertQue(final ICSample entity) {
+        icSamples.add(entity);
     }
 }

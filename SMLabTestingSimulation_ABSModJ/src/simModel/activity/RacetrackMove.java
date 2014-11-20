@@ -22,7 +22,7 @@ public class RacetrackMove extends ScheduledActivity {
 	@Override
 	public void startingEvent() {
         // Move the belt one slot forward at every second.
-        model.racetrack.sampleHolders.offset(1);
+        model.rqRacetrack.icSampleHolders.offset(1);
 
 	}
 

@@ -1,8 +1,8 @@
 package simModel.action;
 
 import simModel.ModelName;
-import simModel.entity.Racetrack;
-import simModel.entity.SampleHolder;
+import simModel.entity.RQRacetrack;
+import simModel.entity.ICSampleHolder;
 import absmodJ.ConditionalAction;
 
 public class EnterTestCellBuffer extends ConditionalAction {
@@ -16,8 +16,8 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	}
 	
 	public static boolean precondition(ModelName model, int stationId) {
-		SampleHolder holder = model.racetrack.peek(Racetrack.STATION_ENTRANCES[stationId]);
-        return model.testCellBuffer[stationId].hasVacancy()
+		ICSampleHolder holder = model.rqRacetrack.peek(RQRacetrack.STATION_ENTRANCES[stationId]);
+        return model.qTestCellBuffer[stationId].hasVacancy()
                 && holder != null
                 && holder.hasSample()
                 && holder.getSample().hasNextTest(stationId);
@@ -27,8 +27,8 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	@Override
 	public void actionEvent() {
         //Then move the holder onto the buffer. 
-        SampleHolder sampleHolder = model.racetrack.take(Racetrack.STATION_ENTRANCES[stationId]);
-        model.testCellBuffer[stationId].insertQue(sampleHolder);
+        ICSampleHolder icSampleHolder = model.rqRacetrack.take(RQRacetrack.STATION_ENTRANCES[stationId]);
+        model.qTestCellBuffer[stationId].insertQue(icSampleHolder);
 		
 	}
 }

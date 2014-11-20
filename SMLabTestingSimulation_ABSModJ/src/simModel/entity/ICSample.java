@@ -14,7 +14,7 @@ import org.apache.commons.math3.random.Well19937a;
  *
  * @author Ahmed El-Hajjar
  */
-public class Sample {
+public class ICSample {
 	// TODO: BEGIN SHOULD MOVE
     // Constants
 	public static final RandomGenerator DEFAULT_RNG = new Well19937a();
@@ -37,10 +37,10 @@ public class Sample {
     private static final IntegerDistribution distribution = new EnumeratedIntegerDistribution(DEFAULT_RNG, SEQUENCE_ID, PROBABILITIES);
 	
     // Factories
-    public static Sample generateSample() {
-        Sample sample = new Sample();
-        IntStream.of(SEQUENCES[distribution.sample()]).forEach(sample.testSequence::add);
-        return sample;
+    public static ICSample generateSample() {
+        ICSample icSample = new ICSample();
+        IntStream.of(SEQUENCES[distribution.sample()]).forEach(icSample.testSequence::add);
+        return icSample;
     }
     
     // TODO: END SHOULD MOVE
@@ -51,7 +51,7 @@ public class Sample {
     // Entity API
     
     /**
-     * Checks if the next test to be performed to for this sample corresponds
+     * Checks if the next test to be performed to for this icSample corresponds
      * to the provided station number.
      * 
      * @return true if the next test does correspond. false otherwise, or if
@@ -62,7 +62,7 @@ public class Sample {
     }
 
     /**
-     * Checks if the sample has gone through all required tests.
+     * Checks if the icSample has gone through all required tests.
      * 
      * @return true if the are no more tests to be done.
      */
@@ -72,7 +72,7 @@ public class Sample {
     
     /**
      * Marks that the upcoming has been completed. Called by the testing machine
-     * when it finishes testing this sample.
+     * when it finishes testing this icSample.
      */
     public void completedNextTest() {
         testSequence.pop();

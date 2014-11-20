@@ -1,7 +1,7 @@
 package simModel.action;
 
 import simModel.ModelName;
-import simModel.entity.Sample;
+import simModel.entity.ICSample;
 import absmodJ.ScheduledAction;
 
 public class Arrival extends ScheduledAction {
@@ -20,10 +20,10 @@ public class Arrival extends ScheduledAction {
 
 	@Override
 	protected void actionEvent() {
-        // Create a sample.
-        Sample sample = Sample.generateSample();
-        model.newSamples.samples.add(sample);
-//        simulation.addEntity(sample);
+        // Create a icSample.
+        ICSample icSample = ICSample.generateSample();
+        model.qNewSamples.icSamples.add(icSample);
+//        simulation.addEntity(icSample);
 
 	}
 }

@@ -7,7 +7,7 @@ package simModel.entity;
  * @author Lalit Azad
  * @author Ahmed El-Hajjar
  */
-public class TestingMachine {
+public class RCTestingMachine {
     // States
     public enum TestingMachineState {
         Idle, Testing, Cleaning, Repair, InRepair, InCleaning;
@@ -16,7 +16,7 @@ public class TestingMachine {
     public static final int STATION_2_CLEANING_THRESHOLD = 300;
     
     // Containers
-    public SampleHolder sampleHolder = null;
+    public ICSampleHolder icSampleHolder = null;
     
     // Attributes
     public TestingMachineState status = TestingMachineState.Idle;

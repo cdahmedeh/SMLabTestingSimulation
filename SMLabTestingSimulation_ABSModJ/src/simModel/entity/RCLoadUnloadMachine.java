@@ -7,10 +7,10 @@ package simModel.entity;
  * @author Lalit Azad
  * @author Ahmed El-Hajjar
  */
-public class LoadUnloadMachine {
+public class RCLoadUnloadMachine {
     // Attributes
     public boolean busy = false; //TODO: Unused.   
     
     // Containers
-    public SampleHolder sampleHolder = null;
+    public ICSampleHolder icSampleHolder = null;
 }

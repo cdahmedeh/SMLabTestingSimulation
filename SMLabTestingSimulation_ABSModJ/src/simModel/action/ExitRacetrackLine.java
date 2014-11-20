@@ -1,7 +1,7 @@
 package simModel.action;
 
 import simModel.ModelName;
-import simModel.entity.Racetrack;
+import simModel.entity.RQRacetrack;
 import absmodJ.ConditionalAction;
 
 public class ExitRacetrackLine extends ConditionalAction {
@@ -16,13 +16,13 @@ public class ExitRacetrackLine extends ConditionalAction {
 	
 	public static boolean precondition(ModelName model, int stationId) {
       // If there is a holder waiting to enter and it's possible to merge
-      // on the racetrack.
-      return model.racetrackLine[stationId].hasNext() && model.racetrack.isVacant(Racetrack.STATION_EXITS[stationId]);
+      // on the rqRacetrack.
+      return model.qRacetrackLine[stationId].hasNext() && model.rqRacetrack.isVacant(RQRacetrack.STATION_EXITS[stationId]);
 	}
 	
 	@Override
 	public void actionEvent() {
-	    //Then move the holder onto the racetrack. 
-      model.racetrack.setSlot(Racetrack.STATION_EXITS[stationId], model.racetrackLine[stationId].removeQue());
+	    //Then move the holder onto the rqRacetrack. 
+      model.rqRacetrack.setSlot(RQRacetrack.STATION_EXITS[stationId], model.qRacetrackLine[stationId].removeQue());
 	}
 }

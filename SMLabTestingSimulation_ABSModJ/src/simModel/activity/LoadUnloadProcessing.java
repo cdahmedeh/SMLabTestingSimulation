@@ -1,7 +1,7 @@
 package simModel.activity;
 
 import simModel.ModelName;
-import simModel.entity.Sample;
+import simModel.entity.ICSample;
 import absmodJ.ConditionalActivity;
 
 public class LoadUnloadProcessing extends ConditionalActivity {
@@ -14,19 +14,19 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	
 	public static boolean precondition(ModelName model) {
 		// TODO: The busy wasn't needed for our version of the system.
-		return model.unloadBuffer.hasNext() && model.loadUnloadMachine.busy == false;
+		return model.qUnloadBuffer.hasNext() && model.rcLoadUnloadMachine.busy == false;
 	}
 
 	@Override
 	public void startingEvent() {
 		// TODO: The busy wasn't needed for our version of the system.
-		model.loadUnloadMachine.busy = true;
+		model.rcLoadUnloadMachine.busy = true;
 		
-        model.loadUnloadMachine.sampleHolder = model.unloadBuffer.removeQue();
+        model.rcLoadUnloadMachine.icSampleHolder = model.qUnloadBuffer.removeQue();
         
         // TODO: May have been forgetten....
-        if (!model.loadUnloadMachine.sampleHolder.hasSample()) {
-        	model.unloadBuffer.emptySampleHolderCount--;
+        if (!model.rcLoadUnloadMachine.icSampleHolder.hasSample()) {
+        	model.qUnloadBuffer.emptySampleHolderCount--;
         }
 	}
 
@@ -38,23 +38,23 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	
 	@Override
 	protected void terminatingEvent() {
-		// If sample holder has a sample, remove it.
-        if (model.loadUnloadMachine.sampleHolder.hasSample()) {
-            Sample removedSample = model.loadUnloadMachine.sampleHolder.removeSample();
+		// If icSample holder has a icSample, remove it.
+        if (model.rcLoadUnloadMachine.icSampleHolder.hasSample()) {
+            ICSample removedSample = model.rcLoadUnloadMachine.icSampleHolder.removeSample();
 //            simulation.removeEntity(removedSample); //TODO: Is there an equivalent in ABSmodJ
         }
 
-        // If a new samples is in line to be processed, insert into holder.
-        if (model.newSamples.hasNext()) {
-            model.loadUnloadMachine.sampleHolder.putSample(model.newSamples.removeQue());
+        // If a new icSamples is in line to be processed, insert into holder.
+        if (model.qNewSamples.hasNext()) {
+            model.rcLoadUnloadMachine.icSampleHolder.putSample(model.qNewSamples.removeQue());
         }
         
-        // Queue to return to racetrack.
-        model.racetrackLine[0].insertQue(model.loadUnloadMachine.sampleHolder);
-        model.loadUnloadMachine.sampleHolder = null;
+        // Queue to return to rqRacetrack.
+        model.qRacetrackLine[0].insertQue(model.rcLoadUnloadMachine.icSampleHolder);
+        model.rcLoadUnloadMachine.icSampleHolder = null;
         
      // TODO: The busy wasn't needed for our version of the system.
-        model.loadUnloadMachine.busy = false;
+        model.rcLoadUnloadMachine.busy = false;
 
 	}	
 }

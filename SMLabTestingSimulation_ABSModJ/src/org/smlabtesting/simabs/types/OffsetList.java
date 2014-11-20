@@ -9,7 +9,7 @@ import java.util.ListIterator;
  * A list where the first element index can be offsetted. Once the offset
  * reaches the end of the list, it is cycled back.
  *
- * This is mostly used for the racetrack where the sample holders move in
+ * This is mostly used for the rqRacetrack where the icSample holders move in
  * unison on slot at a time. Instead of having to actually move the elements
  * in the array one by one, and slowing things down, we just do some
  * basic arithmetic with the index by adding/subtracting an offset.
