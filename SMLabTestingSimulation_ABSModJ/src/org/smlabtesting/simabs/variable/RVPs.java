@@ -1,12 +1,18 @@
 package org.smlabtesting.simabs.variable;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
+import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
+import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.TriangularDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.Well19937a;
+import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import cern.jet.random.Exponential;
@@ -97,6 +103,34 @@ public class RVPs
         return (int) stationTwoCleaningTimeDistribution.sample();
     }
     
+    // --
+    
+//	public static final RandomGenerator DEFAULT_RNG = new Well19937a();
+    private static final int[] SEQUENCE_ID = {0,1,2,3,4,5,6,7,8};
+    private static final double[] PROBABILITIES = {0.09, 0.13, 0.15, 0.12, 0.07, 0.11, 0.14, 0.06, 0.13}; 
+    
+    private static final int[][] SEQUENCES = {
+        { 1, 2, 4, 5 },
+        { 3, 4, 5 },
+        { 1, 2, 3, 4 },
+        { 4, 3, 2 },
+        { 2, 5, 1 },
+        { 4, 5, 2, 3 },
+        { 1, 5, 3, 4 },
+        { 5, 3, 1 },
+        { 2, 4, 5 }
+    };
+    
+    private static final IntegerDistribution distribution = new EnumeratedIntegerDistribution(DEFAULT_RNG, SEQUENCE_ID, PROBABILITIES);
+    
+	public Deque<Integer> uSequenceOfTests() {
+		Deque<Integer> list = new ArrayDeque<Integer>();
+        IntStream.of(SEQUENCES[distribution.sample()]).forEach(list::add);
+        return list;
+	}
+	
+	// --
+    
 	// END MYSTUFF
 	
 	// Constructor
@@ -117,5 +151,7 @@ public class RVPs
 	    // clock value to get the next arrival time.
 	    return(nxtInterArr+model.getClock());
 	}
+
+
 
 }

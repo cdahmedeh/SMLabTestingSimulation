@@ -27,7 +27,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         
         // TODO: May have been forgetten....
         if (!model.rcLoadUnloadMachine.icSampleHolder.hasSample()) {
-        	model.qUnloadBuffer.emptySampleHolderCount--;
+        	model.qUnloadBuffer.nEmpty--;
         }
 	}
 

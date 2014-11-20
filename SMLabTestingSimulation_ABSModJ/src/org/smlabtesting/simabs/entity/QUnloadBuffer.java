@@ -12,14 +12,14 @@ import java.util.Deque;
  */
 public class QUnloadBuffer {
     // Constants
-    private static final int BUFFER_SLOTS = 5; 
-    public static int MAX_EMPTY_HOLDERS = 3;
+    public static final int UNLOADBUFFER_CAPACITY = 5; 
+    public int maxEmptyHolders = 3;
 
     // Containers
-    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(BUFFER_SLOTS);
+    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(UNLOADBUFFER_CAPACITY);
 
     // Attributes
-    public int emptySampleHolderCount = 0;
+    public int nEmpty = 0;
     
     // Queue API
     public boolean hasNext() {
@@ -35,6 +35,10 @@ public class QUnloadBuffer {
     }
 
     public boolean hasVacancy() {
-        return icSampleHolders.size() < BUFFER_SLOTS;
+        return icSampleHolders.size() < UNLOADBUFFER_CAPACITY;
+    }
+    
+    public int n() {
+    	return icSampleHolders.size();
     }
 }

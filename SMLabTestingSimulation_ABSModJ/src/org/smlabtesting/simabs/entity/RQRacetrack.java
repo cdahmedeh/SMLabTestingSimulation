@@ -73,7 +73,7 @@ public class RQRacetrack {
      * @param position Zero-based index of where to get the holder from.
      * @param icSampleHolder The holder at that postiion of the track.
      */
-    public ICSampleHolder peek(final int position) {
+    public ICSampleHolder slots(final int position) {
         return icSampleHolders.get(position);
     }
 }

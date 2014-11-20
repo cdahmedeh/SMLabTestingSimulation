@@ -5,8 +5,13 @@ import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ScheduledAction;
 
+/**
+ * This action describes when a new sample arrives to the new samples queue.
+ * 
+ * Participants: Q.NewSamples
+ * Uses: iC.Sample
+ */
 public class Arrival extends ScheduledAction {
-
 	private SMLabModel model;
 
 	public Arrival(SMLabModel model) {
@@ -15,16 +20,18 @@ public class Arrival extends ScheduledAction {
 	
 	@Override
 	protected double timeSequence() {
-		//TODO: Is the next time, or the current time + next time?
+		// Retrieves the next arrival time of a new untested sample
         return model.getClock() + model.rvp.nextArrival();
 	}
 
 	@Override
 	protected void actionEvent() {
-        // Create a icSample.
-        ICSample icSample = ICSample.generateSample();
-        model.qNewSamples.icSamples.add(icSample);
-//        simulation.addEntity(icSample);
-
+        // Create a new sample with a randomly derived sequence and priority
+        ICSample icSample = new ICSample();
+        icSample.testsRemaining = model.rvp.uSequenceOfTests();
+        // TODO: icSample.rush = model.rvp.uSampleRush();
+		
+        // Move the new sample into the new samples queue.
+        model.qNewSamples.insertQue(icSample);
 	}
 }

@@ -9,7 +9,7 @@ package org.smlabtesting.simabs.entity;
  */
 public class ICSampleHolder {
     // Containers
-    public ICSample icSample;
+    public ICSample sample;
 
     // Public Methods
     
@@ -20,7 +20,7 @@ public class ICSampleHolder {
      * @param icSample The icSample to insert into the holder.
      */
     public void putSample(final ICSample icSample) {
-        this.icSample = icSample;
+        this.sample = icSample;
     }
 
     /**
@@ -29,7 +29,7 @@ public class ICSampleHolder {
      * @return True is there a icSample in it already.
      */
     public boolean hasSample() {
-        return icSample != null;
+        return sample != null;
     }
     
     /**
@@ -42,8 +42,8 @@ public class ICSampleHolder {
      * @return The removed icSample. Null if no icSample was in.
      */
     public ICSample removeSample() {
-        ICSample removedSample = icSample;
-        icSample = null;
+        ICSample removedSample = sample;
+        sample = null;
         return removedSample;
     }
     
@@ -54,6 +54,6 @@ public class ICSampleHolder {
      * @return A reference to the icSample in the holder. Null if none.
      */    
     public ICSample getSample(){
-        return this.icSample;
+        return this.sample;
     }
 }

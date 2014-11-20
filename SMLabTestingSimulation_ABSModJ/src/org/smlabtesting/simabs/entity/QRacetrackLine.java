@@ -19,6 +19,10 @@ public class QRacetrackLine {
     public boolean hasNext() {
         return icSampleHolders.peek() != null;
     }
+    
+    public int n() {
+    	return icSampleHolders.size();
+    }
 
     public ICSampleHolder removeQue() {
         return icSampleHolders.pop();
