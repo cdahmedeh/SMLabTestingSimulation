@@ -1,21 +1,21 @@
 package simModel.action;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.RQRacetrack;
 import simModel.entity.ICSampleHolder;
 import absmodJ.ConditionalAction;
 
 public class EnterTestCellBuffer extends ConditionalAction {
 	
-	private ModelName model;
+	private SMLabModel model;
 	private int stationId;
 
-	public EnterTestCellBuffer(ModelName model, int stationId) {
+	public EnterTestCellBuffer(SMLabModel model, int stationId) {
 		this.model = model;
 		this.stationId = stationId;
 	}
 	
-	public static boolean precondition(ModelName model, int stationId) {
+	public static boolean precondition(SMLabModel model, int stationId) {
 		ICSampleHolder holder = model.rqRacetrack.peek(RQRacetrack.STATION_ENTRANCES[stationId]);
         return model.qTestCellBuffer[stationId].hasVacancy()
                 && holder != null

@@ -1,23 +1,23 @@
 package simModel.activity;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.RCTestingMachine;
 import simModel.entity.RCTestingMachine.TestingMachineState;
 import absmodJ.ConditionalActivity;
 
 public class Cleaning extends ConditionalActivity {
 
-	private ModelName model;
+	private SMLabModel model;
 	private int stationId;
 	private int machineId;
 
-	public Cleaning(ModelName model, int stationId, int machineId) {
+	public Cleaning(SMLabModel model, int stationId, int machineId) {
 		this.model = model;
 		this.stationId = stationId;
 		this.machineId = machineId;
 	}
 	
-	public static boolean precondition(ModelName model, int stationId, int machineId) {
+	public static boolean precondition(SMLabModel model, int stationId, int machineId) {
 		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.Cleaning;
 	}
 	

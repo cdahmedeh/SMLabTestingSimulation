@@ -1,23 +1,23 @@
 package simModel.activity;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.RCTestingMachine;
 import simModel.entity.RCTestingMachine.TestingMachineState;
 import absmodJ.ConditionalActivity;
 
 public class Testing extends ConditionalActivity {
 
-	private ModelName model;
+	private SMLabModel model;
 	private int stationId;
 	private int machineId;
 
-	public Testing(ModelName model, int stationId, int machineId) {
+	public Testing(SMLabModel model, int stationId, int machineId) {
 		this.model = model;
 		this.stationId = stationId;
 		this.machineId = machineId;
 	}
 	
-	public static boolean precondition(ModelName model, int stationId, int machineId) {
+	public static boolean precondition(SMLabModel model, int stationId, int machineId) {
 		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.Idle && (model.qTestCellBuffer[stationId].hasNext() || model.rcTestingMachine[stationId][machineId].icSampleHolder != null);
 	}
 	

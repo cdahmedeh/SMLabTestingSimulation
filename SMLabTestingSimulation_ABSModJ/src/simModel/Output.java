@@ -17,7 +17,7 @@ class Output
 	public Output() {
 	}
 	
-	public Output(ModelName modelName) {
+	public Output(SMLabModel sMLabModel) {
 	}
 	/* END NOT INCLUDED IN THE ORIGINAL */
 	

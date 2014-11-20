@@ -23,7 +23,7 @@ import absmodJ.Behaviour;
 import absmodJ.SequelActivity;
 //
 // The Simulation model Class
-public class ModelName extends AOSimulationModel
+public class SMLabModel extends AOSimulationModel
 {
 	// Constants available from Constants class
 	/* Parameter */
@@ -59,7 +59,7 @@ public class ModelName extends AOSimulationModel
 
 
 	// Constructor
-	public ModelName(double t0time, double tftime, /*define other args,*/ Seeds sd)
+	public SMLabModel(double t0time, double tftime, /*define other args,*/ Seeds sd)
 	{
 		// Initialise parameters here
 		
@@ -156,7 +156,7 @@ public class ModelName extends AOSimulationModel
 		return preconditions;
 	}
 	
-	private void crazyPrint(ModelName modelName) {
+	private void crazyPrint(SMLabModel sMLabModel) {
 //		System.out.println(modelName.racetrack.sampleHolders.count());
 //		
 //		int c = 0;

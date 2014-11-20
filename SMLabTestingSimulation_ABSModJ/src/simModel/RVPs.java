@@ -13,7 +13,7 @@ import cern.jet.random.engine.MersenneTwister;
 
 public class RVPs 
 {
-	ModelName model; // for accessing the clock
+	SMLabModel model; // for accessing the clock
     // Data Models - i.e. random veriate generators for distributions
 	// are created using Colt classes, define 
 	// reference variables here and create the objects in the
@@ -99,7 +99,7 @@ public class RVPs
 	// END MYSTUFF
 	
 	// Constructor
-	public RVPs(ModelName model, Seeds sd) 
+	public RVPs(SMLabModel model, Seeds sd) 
 	{ 
 		this.model = model; 
 		// Set up distribution functions

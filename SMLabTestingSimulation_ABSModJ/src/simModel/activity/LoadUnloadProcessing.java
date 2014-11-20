@@ -1,18 +1,18 @@
 package simModel.activity;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.ICSample;
 import absmodJ.ConditionalActivity;
 
 public class LoadUnloadProcessing extends ConditionalActivity {
 
-	private ModelName model;
+	private SMLabModel model;
 
-	public LoadUnloadProcessing(ModelName model) {
+	public LoadUnloadProcessing(SMLabModel model) {
 		this.model = model;
 	}
 	
-	public static boolean precondition(ModelName model) {
+	public static boolean precondition(SMLabModel model) {
 		// TODO: The busy wasn't needed for our version of the system.
 		return model.qUnloadBuffer.hasNext() && model.rcLoadUnloadMachine.busy == false;
 	}

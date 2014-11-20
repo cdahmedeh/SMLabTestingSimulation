@@ -1,20 +1,20 @@
 package simModel.action;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.RQRacetrack;
 import absmodJ.ConditionalAction;
 
 public class ExitRacetrackLine extends ConditionalAction {
 
-	private ModelName model;
+	private SMLabModel model;
 	private int stationId;
 
-	public ExitRacetrackLine(ModelName model, int stationId) {
+	public ExitRacetrackLine(SMLabModel model, int stationId) {
 		this.model = model;
 		this.stationId = stationId;
 	}
 	
-	public static boolean precondition(ModelName model, int stationId) {
+	public static boolean precondition(SMLabModel model, int stationId) {
       // If there is a holder waiting to enter and it's possible to merge
       // on the rqRacetrack.
       return model.qRacetrackLine[stationId].hasNext() && model.rqRacetrack.isVacant(RQRacetrack.STATION_EXITS[stationId]);

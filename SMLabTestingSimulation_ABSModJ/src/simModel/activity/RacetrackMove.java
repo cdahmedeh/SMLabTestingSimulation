@@ -1,13 +1,13 @@
 package simModel.activity;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import absmodJ.ScheduledActivity;
 
 public class RacetrackMove extends ScheduledActivity {
 
-	private ModelName model;
+	private SMLabModel model;
 
-	public RacetrackMove(ModelName model) {
+	public RacetrackMove(SMLabModel model) {
 		this.model = model;
 	}
 	

@@ -1,14 +1,14 @@
 package simModel.action;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.RQRacetrack;
 import simModel.entity.ICSampleHolder;
 import absmodJ.ConditionalAction;
 
 public class EnterUnloadBuffer extends ConditionalAction {
-	private ModelName model;
+	private SMLabModel model;
 
-	public static boolean precondition(ModelName model) {
+	public static boolean precondition(SMLabModel model) {
 		ICSampleHolder holder = model.rqRacetrack.peek(RQRacetrack.STATION_ENTRANCES[0]);
         
         return model.rqRacetrack.isTaken(RQRacetrack.STATION_ENTRANCES[0]) && model.qUnloadBuffer.hasVacancy()
@@ -18,7 +18,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
                    );
 	}
 	
-	public EnterUnloadBuffer(ModelName model) {
+	public EnterUnloadBuffer(SMLabModel model) {
 		this.model = model;
 	}
 

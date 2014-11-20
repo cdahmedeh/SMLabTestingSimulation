@@ -1,14 +1,14 @@
 package simModel.action;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.ICSample;
 import absmodJ.ScheduledAction;
 
 public class Arrival extends ScheduledAction {
 
-	private ModelName model;
+	private SMLabModel model;
 
-	public Arrival(ModelName model) {
+	public Arrival(SMLabModel model) {
 		this.model = model;
 	}
 	

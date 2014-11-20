@@ -1,6 +1,6 @@
 package simModel.action;
 
-import simModel.ModelName;
+import simModel.SMLabModel;
 import simModel.entity.RCLoadUnloadMachine;
 import simModel.entity.QNewSamples;
 import simModel.entity.RQRacetrack;
@@ -14,10 +14,10 @@ import absmodJ.ScheduledAction;
 
 public class SetupSimulation extends ScheduledAction
 {
-	ModelName model;
+	SMLabModel model;
 	
 	// Constructor
-	public SetupSimulation(ModelName model) { this.model = model; }
+	public SetupSimulation(SMLabModel model) { this.model = model; }
 
 	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
 	int tsix = 0;  // set index to first entry.
