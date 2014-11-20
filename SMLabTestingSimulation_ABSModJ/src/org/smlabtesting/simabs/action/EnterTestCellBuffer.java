@@ -14,7 +14,7 @@ import absmodJ.ConditionalAction;
  * cell as the next test in its sequence.
  * 
  * Participants: Q.TestCellBuffer
- * Uses: RQ.Racetrack, R.SampleHolder (implicit), iC.Sample (implicit)
+ * Uses: RQ.Racetrack, iC.SampleHolder (implicit), iC.Sample (implicit)
 
  * There are five instances in Q.TestCellBuffer, one per test cell. There is 
  * a separate action for each one.

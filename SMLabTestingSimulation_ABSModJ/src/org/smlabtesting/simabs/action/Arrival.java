@@ -9,7 +9,7 @@ import absmodJ.ScheduledAction;
  * This action describes when a new sample arrives to the new samples queue.
  * 
  * Participants: Q.NewSamples
- * Uses: iC.Sample
+ * Uses: iC.Sample (implicit)
  */
 public class Arrival extends ScheduledAction {
 	private SMLabModel model;

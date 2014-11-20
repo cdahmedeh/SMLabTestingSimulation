@@ -8,17 +8,14 @@ import org.smlabtesting.simabs.model.SMLabModel;
 import absmodJ.ConditionalAction;
 
 /**
- * This action describes when a Sample Holder exits the RacetrackLine queue to merge onto the Racetrack.
+ * This action describes when a Sample Holder exits the RacetrackLine queue to
+ * merge onto the Racetrack.
  * 
- * Participants: Q.RacetrackLine[CX]
- * Uses: RQ.Racetrack, R.SampleHolder (implicit), iC.Sample (implicit)
+ * Participants: Q.RacetrackLine[stationId]
+ * Uses: RQ.Racetrack, iC.SampleHolder (implicit), iC.Sample (implicit)
  * 
  * There are six instances of Q.RacetrackLine. There is a separate action for each one.
  * stationId = one of {LU = 0, C1 = 1, C2 = 2, C3, = 3, C4 = 4, C5 = 5}
- * 
- * TODO: Mentioning naming in the CM.
- * TODO: Deal with Racetrack.inMotion
- * 
  */
 public class ExitRacetrackLine extends ConditionalAction {
 	private SMLabModel model;

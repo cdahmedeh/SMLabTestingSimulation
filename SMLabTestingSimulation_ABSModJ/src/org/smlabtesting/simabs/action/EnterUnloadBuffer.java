@@ -14,10 +14,7 @@ import absmodJ.ConditionalAction;
  * and is ready to leave the system or when a sample holder is empty.
  *
  * Participants: Q.UnloadBuffer
- * Uses: Q.Racetrack, R.SampleHolder (implicit), iC.Sample (implicit)
- * 
- * TODO: Handle Racetrack.InMotion
- * TODO: maxEmptyHolders is not a parameter yet.
+ * Uses: Q.Racetrack, iC.SampleHolder (implicit), iC.Sample (implicit)
  */
 public class EnterUnloadBuffer extends ConditionalAction {
 	private SMLabModel model;

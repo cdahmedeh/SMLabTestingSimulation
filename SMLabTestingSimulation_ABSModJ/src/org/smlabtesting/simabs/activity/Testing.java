@@ -4,7 +4,6 @@ import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsCleaning;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsRepair;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Testing;
-import static org.smlabtesting.simabs.variable.Constants.STATION_2_CLEANING_THRESHOLD;
 
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.model.SMLabModel;
@@ -110,8 +109,7 @@ public class Testing extends ConditionalActivity {
             testingMachine.status = Idle;
             
             // Subtract the machine runtime from the failure time. Except for
-            // station number 2.
-            // TODO: Mark this in the CM.
+            // test cell number 2 that never fails.
             if (stationId != 2) {
                 testingMachine.timeUntilFailure -= testingMachine.runTime;            	
             }
@@ -120,8 +118,7 @@ public class Testing extends ConditionalActivity {
             testingMachine.completedTests++;
             
             // Cell C2 needs to be cleaned after 300 tests.
-            // TODO: In the CM, this should mentioned somewhere RCTestingMachine.STATION_2_CLEANING_THRESHOLD
-            if (stationId == 2 && (testingMachine.completedTests % STATION_2_CLEANING_THRESHOLD == 0)) {
+            if (stationId == 2 && (testingMachine.completedTests % 300 == 0)) {
             	testingMachine.status = NeedsCleaning;
             }
         } else {
