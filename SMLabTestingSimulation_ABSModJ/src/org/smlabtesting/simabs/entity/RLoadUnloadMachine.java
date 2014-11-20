@@ -4,7 +4,7 @@ package org.smlabtesting.simabs.entity;
 /**
  * Maps to R.LoadUnloadMachine 
  */
-public class RCLoadUnloadMachine {
+public class RLoadUnloadMachine {
     // Containers
     public ICSampleHolder sampleHolder = null;
 	

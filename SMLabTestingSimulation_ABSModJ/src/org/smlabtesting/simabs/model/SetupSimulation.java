@@ -7,7 +7,7 @@ import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
 import org.smlabtesting.simabs.entity.QTestCellBuffer;
 import org.smlabtesting.simabs.entity.QUnloadBuffer;
-import org.smlabtesting.simabs.entity.RCLoadUnloadMachine;
+import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 
@@ -51,7 +51,7 @@ public class SetupSimulation extends ScheduledAction
         model.qNewSamples = new QNewSamples();
         model.qUnloadBuffer = new QUnloadBuffer();
         model.qRacetrackLine[0] = new QRacetrackLine();
-        model.rcLoadUnloadMachine = new RCLoadUnloadMachine();
+        model.rLoadUnloadMachine = new RLoadUnloadMachine();
         
         // Create some sample holders, put them in the racetrack line of 
         // load/unload machine.

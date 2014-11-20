@@ -1,6 +1,5 @@
 package org.smlabtesting.simabs.activity;
 
-import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;
@@ -26,21 +25,21 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 		
 		// The unload buffer has a holder waiting in line and the load unload 
 		// machine is not currently processing another holder
-		return model.qUnloadBuffer.n() > 0 && model.rcLoadUnloadMachine.busy == false;
+		return model.qUnloadBuffer.n() > 0 && model.rLoadUnloadMachine.busy == false;
 	}
 
 	@Override
 	public void startingEvent() {
 		// The machine status is set to busy.
-		model.rcLoadUnloadMachine.busy = true;
+		model.rLoadUnloadMachine.busy = true;
 		
 		// Take the next sample holder in line from the unload buffer and load
 		// it in the machine
-        model.rcLoadUnloadMachine.sampleHolder = model.qUnloadBuffer.removeQue();
+        model.rLoadUnloadMachine.sampleHolder = model.qUnloadBuffer.removeQue();
         
         // If the holder was an empty,  decrement the empty holder counter as 
         // it will be removed.
-        if (model.rcLoadUnloadMachine.sampleHolder.sample == null) {
+        if (model.rLoadUnloadMachine.sampleHolder.sample == null) {
         	model.qUnloadBuffer.nEmpty--;
         }
 	}
@@ -56,24 +55,25 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	protected void terminatingEvent() {
 		// If the holder in the machine has a sample, remove it from the 
 		// system.
-        if (model.rcLoadUnloadMachine.sampleHolder != null) {
-            ICSample icSample = model.rcLoadUnloadMachine.sampleHolder.sample;
-            // TODO: SP.Leave(removedSample)
-            model.rcLoadUnloadMachine.sampleHolder.sample = null;
+        if (model.rLoadUnloadMachine.sampleHolder != null) {
+        	// No Behavior belongs to ICSample, so these are implicit.        	
+            // ICSample icSample = model.rcLoadUnloadMachine.sampleHolder.sample;
+            // SP.Leave(icSample)
+            model.rLoadUnloadMachine.sampleHolder.sample = null;
         }
 
         // If there is a new sample waiting to be tested, put it in the holder.
         if (model.qNewSamples.n() > 0) {
         	// TODO: This queue will give priority to rush samples
-            model.rcLoadUnloadMachine.sampleHolder.sample = model.qNewSamples.removeQue();
+            model.rLoadUnloadMachine.sampleHolder.sample = model.qNewSamples.removeQue();
         }
         
         // Put the holder in line to return to the racetrack.
-        model.qRacetrackLine[0].insertQue(model.rcLoadUnloadMachine.sampleHolder);
-        model.rcLoadUnloadMachine.sampleHolder = null;
+        model.qRacetrackLine[0].insertQue(model.rLoadUnloadMachine.sampleHolder);
+        model.rLoadUnloadMachine.sampleHolder = null;
         
         // The machine status is set to idle.
-        model.rcLoadUnloadMachine.busy = false;
+        model.rLoadUnloadMachine.busy = false;
 
 	}	
 }

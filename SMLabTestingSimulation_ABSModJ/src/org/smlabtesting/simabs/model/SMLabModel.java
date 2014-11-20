@@ -13,7 +13,7 @@ import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
 import org.smlabtesting.simabs.entity.QTestCellBuffer;
 import org.smlabtesting.simabs.entity.QUnloadBuffer;
-import org.smlabtesting.simabs.entity.RCLoadUnloadMachine;
+import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.variable.DVPs;
@@ -66,7 +66,7 @@ public class SMLabModel extends AOSimulationModel {
 	// Load/Unload Machine related
 	public QNewSamples qNewSamples;
 	public QUnloadBuffer qUnloadBuffer;
-	public RCLoadUnloadMachine rcLoadUnloadMachine;
+	public RLoadUnloadMachine rLoadUnloadMachine;
 	
 	// Testing Cell related
 	public QTestCellBuffer[] qTestCellBuffer;
