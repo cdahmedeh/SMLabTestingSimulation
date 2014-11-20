@@ -17,14 +17,13 @@ import org.smlabtesting.simabs.model.SMLabModel;
 
 public class RVPs {
 	private SMLabModel model;
+	private Seeds sd;
 
 	public RVPs(SMLabModel model, Seeds sd) { 
-		this.model = model; 
+		this.model = model;
+		this.sd = sd; 
 	}
-
-	// A set of variously seeded random number generators. One per distribution.
-	public static final RandomGenerator RNG[] = new RandomGenerator[]{new Well19937a()};
-    
+   
 	// RVP methods
     // Notice how everything is converted to int to shave off decimals. Our 
     // simulation is always incremented in whole seconds, and thus not needed 
@@ -106,8 +105,8 @@ public class RVPs {
     // TODO: Convert to CERN.
     
     // Generates a random sequence for incoming samples. 
-    private static final IntegerDistribution distribution = 
-    		new EnumeratedIntegerDistribution(RNG[0], SEQUENCE_ID, SEQUENCE_PROBABILITIES);
+    private final IntegerDistribution distribution = 
+    		new EnumeratedIntegerDistribution(getAnotherRNG(), SEQUENCE_ID, SEQUENCE_PROBABILITIES);
     
 	// Sample arrivals distribution, there is one for each hour of the day 0 to 23.
 	private final ExponentialDistribution[] sampleArrivalDist = 
@@ -118,11 +117,11 @@ public class RVPs {
 	
 	// Load/Unload machine cycle times distribution.
     private final TriangularDistribution loadUnloadMachineCycleTimeDist = 
-    		new TriangularDistribution(RNG[0], 0.18 * 60, 0.23 * 60, 0.45 * 60);
+    		new TriangularDistribution(getAnotherRNG(), 0.18 * 60, 0.23 * 60, 0.45 * 60);
 
     // Cleaning time distribution for the second test cell.
-    private static final TriangularDistribution stationTwoCleaningTimeDist = 
-    		new TriangularDistribution(RNG[0], 5.0*60, 6.0*60, 10.0*60);
+    private final TriangularDistribution stationTwoCleaningTimeDist = 
+    		new TriangularDistribution(getAnotherRNG(), 5.0*60, 6.0*60, 10.0*60);
 
     // Time until failure for each station.
     private final ExponentialDistribution[] failureDist =
@@ -135,4 +134,11 @@ public class RVPs {
     		DoubleStream.of(MACHINE_MTBR)
     			.mapToObj(ExponentialDistribution::new)
     			.toArray(ExponentialDistribution[]::new);
+    
+    // Generates a new random random generator when called based on the seed
+    // list in Seeds
+	// A set of variously seeded random number generators. One per distribution.
+	private final RandomGenerator getAnotherRNG() {
+		return new Well19937a(sd.next());
+	}
 }
