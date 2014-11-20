@@ -28,6 +28,9 @@ public class SetupSimulation extends ScheduledAction
 
 	public void actionEvent() 
 	{
+		// TODO: Include the parameter for setting the number of testing
+		//       machines per cell.
+		
 		// TODO: Why......?
 		model.qRacetrackLine = new QRacetrackLine[6];
 		model.qTestCellBuffer = new QTestCellBuffer[6];

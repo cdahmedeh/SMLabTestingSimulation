@@ -40,7 +40,7 @@ public class RacetrackMove extends ScheduledActivity {
 	@Override
 	protected double duration() {
 		// TODO: In the CM, it says 0, but it should be 1. Otherwise, the
-		// racetrack is shifted every 2 seconds.
+		// racetrack is shifted every 2 seconds. Need to double check.
 		return 0;
 	}
 	

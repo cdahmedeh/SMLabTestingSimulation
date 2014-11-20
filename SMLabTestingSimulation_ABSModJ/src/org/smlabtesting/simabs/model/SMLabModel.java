@@ -24,93 +24,133 @@ import org.smlabtesting.simabs.variable.UDPs;
 
 import absmodJ.AOSimulationModel;
 import absmodJ.Behaviour;
-import absmodJ.SequelActivity;
-//
-// The Simulation model Class
-public class SMLabModel extends AOSimulationModel
-{
-	// Constants available from Constants class
-	/* Parameter */
-        // Define the parameters
 
-	/*-------------Entity Data Structures-------------------*/
+/**
+ * Contains all related variables to a single simulation run. It includes 
+ * references to:
+ * 
+ * - All Entities in the system.
+ * - Parameters for the run.
+ * - RVPs, UDPs and DVPs.
+ * - The Output container.
+ * - Input variables, if any.
+ * x Note that constants are refered through Constants class statically.
+ * 
+ * In addition, this class instantiates the activites and actions related to 
+ * this SM. Finally, it defines the algorithm of preconditions verifications
+ * and event scheduling.
+ * 
+ * This class is a sub-class of AOSimlationModel which handles processing the
+ * actual SBL and doing the time advanced algorithm.
+ * 
+ */
+public class SMLabModel extends AOSimulationModel {
+	/* Debug Mode */
+	private final boolean debug;
+	
+	/* Parameter */
+	// TODO: Put parameters here.
+
+	/* Entities */
+	// The entites are initalized by the SetupSimulation action. The 
+	// SampleHolder entities are created in that same action but the Sample 
+	// entities are made in the Arrivals activity.
+	
+	// Racetrack related
 	public RQRacetrack rqRacetrack;
+	public QRacetrackLine[] qRacetrackLine;
+	
+	// Load/Unload Machine related
 	public QNewSamples qNewSamples;
 	public QUnloadBuffer qUnloadBuffer;
-	public QRacetrackLine[] qRacetrackLine;
 	public RCLoadUnloadMachine rcLoadUnloadMachine;
+	
+	// Testing Cell related
 	public QTestCellBuffer[] qTestCellBuffer;
 	public RCTestingMachine[][] rcTestingMachine;
-	/* Group and Queue Entities */
-	// Define the reference variables to the various 
-	// entities with scope Set and Unary
-	// Objects can be created here or in the Initialise Action
 
 	/* Input Variables */
-	// Define any Independent Input Varaibles here
+	// TODO: Put inputs here.
 	
-	// References to RVP and DVP objects
-	public RVPs rvp;  // Reference to rvp object - object created in constructor
-	public DVPs dvp = new DVPs(this);  // Reference to dvp object
+	/* RVP, DVP and UDP */
+	public RVPs rvp;  
+	public DVPs dvp = new DVPs(this); 
 	public UDPs udp = new UDPs(this);
 
-	// Output object
+	/* Output container */
 	protected Output output = new Output(this);
-
+	// TODO: Define any methods to read some output.
 	
-	// Output values - define the public methods that return values
-	// required for experimentation.
+	
 
-
-	// Constructor
-	public SMLabModel(double t0time, double tftime, /*define other args,*/ Seeds sd)
-	{
-		// Initialise parameters here
-		
+	/**
+	 * Creates an instance of the SM Testing Lab simulation model.
+	 * 
+	 * @param t0time  The start time for the simulation.
+	 * @param tftime  The end time for the simulation. Exclusive.
+	 * @param sd 	  Seeds used to generate the RVPs.
+	 * @param debug   Set to true if you want to see the SBL being printed to console.
+	 */
+	public SMLabModel(double t0time, double tftime, Seeds sd, boolean debug) {
+		this.debug = debug;
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
-		
-		// rgCounter and qCustLine objects created in Initalise Action
 		
 		// Initialise the simulation model
 		initAOSimulModel(t0time,tftime);   
 
-		     // Schedule the first arrivals and employee scheduling
+		// Prepare the entities by initalizing them.
 		SetupSimulation init = new SetupSimulation(this);
-		scheduleAction(init);  // Should always be first one scheduled.
-		// Schedule other scheduled actions and acitvities here
-		// TODO:
+		scheduleAction(init); 
+		
+		// Schedule scheduled activties and actions.
+		scheduleScheduled();
+	}
+	
+	/**
+	 * Schedule all scheduled activties and actions that belong to this 
+	 * system.
+	 */
+	protected void scheduleScheduled() {
 		scheduleAction(new Arrival(this));
 		scheduleActivity(new RacetrackMove(this));
 	}
 
-	/************  Implementation of Data Modules***********/	
-	/*
-	 * Testing preconditions
+	/**
+	 * Overriden from AOSimulationModel to handle behavior bootstrapping and
+	 * to actions/activties missed by the time advance. 
 	 */
-	protected void testPreconditions(Behaviour behObj)
-	{
-		// TODO: Allow bootstrapping
+	@Override
+	protected void testPreconditions(Behaviour behObj) {
+		// Reschedule any behavior so that it's preconditions can be 
+		// tested again. Otherwise, repeatable activties are only done once.
 		reschedule(behObj);
 		
-		// Check preconditions of Conditional Activities
+		// Run through preconditions of all conditional activites and
+		// conditional actions and start them if needed.
 		while(scanPreconditions());
 
-		// Check preconditions of Interruptions in Extended Activities
+		// No interruptions exist in this model.  
 	}
 	
+	/**
+	 * Call this continuiously until all preconditions are all false. It will
+	 * check all preconditions for all conditional activties and actions, 
+	 * and run an instance of them if the preconditions are met.
+	 * 
+	 * @return False if all preconditions fail. True if at least one passes.
+	 */
 	private boolean scanPreconditions() {
 		boolean preconditions = false;
 		
-		//TODO: remove me
-		crazyPrint(this);
-		
+		// Load/Unload Buffer action.
 		if (EnterUnloadBuffer.precondition(this)) {
 			EnterUnloadBuffer enterUnloadBuffer = new EnterUnloadBuffer(this);
 			enterUnloadBuffer.actionEvent();
 			preconditions = true;
 		}
 		
+		// Load/Unload Machine activity.
 		if (LoadUnloadProcessing.precondition(this)) {
 			LoadUnloadProcessing loadUnloadProcessing = new LoadUnloadProcessing(this);
 			loadUnloadProcessing.startingEvent();
@@ -118,6 +158,7 @@ public class SMLabModel extends AOSimulationModel
 			preconditions = true;			
 		}
 
+		// Racetrack return queue activity. There is one for all six stations.
 		for (int i = 0; i < 6; i++) {
 			if (ExitRacetrackLine.precondition(this, i)) {
 				ExitRacetrackLine exitRacetrackLine = new ExitRacetrackLine(this, i);
@@ -126,13 +167,20 @@ public class SMLabModel extends AOSimulationModel
 			}
 		}
 		
+		// Test Cell activties and actions. There are five of them.
 		for (int i = 1; i < 6; i++) {
+			// Test cell buffer queue, one per test cell.
 			if (EnterTestCellBuffer.precondition(this, i)) {
 				EnterTestCellBuffer enterTestCellBuffer = new EnterTestCellBuffer(this, i);
 				enterTestCellBuffer.actionEvent();
 				preconditions = true;
 			}
 
+			// There can be multiple testing macines per cell. There is a
+			// Repair, Cleaning and Testing activty for each and every one of 
+			// them.
+			// TODO: Include the parameter for setting the number of testing
+			//       machines per cell.
 			for (int j = 0; j < 3; j++) {
 				if (Testing.precondition(this, i, j)) {
 					Testing testing = new Testing(this, i, j);
@@ -160,37 +208,24 @@ public class SMLabModel extends AOSimulationModel
 		return preconditions;
 	}
 	
-	private void crazyPrint(SMLabModel sMLabModel) {
-//		System.out.println(modelName.racetrack.sampleHolders.count());
-//		
-//		int c = 0;
-//		for (ICSampleHolder holder: modelName.racetrack.sampleHolders) {
-//			if (holder != null && holder.hasSample()) c++;
-//		}
-//		System.out.println(c);
-//		
-//		System.out.println(modelName.newSamples.samples.size());
-//		System.out.println(modelName.unloadBuffer.emptySampleHolderCount);
+	/**
+	 * Overriden to show SBL if debug mode is enabled.
+	 */
+	@Override
+	protected void eventOccured() {
+		if (debug) {
+			this.showSBL();			
+		}
 	}
 
-	protected void eventOccured()
-	{
-//		this.showSBL(); //TODO: Needs condition......
-		// Can add other debug code to monitor the status of the system
-		// See examples for suggestions on setup logging
-
-		// Setup an updateTrjSequences() method in the Output class
-		// and call here if you have Trajectory Sets
-		// updateTrjSequences() 
+	/**
+	 * Overriden and changed visibility to public to be able to retrieve timer
+	 * so that scheduled activties don't have to keep their own clock.
+	 */
+	@Override
+	public double getClock() {
+		return super.getClock();
 	}
-
-	// Standard Procedure to start Sequel Activities with no parameters
-	protected void spStart(SequelActivity seqAct)
-	{
-		seqAct.startingEvent();
-		scheduleActivity(seqAct);
-	}	
-	public double getClock() {return super.getClock();}
 }
 
 
