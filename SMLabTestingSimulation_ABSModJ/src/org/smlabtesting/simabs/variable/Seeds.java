@@ -2,8 +2,7 @@ package org.smlabtesting.simabs.variable;
 
 import cern.jet.random.engine.RandomSeedGenerator;
 
-public class Seeds 
-{
+public class Seeds {
 	int seed1;   // comment 1
 	int seed2;   // comment 2
 	int seed3;   // comment 3

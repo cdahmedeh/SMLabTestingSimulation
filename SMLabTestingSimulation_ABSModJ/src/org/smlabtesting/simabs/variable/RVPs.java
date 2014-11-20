@@ -1,108 +1,81 @@
 package org.smlabtesting.simabs.variable;
 
+import static java.lang.Double.MAX_VALUE;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
+import org.apache.commons.math3.distribution.ExponentialDistribution;
 import org.apache.commons.math3.distribution.IntegerDistribution;
-import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.TriangularDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.Well19937a;
 import org.smlabtesting.simabs.model.SMLabModel;
 
-import cern.jet.random.Exponential;
-import cern.jet.random.engine.MersenneTwister;
+public class RVPs {
+	private SMLabModel model;
 
-public class RVPs 
-{
-	SMLabModel model; // for accessing the clock
-    // Data Models - i.e. random veriate generators for distributions
-	// are created using Colt classes, define 
-	// reference variables here and create the objects in the
-	// constructor with seeds
+	public RVPs(SMLabModel model, Seeds sd) { 
+		this.model = model; 
+	}
 
-	/* Data Models for implementing timing maps */
-	protected Exponential interArrDist;  // Exponential distribution for interarrival times
-	final double WMEAN1=10.0;
-
-	// MYSTUFF
-
-	public static final RandomGenerator DEFAULT_RNG = new Well19937a();
+	// A set of variously seeded random number generators. One per distribution.
+	public static final RandomGenerator RNG[] = new RandomGenerator[]{new Well19937a()};
+    
+	// RVP methods
+    // Notice how everything is converted to int to shave off decimals. Our 
+    // simulation is always incremented in whole seconds, and thus not needed 
+    // to have decimal points.
 	
-    private static final int HOURS_IN_DAY = 24;
-    private static final int SECONDS_IN_HOUR = 3600;
-
-    private static final int INCOMING_SAMPLE_ARRIVAL_DEVIATION = 25; //TODO: Undocumented in Deliverables.
-    private static final int[] INCOMING_SAMPLE_RATES = new int[] {
-        119, 107, 100, 113, 123, 116, 107, 121,
-        131, 152, 171, 191, 200, 178, 171, 152,
-        134, 147, 165, 155, 149, 134, 119, 116
-    };
-
-	
-    private NormalDistribution deviationDistribution = new NormalDistribution(
-            DEFAULT_RNG, 0, INCOMING_SAMPLE_ARRIVAL_DEVIATION
-    );
-	
-	public double nextArrival() {
-        int currentHour = (int) (( model.getClock() / SECONDS_IN_HOUR ) % HOURS_IN_DAY);
-        int randomOffset = (int) deviationDistribution.sample();
-        return Math.max(0, SECONDS_IN_HOUR/INCOMING_SAMPLE_RATES[currentHour] + randomOffset);
+	public int uSampleArrival() {
+        int currentHour = (int) (( model.getClock() / 3600 ) % 24);
+        return (int) sampleArrivalDist[currentHour].sample();
 	}
 	
-	// ---
-	
-    // Constants
-    private static final double[] CYCLE_TIME_BOUNDS = { 0.18 * 60, 0.23 * 60, 0.45 * 60 };
-
-    // RNG
-    private final TriangularDistribution cycleTimeDistribution = new TriangularDistribution(
-            DEFAULT_RNG, CYCLE_TIME_BOUNDS[0], CYCLE_TIME_BOUNDS[1], CYCLE_TIME_BOUNDS[2]);
-    /**
-     * Generates a load/unload cycle duration using a triangular distribution.
-     *
-     * @return Machine cycle time in seconds.
-     */
     public int uLoadUnloadMachineCycleTime() {
-        return (int) cycleTimeDistribution.sample();
+        return (int) loadUnloadMachineCycleTimeDist.sample();
+    }
+	
+    public int uCleaningTime() {
+        return (int) stationTwoCleaningTimeDist.sample();
     }
     
-    // --
-    
-    // RNG
-    private static final TriangularDistribution stationTwoCleaningTimeDistribution = new TriangularDistribution(5.0*60, 6.0*60, 10.0*60);
-    
-    
-    private static final int[] MACHINE_MBTF = IntStream.of(0, 14, -1, 9, 15, 16).map(i -> i * 3600).toArray();
-    private static final int[] MACHINE_MBTR = IntStream.of(0, 11, -1, 7, 14, 13).map(i -> i * 60).toArray();
-    
-
-
-    public double uRepairTime(int stationId) {      
-        return MACHINE_MBTR[stationId]; //TODO: No randomization yet.
-    }
-
     public double generateFailureTime(int stationId) {
         // Machine two rarely fails.
         if (stationId == 2) {
             return Double.MAX_VALUE;
         }
         
-        return MACHINE_MBTF[stationId]; //TODO: No randomization yet.
+        return failureDist[stationId].sample();
     }
+    
+    public int uRepairTime(int stationId) {
+    	// Machine 2 never fails.
+    	if (stationId == 2) {
+    		return 0;
+    	}
+    	
+        return (int) repairDist[stationId].sample();
+    }
+    
+	public Deque<Integer> uSequenceOfTests() {
+		// TODO: If anyone finds an elegant way to do this and keep Java's
+		//       stupid type erasure system out of the way, you'll get
+		//       a chocolate bar.
+		Deque<Integer> list = new ArrayDeque<Integer>();
+		int sequenceNumber = distribution.sample();
+        IntStream.of(SEQUENCES[sequenceNumber]).forEach(list::add);
+        return list;
+	}
+    
+    // Data Model Constants for RNGs
 
-    public int uCleaningTime() {
-        return (int) stationTwoCleaningTimeDistribution.sample();
-    }
-    
-    // --
-    
-//	public static final RandomGenerator DEFAULT_RNG = new Well19937a();
+	// Test sequences and their probabilty of actually occuring.
     private static final int[] SEQUENCE_ID = {0,1,2,3,4,5,6,7,8};
-    private static final double[] PROBABILITIES = {0.09, 0.13, 0.15, 0.12, 0.07, 0.11, 0.14, 0.06, 0.13}; 
-    
+    private static final double[] SEQUENCE_PROBABILITIES = {0.09, 0.13, 0.15, 0.12, 0.07, 0.11, 0.14, 0.06, 0.13};
     private static final int[][] SEQUENCES = {
         { 1, 2, 4, 5 },
         { 3, 4, 5 },
@@ -114,37 +87,60 @@ public class RVPs
         { 5, 3, 1 },
         { 2, 4, 5 }
     };
-    
-    private static final IntegerDistribution distribution = new EnumeratedIntegerDistribution(DEFAULT_RNG, SEQUENCE_ID, PROBABILITIES);
-    
-	public Deque<Integer> uSequenceOfTests() {
-		Deque<Integer> list = new ArrayDeque<Integer>();
-        IntStream.of(SEQUENCES[distribution.sample()]).forEach(list::add);
-        return list;
-	}
 	
-	// --
+    // Sample arrival rates per hour, not randomized. Needs to be divided by
+    // 3600 to get arrival time.
+	private static final double[] INCOMING_SAMPLE_RATES = new double[] {
+        119, 107, 100, 113, 123, 116, 107, 121,
+        131, 152, 171, 191, 200, 178, 171, 152,
+        134, 147, 165, 155, 149, 134, 119, 116
+    };
     
-	// END MYSTUFF
+	// Station failure times and fix times. Integer.MAX_VALUE values indicate that they never
+	// occur for said station. Both converted to seconds.
+    private static final double[] MACHINE_MTBF = DoubleStream.of(MAX_VALUE, 14, MAX_VALUE, 9, 15, 16).map(i -> i * 3600).toArray();
+    private static final double[] MACHINE_MTBR = DoubleStream.of(MAX_VALUE, 11, MAX_VALUE, 7, 14, 13).map(i -> i * 60).toArray();
 	
-	// Constructor
-	public RVPs(SMLabModel model, Seeds sd) 
-	{ 
-		this.model = model; 
-		// Set up distribution functions
-		interArrDist = new Exponential(1.0/WMEAN1,  
-				         new MersenneTwister(sd.seed1));
-	}
+	// Actual RNGs distribution models.
+    // TODO: Update CM to use the new models.
+    // TODO: Convert to CERN.
+    
+    // Generates a random sequence for incoming samples. 
+    private static final IntegerDistribution distribution = 
+    		new EnumeratedIntegerDistribution(RNG[0], SEQUENCE_ID, SEQUENCE_PROBABILITIES);
+    
+	// Sample arrivals distribution, there is one for each hour of the day 0 to 23.
+	private final ExponentialDistribution[] sampleArrivalDist = 
+			DoubleStream.of(INCOMING_SAMPLE_RATES)
+				.map(rate -> 3600/rate)
+				.mapToObj(ExponentialDistribution::new)
+				.toArray(ExponentialDistribution[]::new);
 	
-	protected double duInput()  // for getting next value of uW(t)
-	{
-	    double nxtInterArr;
+	// Load/Unload machine cycle times distribution.
+    private final TriangularDistribution loadUnloadMachineCycleTimeDist = 
+    		new TriangularDistribution(RNG[0], 0.18 * 60, 0.23 * 60, 0.45 * 60);
 
-        nxtInterArr = interArrDist.nextDouble();
-	    // Note that interarrival time is added to current
-	    // clock value to get the next arrival time.
-	    return(nxtInterArr+model.getClock());
-	}
+    // Cleaning time distribution for the second test cell.
+    private static final TriangularDistribution stationTwoCleaningTimeDist = 
+    		new TriangularDistribution(RNG[0], 5.0*60, 6.0*60, 10.0*60);
+
+    // Time until failure for each station.
+    private final ExponentialDistribution[] failureDist =
+    		DoubleStream.of(MACHINE_MTBF)
+    			.mapToObj(ExponentialDistribution::new)
+    			.toArray(ExponentialDistribution[]::new);
+    
+    // Repair time for a each station.
+    private final ExponentialDistribution[] repairDist =
+    		DoubleStream.of(MACHINE_MTBR)
+    			.mapToObj(ExponentialDistribution::new)
+    			.toArray(ExponentialDistribution[]::new);
+
+    
+
+    
+
+	
 
 
 

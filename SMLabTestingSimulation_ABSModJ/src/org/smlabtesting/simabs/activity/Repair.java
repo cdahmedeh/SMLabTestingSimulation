@@ -4,7 +4,6 @@ import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.InRepair;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsRepair;
 
-import org.smlabtesting.simabs.entity.RCTestingMachine.Status;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;

@@ -21,7 +21,7 @@ public class Arrival extends ScheduledAction {
 	@Override
 	protected double timeSequence() {
 		// Retrieves the next arrival time of a new untested sample
-        return model.getClock() + model.rvp.nextArrival();
+        return model.getClock() + model.rvp.uSampleArrival();
 	}
 
 	@Override
