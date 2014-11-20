@@ -5,8 +5,16 @@ import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;
 
+/**
+ * This activity represents the Load/Unload Machine performing the required 
+ * operations to process Sample Holders and Samples as described in the
+ * Load/unloading machine behaviors section.
+ * 
+ * Participants: R.LoadUnloadMachine
+ * Uses: Q.NewSamples, Q.UnloadBuffer, Q.RacetrackLine, 
+ *       R.SampleHolder (implicit), iC.Sample (implicit)
+ */
 public class LoadUnloadProcessing extends ConditionalActivity {
-
 	private SMLabModel model;
 
 	public LoadUnloadProcessing(SMLabModel model) {
@@ -14,47 +22,57 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(SMLabModel model) {
-		// TODO: The busy wasn't needed for our version of the system.
-		return model.qUnloadBuffer.hasNext() && model.rcLoadUnloadMachine.busy == false;
+		// TODO: The busy attribute wasn't needed for our version of the system.
+		
+		// The unload buffer has a holder waiting in line and the load unload 
+		// machine is not currently processing another holder
+		return model.qUnloadBuffer.n() > 0 && model.rcLoadUnloadMachine.busy == false;
 	}
 
 	@Override
 	public void startingEvent() {
-		// TODO: The busy wasn't needed for our version of the system.
+		// The machine status is set to busy.
 		model.rcLoadUnloadMachine.busy = true;
 		
-        model.rcLoadUnloadMachine.icSampleHolder = model.qUnloadBuffer.removeQue();
+		// Take the next sample holder in line from the unload buffer and load
+		// it in the machine
+        model.rcLoadUnloadMachine.sampleHolder = model.qUnloadBuffer.removeQue();
         
-        // TODO: May have been forgetten....
-        if (!model.rcLoadUnloadMachine.icSampleHolder.hasSample()) {
+        // If the holder was an empty,  decrement the empty holder counter as 
+        // it will be removed.
+        if (model.rcLoadUnloadMachine.sampleHolder.sample == null) {
         	model.qUnloadBuffer.nEmpty--;
         }
 	}
 
 	@Override
 	public double duration() {
-        // Simulate cycle time.
-        return model.rvp.generateCycleTime();
+        // Simulate cycle time. It randomly varies according to the 
+		// distribution in the RVP.
+        return model.rvp.uLoadUnloadMachineCycleTime();
 	}
 	
 	@Override
 	protected void terminatingEvent() {
-		// If icSample holder has a icSample, remove it.
-        if (model.rcLoadUnloadMachine.icSampleHolder.hasSample()) {
-            ICSample removedSample = model.rcLoadUnloadMachine.icSampleHolder.removeSample();
-//            simulation.removeEntity(removedSample); //TODO: Is there an equivalent in ABSmodJ
+		// If the holder in the machine has a sample, remove it from the 
+		// system.
+        if (model.rcLoadUnloadMachine.sampleHolder != null) {
+            ICSample icSample = model.rcLoadUnloadMachine.sampleHolder.sample;
+            // TODO: SP.Leave(removedSample)
+            model.rcLoadUnloadMachine.sampleHolder.sample = null;
         }
 
-        // If a new icSamples is in line to be processed, insert into holder.
-        if (model.qNewSamples.hasNext()) {
-            model.rcLoadUnloadMachine.icSampleHolder.putSample(model.qNewSamples.removeQue());
+        // If there is a new sample waiting to be tested, put it in the holder.
+        if (model.qNewSamples.n() > 0) {
+        	// TODO: This queue will give priority to rush samples
+            model.rcLoadUnloadMachine.sampleHolder.putSample(model.qNewSamples.removeQue());
         }
         
-        // Queue to return to rqRacetrack.
-        model.qRacetrackLine[0].insertQue(model.rcLoadUnloadMachine.icSampleHolder);
-        model.rcLoadUnloadMachine.icSampleHolder = null;
+        // Put the holder in line to return to the racetrack.
+        model.qRacetrackLine[0].insertQue(model.rcLoadUnloadMachine.sampleHolder);
+        model.rcLoadUnloadMachine.sampleHolder = null;
         
-     // TODO: The busy wasn't needed for our version of the system.
+        // The machine status is set to idle.
         model.rcLoadUnloadMachine.busy = false;
 
 	}	

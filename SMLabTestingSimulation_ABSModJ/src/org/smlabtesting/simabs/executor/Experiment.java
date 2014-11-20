@@ -2,11 +2,10 @@ package org.smlabtesting.simabs.executor;
 // File: Experiment.java
 // Description:
 
-import org.smlabtesting.simabs.*;
 import org.smlabtesting.simabs.model.SMLabModel;
 import org.smlabtesting.simabs.variable.Seeds;
 
-import cern.jet.random.engine.*;
+import cern.jet.random.engine.RandomSeedGenerator;
 
 // Main Method: Experiments
 // 

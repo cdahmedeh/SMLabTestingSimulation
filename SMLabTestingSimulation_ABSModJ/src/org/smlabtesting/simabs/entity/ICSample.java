@@ -2,12 +2,6 @@ package org.smlabtesting.simabs.entity;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.stream.IntStream;
-
-import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
-import org.apache.commons.math3.distribution.IntegerDistribution;
-import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.random.Well19937a;
 
 /**
  * Maps to iC.Sample

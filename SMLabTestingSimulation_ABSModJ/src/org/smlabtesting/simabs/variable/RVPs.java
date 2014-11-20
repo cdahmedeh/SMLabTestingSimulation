@@ -2,8 +2,6 @@ package org.smlabtesting.simabs.variable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
@@ -12,7 +10,6 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.TriangularDistribution;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.Well19937a;
-import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import cern.jet.random.Exponential;
@@ -68,7 +65,7 @@ public class RVPs
      *
      * @return Machine cycle time in seconds.
      */
-    public int generateCycleTime() {
+    public int uLoadUnloadMachineCycleTime() {
         return (int) cycleTimeDistribution.sample();
     }
     
@@ -77,16 +74,13 @@ public class RVPs
     // RNG
     private static final TriangularDistribution stationTwoCleaningTimeDistribution = new TriangularDistribution(5.0*60, 6.0*60, 10.0*60);
     
-    private static final double[] TESTING_CYCLE_TIMES = DoubleStream.of(0, 0.77, 0.85 , 1.04, 1.24 , 1.7).map(i -> i * 60).toArray();
+    
     private static final int[] MACHINE_MBTF = IntStream.of(0, 14, -1, 9, 15, 16).map(i -> i * 3600).toArray();
     private static final int[] MACHINE_MBTR = IntStream.of(0, 11, -1, 7, 14, 13).map(i -> i * 60).toArray();
     
-    
-    public double generateTestingTime(int stationId) {
-        return TESTING_CYCLE_TIMES[stationId];
-    }
 
-    public double generateRepairTime(int stationId) {      
+
+    public double uRepairTime(int stationId) {      
         return MACHINE_MBTR[stationId]; //TODO: No randomization yet.
     }
 
@@ -99,7 +93,7 @@ public class RVPs
         return MACHINE_MBTF[stationId]; //TODO: No randomization yet.
     }
 
-    public int generateCleaningTime() {
+    public int uCleaningTime() {
         return (int) stationTwoCleaningTimeDistribution.sample();
     }
     

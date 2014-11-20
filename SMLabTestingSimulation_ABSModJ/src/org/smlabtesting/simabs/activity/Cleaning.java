@@ -1,13 +1,27 @@
 package org.smlabtesting.simabs.activity;
 
-import org.smlabtesting.simabs.entity.RCTestingMachine;
-import org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.Cleaning;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.Idle;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.NeedsCleaning;
+
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;
 
+/**
+ * This activity represents a Test Machine (inside a Test Cell) being repaired after a failure.
+ * 
+ * Participants: RC.TestingMachine
+ * 
+ * TODO: This one does not really need stationId.
+ * TODO: Update document to match this.
+ * Thus, there is a separate activity instance for each test machine in every
+ * test cell.
+ * stationId = one of {C1 = 1, C2 = 2, C3, = 3, C4 = 4, C5 = 5}
+ * TODO: machineId = UDP.testingMachine(CX) \ where n = number of machines cell
+ *                   stationId.
+ */
 public class Cleaning extends ConditionalActivity {
-
 	private SMLabModel model;
 	private int stationId;
 	private int machineId;
@@ -19,22 +33,27 @@ public class Cleaning extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(SMLabModel model, int stationId, int machineId) {
-		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.Cleaning;
+		// The machine has to be ready for cleaning.
+		return model.rcTestingMachine[stationId][machineId].status == NeedsCleaning;
 	}
 	
 	@Override
-	protected double duration() {
-		return model.rvp.generateCleaningTime();
+	public void startingEvent() {
+		// The machine status becomes in cleaning.
+		model.rcTestingMachine[stationId][machineId].status = Cleaning;
 	}
 
 	@Override
-	public void startingEvent() {
-		//TODO: WHY DO WE NEED TO CHECK PRECONDITIONS SO WE CAN DO THEM AGAIN????!?!?!
-		model.rcTestingMachine[stationId][machineId].status = TestingMachineState.InCleaning;
+	protected double duration() {
+		// The cleaning time is defined by a data model that is associated
+		// with a specific test cell.
+		// TODO: It only applies to C2 though.
+		return model.rvp.uCleaningTime();
 	}
-
+	
 	@Override
 	protected void terminatingEvent() {
-        model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Idle;
+		// The machine is ready to test again.
+        model.rcTestingMachine[stationId][machineId].status = Idle;
 	}
 }

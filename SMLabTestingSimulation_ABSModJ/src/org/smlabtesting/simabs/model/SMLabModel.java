@@ -9,7 +9,6 @@ import org.smlabtesting.simabs.activity.LoadUnloadProcessing;
 import org.smlabtesting.simabs.activity.RacetrackMove;
 import org.smlabtesting.simabs.activity.Repair;
 import org.smlabtesting.simabs.activity.Testing;
-import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
 import org.smlabtesting.simabs.entity.QTestCellBuffer;

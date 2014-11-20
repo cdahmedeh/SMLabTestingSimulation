@@ -12,5 +12,5 @@ public class RCLoadUnloadMachine {
     public boolean busy = false; //TODO: Unused.   
     
     // Containers
-    public ICSampleHolder icSampleHolder = null;
+    public ICSampleHolder sampleHolder = null;
 }

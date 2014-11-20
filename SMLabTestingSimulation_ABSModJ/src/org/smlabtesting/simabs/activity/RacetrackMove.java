@@ -4,6 +4,17 @@ import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ScheduledActivity;
 
+/**
+ * This action describes the movement of the track as the holders get shifted 
+ * forward in a counter-clockwise fashion. Everything is shifted by one slot, 
+ * every second.
+ * 
+ * TODO: Mention optimizations.
+ * TODO: Rant about duration.
+ * TODO: Handle Racetrack.InMotion.
+ * 
+ * Participants: RQ.Racetrack
+ */
 public class RacetrackMove extends ScheduledActivity {
 
 	private SMLabModel model;
@@ -22,22 +33,20 @@ public class RacetrackMove extends ScheduledActivity {
 
 	@Override
 	public void startingEvent() {
-        // Move the belt one slot forward at every second.
-        model.rqRacetrack.icSampleHolders.offset(1);
-
+        // Move the belt one slot forward.
+        model.rqRacetrack.shiftRacetrack(1);
 	}
 
 	@Override
 	protected double duration() {
-		// TODO: In this system, it should be one, and not 0 unlike ours.
-		// (Maybe ours does not handle lengths correctly)
+		// TODO: In the CM, it says 0, but it should be 1. Otherwise, the
+		// racetrack is shifted every 2 seconds.
 		return 0;
 	}
 	
 	@Override
 	protected void terminatingEvent() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }

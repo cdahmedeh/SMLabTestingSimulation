@@ -10,13 +10,13 @@ package org.smlabtesting.simabs.entity;
 public class RCTestingMachine {
     // States
     public enum TestingMachineState {
-        Idle, Testing, Cleaning, Repair, InRepair, InCleaning;
+        Idle, Testing, NeedsCleaning, NeedsRepair, InRepair, Cleaning;
     }
     
     public static final int STATION_2_CLEANING_THRESHOLD = 300;
     
     // Containers
-    public ICSampleHolder icSampleHolder = null;
+    public ICSampleHolder sampleHolder = null;
     
     // Attributes
     public TestingMachineState status = TestingMachineState.Idle;

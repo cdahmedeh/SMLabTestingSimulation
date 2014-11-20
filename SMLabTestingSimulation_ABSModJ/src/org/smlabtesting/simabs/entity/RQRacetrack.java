@@ -17,7 +17,7 @@ public class RQRacetrack {
     public static final int[] STATION_ENTRANCES = {4, 12, 20, 28, 36, 44};
     
     // Containers
-    public final OffsetList<ICSampleHolder> icSampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
+    public final OffsetList<ICSampleHolder> sampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
 
     // Public methods
     
@@ -29,7 +29,7 @@ public class RQRacetrack {
      * @param icSampleHolder The holder to slot into the track.
      */
     public void setSlot(final int position, final ICSampleHolder icSampleHolder) {
-        icSampleHolders.set(position, icSampleHolder);
+        sampleHolders.set(position, icSampleHolder);
     }
    
     /**
@@ -40,7 +40,7 @@ public class RQRacetrack {
      * @return True if a holder can be accodomated at that position.
      */
     public boolean isVacant(final int position) {
-        return icSampleHolders.get(position) == null;
+        return sampleHolders.get(position) == null;
     }
    
     /**
@@ -48,11 +48,11 @@ public class RQRacetrack {
      * and returns its reference.
      *
      * @param position Zero-based index of where to get the holder from.
-     * @param icSampleHolder The holder that was removed from the track.
+     * @param sampleHolder The holder that was removed from the track.
      */
     public ICSampleHolder take(final int position) {
-        ICSampleHolder icSampleHolder = icSampleHolders.get(position);
-        icSampleHolders.set(position, null);
+        ICSampleHolder icSampleHolder = sampleHolders.get(position);
+        sampleHolders.set(position, null);
         return icSampleHolder;
     }
     
@@ -71,9 +71,17 @@ public class RQRacetrack {
      * without actually removing it from there.
      *
      * @param position Zero-based index of where to get the holder from.
-     * @param icSampleHolder The holder at that postiion of the track.
+     * @param sampleHolder The holder at that postiion of the track.
      */
     public ICSampleHolder slots(final int position) {
-        return icSampleHolders.get(position);
+        return sampleHolders.get(position);
     }
+
+    /**
+     * TODO: Write comments here.
+     * @param i
+     */
+	public void shiftRacetrack(int i) {
+		sampleHolders.offset(i);
+	}
 }

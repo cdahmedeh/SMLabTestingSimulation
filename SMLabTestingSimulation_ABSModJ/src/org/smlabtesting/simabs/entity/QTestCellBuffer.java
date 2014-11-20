@@ -32,4 +32,8 @@ public class QTestCellBuffer {
     public boolean hasVacancy() {
         return icSampleHolders.size() < BUFFER_SLOTS;
     }
+    
+    public int n() {
+    	return icSampleHolders.size();
+    }
 }

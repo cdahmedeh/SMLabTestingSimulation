@@ -2,9 +2,6 @@ package org.smlabtesting.simabs.entity;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Queue;
-
-import javax.swing.text.html.parser.Entity;
 
 /**
  * Maps to Q.NewSamples.
@@ -14,18 +11,22 @@ import javax.swing.text.html.parser.Entity;
  */
 public class QNewSamples {
     // Containers
-    public final Deque<ICSample> icSamples = new ArrayDeque<ICSample>();
+    public final Deque<ICSample> samples = new ArrayDeque<ICSample>();
 
     // Queue API
     public boolean hasNext() {
-        return icSamples.peek() != null;
+        return samples.peek() != null;
     }
 
     public ICSample removeQue() {
-        return icSamples.pop();
+        return samples.pop();
     }
 
     public void insertQue(final ICSample entity) {
-        icSamples.add(entity);
+        samples.add(entity);
+    }
+    
+    public int n() {
+    	return samples.size();
     }
 }
