@@ -22,20 +22,12 @@ public class QUnloadBuffer {
     public int nEmpty = 0;
     
     // Queue API
-    public boolean hasNext() {
-        return icSampleHolders.peek() != null;
-    }
-
     public ICSampleHolder removeQue() {
         return icSampleHolders.pop();
     }
 
     public void insertQue(final ICSampleHolder entity) {
         icSampleHolders.add(entity);
-    }
-
-    public boolean hasVacancy() {
-        return icSampleHolders.size() < UNLOADBUFFER_CAPACITY;
     }
     
     public int n() {

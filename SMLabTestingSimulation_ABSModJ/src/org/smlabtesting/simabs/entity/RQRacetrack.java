@@ -33,40 +33,6 @@ public class RQRacetrack {
     }
    
     /**
-     * Checks if the specific position has room for a icSample holder and not 
-     * taken by any other.
-     * 
-     * @param position Zero-based index of where to verify vacancy.
-     * @return True if a holder can be accodomated at that position.
-     */
-    public boolean isVacant(final int position) {
-        return sampleHolders.get(position) == null;
-    }
-   
-    /**
-     * Takes the icSample holder at the provided position out of the race track 
-     * and returns its reference.
-     *
-     * @param position Zero-based index of where to get the holder from.
-     * @param sampleHolder The holder that was removed from the track.
-     */
-    public ICSampleHolder take(final int position) {
-        ICSampleHolder icSampleHolder = sampleHolders.get(position);
-        sampleHolders.set(position, null);
-        return icSampleHolder;
-    }
-    
-    /**
-     * Checks if the specific position a icSample holder already in it. 
-     * 
-     * @param position Zero-based index of position to verify.
-     * @return True if a holder is already here.
-     */
-    public boolean isTaken(final int position) {
-        return !isVacant(position);
-    }
-   
-    /**
      * Gets a reference to the icSample holder in that position on the rqRacetrack
      * without actually removing it from there.
      *

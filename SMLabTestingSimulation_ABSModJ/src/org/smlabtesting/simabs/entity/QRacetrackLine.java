@@ -16,10 +16,6 @@ public class QRacetrackLine {
     private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>();
     
     // Queue API
-    public boolean hasNext() {
-        return icSampleHolders.peek() != null;
-    }
-    
     public int n() {
     	return icSampleHolders.size();
     }

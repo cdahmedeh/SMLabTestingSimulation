@@ -14,10 +14,6 @@ public class QNewSamples {
     public final Deque<ICSample> samples = new ArrayDeque<ICSample>();
 
     // Queue API
-    public boolean hasNext() {
-        return samples.peek() != null;
-    }
-
     public ICSample removeQue() {
         return samples.pop();
     }

@@ -22,18 +22,9 @@ public class ICSample {
      *         there are no more tests to perform
      */
     public boolean testsRemainingNext(int stationId) {
-        return !hasCompletedSequence() && testsRemaining.peek() == stationId;
+        return !testsRemaining.isEmpty() && testsRemaining.peek() == stationId;
     }
-
-    /**
-     * Checks if the icSample has gone through all required tests.
-     * 
-     * @return true if the are no more tests to be done.
-     */
-    public boolean hasCompletedSequence() {
-        return testsRemaining.isEmpty();
-    }
-    
+ 
     /**
      * Marks that the upcoming has been completed. Called by the testing machine
      * when it finishes testing this icSample.

@@ -24,30 +24,6 @@ public class ICSampleHolder {
     }
 
     /**
-     * Checks if there is a icSample in this holder.
-     * 
-     * @return True is there a icSample in it already.
-     */
-    public boolean hasSample() {
-        return sample != null;
-    }
-    
-    /**
-     * Removes the currently installed icSample from this holder. It just 
-     * disappears from the system.
-     * 
-     * The calling class is responsible from removing it from the simulation
-     * processing.
-     * 
-     * @return The removed icSample. Null if no icSample was in.
-     */
-    public ICSample removeSample() {
-        ICSample removedSample = sample;
-        sample = null;
-        return removedSample;
-    }
-    
-    /**
      * Retrieves a reference to the icSample in this holder without removing it 
      * from the holder.
      * 

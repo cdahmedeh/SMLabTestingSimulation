@@ -17,10 +17,6 @@ public class QTestCellBuffer {
     private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(BUFFER_SLOTS);
     
     // Queue API
-    public boolean hasNext() {
-        return icSampleHolders.peek() != null;
-    }
-
     public ICSampleHolder removeQue() {
         return icSampleHolders.pop();
     }
