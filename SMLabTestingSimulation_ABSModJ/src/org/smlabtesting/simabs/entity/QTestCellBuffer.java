@@ -1,35 +1,27 @@
 package org.smlabtesting.simabs.entity;
 
+import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
  * Maps to Q.TestCellBuffer
- * 
- * @author Lalit Azad
- * @author Ahmed El-Hajjar
  */
 public class QTestCellBuffer {
-    // Constants
-    private static final int BUFFER_SLOTS = 3; 
-
     // Containers
-    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(BUFFER_SLOTS);
+    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(TEST_CELL_BUFFER_CAPACITY);
     
-    // Queue API
+    // Attributes
+    public int n() {return icSampleHolders.size();}
+    
+    // Methods for dealing with queues. In the CM, the methods are using the
+    // global SP identifier.
     public ICSampleHolder removeQue() {
         return icSampleHolders.pop();
     }
 
     public void insertQue(final ICSampleHolder entity) {
         icSampleHolders.add(entity);
-    }
-
-    public boolean hasVacancy() {
-        return icSampleHolders.size() < BUFFER_SLOTS;
-    }
-    
-    public int n() {
-    	return icSampleHolders.size();
     }
 }

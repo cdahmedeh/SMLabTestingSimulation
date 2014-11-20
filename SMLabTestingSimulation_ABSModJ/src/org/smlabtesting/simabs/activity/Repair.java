@@ -1,6 +1,10 @@
 package org.smlabtesting.simabs.activity;
 
-import org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.InRepair;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsRepair;
+
+import org.smlabtesting.simabs.entity.RCTestingMachine.Status;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;
@@ -30,13 +34,13 @@ public class Repair extends ConditionalActivity {
 	
 	public static boolean precondition(SMLabModel model, int stationId, int machineId) {
 		// The machine has to be ready for repair.
-		return model.rcTestingMachine[stationId][machineId].status == TestingMachineState.NeedsRepair;
+		return model.rcTestingMachine[stationId][machineId].status == NeedsRepair;
 	}
 	
 	@Override
 	public void startingEvent() {
 		// The machine status becomes in repair.
-		model.rcTestingMachine[stationId][machineId].status = TestingMachineState.InRepair;
+		model.rcTestingMachine[stationId][machineId].status = InRepair;
 	}
 
 	@Override
@@ -54,6 +58,6 @@ public class Repair extends ConditionalActivity {
 		model.rcTestingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.generateFailureTime(stationId);
 		
 		// The machine is ready to test again.
-        model.rcTestingMachine[stationId][machineId].status = TestingMachineState.Idle;
+        model.rcTestingMachine[stationId][machineId].status = Idle;
 	}
 }

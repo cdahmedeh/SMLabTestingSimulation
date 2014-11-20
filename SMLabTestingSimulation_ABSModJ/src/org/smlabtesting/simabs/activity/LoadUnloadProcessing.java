@@ -65,7 +65,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         // If there is a new sample waiting to be tested, put it in the holder.
         if (model.qNewSamples.n() > 0) {
         	// TODO: This queue will give priority to rush samples
-            model.rcLoadUnloadMachine.sampleHolder.putSample(model.qNewSamples.removeQue());
+            model.rcLoadUnloadMachine.sampleHolder.sample = model.qNewSamples.removeQue();
         }
         
         // Put the holder in line to return to the racetrack.

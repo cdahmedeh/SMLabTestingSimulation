@@ -1,6 +1,6 @@
 package org.smlabtesting.simabs.action;
 
-import static org.smlabtesting.simabs.entity.RQRacetrack.STATION_EXITS;
+import static org.smlabtesting.simabs.variable.Constants.STATION_EXITS;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;

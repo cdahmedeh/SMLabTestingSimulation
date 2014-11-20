@@ -1,8 +1,8 @@
 package org.smlabtesting.simabs.activity;
 
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.Cleaning;
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.Idle;
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.NeedsCleaning;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.InCleaning;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsCleaning;
 
 import org.smlabtesting.simabs.model.SMLabModel;
 
@@ -40,7 +40,7 @@ public class Cleaning extends ConditionalActivity {
 	@Override
 	public void startingEvent() {
 		// The machine status becomes in cleaning.
-		model.rcTestingMachine[stationId][machineId].status = Cleaning;
+		model.rcTestingMachine[stationId][machineId].status = InCleaning;
 	}
 
 	@Override

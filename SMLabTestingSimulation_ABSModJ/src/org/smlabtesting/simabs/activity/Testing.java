@@ -1,9 +1,10 @@
 package org.smlabtesting.simabs.activity;
 
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.Idle;
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.NeedsCleaning;
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.NeedsRepair;
-import static org.smlabtesting.simabs.entity.RCTestingMachine.TestingMachineState.Testing;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsCleaning;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsRepair;
+import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Testing;
+import static org.smlabtesting.simabs.variable.Constants.STATION_2_CLEANING_THRESHOLD;
 
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.model.SMLabModel;
@@ -100,7 +101,7 @@ public class Testing extends ConditionalActivity {
 
 		if (testingMachine.testSuccess) {
 			// TODO: Put a comment for this.
-			testingMachine.sampleHolder.getSample().completedNextTest();
+			testingMachine.sampleHolder.sample.completedNextTest();
             
 			// Put the tested holder back inline to return to the racetrack only if the test succeeded.
             model.qRacetrackLine[stationId].insertQue(testingMachine.sampleHolder);
@@ -115,7 +116,7 @@ public class Testing extends ConditionalActivity {
             
             // Cell C2 needs to be cleaned after 300 tests.
             // TODO: In the CM, this should mentioned somewhere RCTestingMachine.STATION_2_CLEANING_THRESHOLD
-            if (stationId == 2 && (testingMachine.completedTests % RCTestingMachine.STATION_2_CLEANING_THRESHOLD == 0)) {
+            if (stationId == 2 && (testingMachine.completedTests % STATION_2_CLEANING_THRESHOLD == 0)) {
             	testingMachine.status = NeedsCleaning;
             }
         } else {

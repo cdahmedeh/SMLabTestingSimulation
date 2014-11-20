@@ -5,26 +5,22 @@ import java.util.Deque;
 
 /**
  * Maps to Q.Racetrack
- * 
- * @author Lalit Azad
- * @author Ahmed El-Hajjar
- *
  */
 public class QRacetrackLine {
 
     // Containers
-    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>();
+    private final Deque<ICSampleHolder> sampleHolders = new ArrayDeque<ICSampleHolder>();
     
-    // Queue API
-    public int n() {
-    	return icSampleHolders.size();
-    }
+    // Attributes
+    public int n() {return sampleHolders.size();}
 
+    // Methods for dealing with queues. In the CM, the methods are using the
+    // global SP identifier.
     public ICSampleHolder removeQue() {
-        return icSampleHolders.pop();
+        return sampleHolders.pop();
     }
 
     public void insertQue(final ICSampleHolder entity) {
-        icSampleHolders.add(entity);
+        sampleHolders.add(entity);
     }
 }

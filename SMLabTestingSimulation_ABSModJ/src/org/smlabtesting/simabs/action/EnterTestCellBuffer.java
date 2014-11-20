@@ -1,6 +1,7 @@
 package org.smlabtesting.simabs.action;
 
-import static org.smlabtesting.simabs.entity.RQRacetrack.STATION_ENTRANCES;
+import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
+import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
@@ -36,7 +37,7 @@ public class EnterTestCellBuffer extends ConditionalAction {
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 
 		// as next in its sequence. Also check for vacancy in the test cell buffer.
-        return model.qTestCellBuffer[stationId].hasVacancy()
+        return model.qTestCellBuffer[stationId].n() < TEST_CELL_BUFFER_CAPACITY
                 && holder != null
                 && holder.sample != null
                 && holder.sample.testsRemainingNext(stationId); // sample.testsRemaining.next = CX

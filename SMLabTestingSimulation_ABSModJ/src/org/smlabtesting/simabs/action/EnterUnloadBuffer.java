@@ -1,9 +1,9 @@
 package org.smlabtesting.simabs.action;
 
-import static org.smlabtesting.simabs.entity.RQRacetrack.STATION_ENTRANCES;
+import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
+import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
-import org.smlabtesting.simabs.entity.QUnloadBuffer;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalAction;
@@ -34,7 +34,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 		// Check that there is actually a holder in the entrance point of the
 		// load/unload buffer and that the buffer is not full. Note: the unload 
 		// buffer has a length of 5.
-		return ( model.rqRacetrack.slots(STATION_ENTRANCES[0]) != null && model.qUnloadBuffer.n() < QUnloadBuffer.UNLOADBUFFER_CAPACITY ) 
+		return ( model.rqRacetrack.slots(STATION_ENTRANCES[0]) != null && model.qUnloadBuffer.n() < UNLOADBUFFER_CAPACITY ) 
                 && (
                 		// Either there is a sample that has completed all tests
                 		// and it can always go in.

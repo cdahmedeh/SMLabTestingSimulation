@@ -1,21 +1,13 @@
 package org.smlabtesting.simabs.entity;
 
+import static org.smlabtesting.simabs.variable.Constants.BELT_SLOTS_COUNT;
+
 import org.smlabtesting.simabs.types.OffsetList;
 
 /**
  * Maps to R.Racetrack
- *
- * @author Lalit Azad
- * @author Ahmed El-Hajjar
  */
 public class RQRacetrack {
-    // Constants
-    public static final int BELT_SLOTS_COUNT = 48;
-    
-    // Enter/Exit points for the load/unload machines and test cells.
-    public static final int[] STATION_EXITS = {0, 8, 16, 24, 32, 40};
-    public static final int[] STATION_ENTRANCES = {4, 12, 20, 28, 36, 44};
-    
     // Containers
     public final OffsetList<ICSampleHolder> sampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
 
@@ -23,7 +15,7 @@ public class RQRacetrack {
     
     /**
      * Puts the provided icSample holder into the the specified position. Make
-     * sure that there is room for it first with isVacant(..).
+     * sure that there is room for it first by check if the slot is null.
      *
      * @param position Zero-based index of where to put the holder in.
      * @param icSampleHolder The holder to slot into the track.
@@ -44,10 +36,14 @@ public class RQRacetrack {
     }
 
     /**
-     * TODO: Write comments here.
-     * @param i
+     * Shifts the track by n spaces forward (clockwise). This is based on the
+     * UP.shiftRacetrack() user-defined procedure in the CM. See OffsetList
+     * type for optimization trick.
+     *  
+     * @param n The number of positions to shift by. Positives values indicate
+     * 			clockwise movement while negative counter-clockwise. 
      */
-	public void shiftRacetrack(int i) {
-		sampleHolders.offset(i);
+	public void shiftRacetrack(int n) {
+		sampleHolders.offset(n);
 	}
 }

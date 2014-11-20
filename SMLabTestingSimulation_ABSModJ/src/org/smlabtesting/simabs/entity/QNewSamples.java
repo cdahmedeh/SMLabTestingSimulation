@@ -5,24 +5,21 @@ import java.util.Deque;
 
 /**
  * Maps to Q.NewSamples.
- * 
- * @author Lalit Azad
- * @author Ahmed El-Hajjar
  */
 public class QNewSamples {
     // Containers
     public final Deque<ICSample> samples = new ArrayDeque<ICSample>();
 
-    // Queue API
+    // Attributes
+    public int n() {return samples.size();}
+    
+    // Methods for dealing with queues. In the CM, the methods are using the
+    // global SP identifier.
     public ICSample removeQue() {
         return samples.pop();
     }
 
     public void insertQue(final ICSample entity) {
         samples.add(entity);
-    }
-    
-    public int n() {
-    	return samples.size();
     }
 }
