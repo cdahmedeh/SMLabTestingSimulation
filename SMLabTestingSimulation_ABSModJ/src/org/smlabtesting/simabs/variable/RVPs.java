@@ -135,13 +135,4 @@ public class RVPs {
     		DoubleStream.of(MACHINE_MTBR)
     			.mapToObj(ExponentialDistribution::new)
     			.toArray(ExponentialDistribution[]::new);
-
-    
-
-    
-
-	
-
-
-
 }
