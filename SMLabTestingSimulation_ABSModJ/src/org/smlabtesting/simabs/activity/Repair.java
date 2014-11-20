@@ -54,7 +54,7 @@ public class Repair extends ConditionalActivity {
 		// Generate a new time for the machine to fail.
 		// TODO: Mention that it is initalized before hand.
 		// TODO: What about Cell 2?
-		model.rcTestingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.generateFailureTime(stationId);
+		model.rcTestingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.uFailureDuration(stationId);
 		
 		// The machine is ready to test again.
         model.rcTestingMachine[stationId][machineId].status = Idle;

@@ -44,13 +44,13 @@ public class RVPs {
         return (int) stationTwoCleaningTimeDist.sample();
     }
     
-    public double generateFailureTime(int stationId) {
+    public int uFailureDuration(int stationId) {
         // Machine two rarely fails.
         if (stationId == 2) {
-            return Double.MAX_VALUE;
+            return Integer.MAX_VALUE;
         }
         
-        return failureDist[stationId].sample();
+        return (int) failureDist[stationId].sample();
     }
     
     public int uRepairTime(int stationId) {

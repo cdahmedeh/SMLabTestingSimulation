@@ -69,6 +69,12 @@ public class SetupSimulation extends ScheduledAction
             // test machines per cell from the parameter numCellMachines.
             for (int machineId = 0; machineId < model.parameters.numCellMachines[stationId]; machineId++) {
                 model.rcTestingMachine[stationId][machineId] = new RCTestingMachine();
+                
+                // For machines that are not number 2, setup a failure time.
+                if (machineId == 2) {
+                	model.rcTestingMachine[stationId][machineId].timeUntilFailure
+                		= model.rvp.uFailureDuration(stationId);
+                }
             }
         }
 	}

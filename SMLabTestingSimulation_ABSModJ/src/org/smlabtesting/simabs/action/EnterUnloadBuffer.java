@@ -5,7 +5,6 @@ import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
-import org.smlabtesting.simabs.variable.Parameters;
 
 import absmodJ.ConditionalAction;
 
