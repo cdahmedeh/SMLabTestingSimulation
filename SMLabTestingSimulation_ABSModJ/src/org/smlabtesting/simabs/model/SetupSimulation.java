@@ -1,4 +1,4 @@
-package org.smlabtesting.simabs.action;
+package org.smlabtesting.simabs.model;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.entity.QNewSamples;
@@ -8,7 +8,6 @@ import org.smlabtesting.simabs.entity.QUnloadBuffer;
 import org.smlabtesting.simabs.entity.RCLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
-import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ScheduledAction;
 
