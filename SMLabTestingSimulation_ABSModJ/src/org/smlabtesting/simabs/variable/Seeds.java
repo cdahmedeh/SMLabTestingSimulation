@@ -17,7 +17,7 @@ import cern.jet.random.engine.RandomSeedGenerator;
  * Can also be in iterator fashion with next().
  */
 public class Seeds {
-	private RandomSeedGenerator rsg;
+	private final RandomSeedGenerator rsg;
 	private Map<Integer, Integer> seeds = new HashMap<>();
 	private int current = 0;
 

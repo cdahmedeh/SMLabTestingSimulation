@@ -22,6 +22,8 @@ public class RVPs {
 	public RVPs(SMLabModel model, Seeds sd) { 
 		this.model = model;
 		this.sd = sd; 
+		
+		initDistributions();
 	}
    
 	// RVP methods
@@ -65,7 +67,7 @@ public class RVPs {
 		//       stupid type erasure system out of the way, you'll get
 		//       a chocolate bar.
 		Deque<Integer> list = new ArrayDeque<Integer>();
-		int sequenceNumber = distribution.sample();
+		int sequenceNumber = sequenceDist.sample();
         IntStream.of(SEQUENCES[sequenceNumber]).forEach(list::add);
         return list;
 	}
@@ -105,36 +107,52 @@ public class RVPs {
     // TODO: Convert to CERN.
     
     // Generates a random sequence for incoming samples. 
-    private final IntegerDistribution distribution = 
-    		new EnumeratedIntegerDistribution(getAnotherRNG(), SEQUENCE_ID, SEQUENCE_PROBABILITIES);
+    private IntegerDistribution sequenceDist;
     
 	// Sample arrivals distribution, there is one for each hour of the day 0 to 23.
-	private final ExponentialDistribution[] sampleArrivalDist = 
-			DoubleStream.of(INCOMING_SAMPLE_RATES)
-				.map(rate -> 3600/rate)
-				.mapToObj(ExponentialDistribution::new)
-				.toArray(ExponentialDistribution[]::new);
+	private ExponentialDistribution[] sampleArrivalDist;
 	
 	// Load/Unload machine cycle times distribution.
-    private final TriangularDistribution loadUnloadMachineCycleTimeDist = 
-    		new TriangularDistribution(getAnotherRNG(), 0.18 * 60, 0.23 * 60, 0.45 * 60);
+    private TriangularDistribution loadUnloadMachineCycleTimeDist;
 
     // Cleaning time distribution for the second test cell.
-    private final TriangularDistribution stationTwoCleaningTimeDist = 
-    		new TriangularDistribution(getAnotherRNG(), 5.0*60, 6.0*60, 10.0*60);
+    private TriangularDistribution stationTwoCleaningTimeDist;
 
     // Time until failure for each station.
-    private final ExponentialDistribution[] failureDist =
-    		DoubleStream.of(MACHINE_MTBF)
-    			.mapToObj(ExponentialDistribution::new)
-    			.toArray(ExponentialDistribution[]::new);
+    private ExponentialDistribution[] failureDist;
     
     // Repair time for a each station.
-    private final ExponentialDistribution[] repairDist =
-    		DoubleStream.of(MACHINE_MTBR)
-    			.mapToObj(ExponentialDistribution::new)
-    			.toArray(ExponentialDistribution[]::new);
+    private ExponentialDistribution[] repairDist;
     
+    
+    private void initDistributions() {
+        sequenceDist = 
+        		new EnumeratedIntegerDistribution(getAnotherRNG(), SEQUENCE_ID, SEQUENCE_PROBABILITIES);
+        
+    	sampleArrivalDist = 
+    			DoubleStream.of(INCOMING_SAMPLE_RATES)
+    				.map(rate -> 3600/rate)
+    				.mapToObj(ExponentialDistribution::new)
+    				.toArray(ExponentialDistribution[]::new);
+    	
+    	loadUnloadMachineCycleTimeDist = 
+        		new TriangularDistribution(getAnotherRNG(), 0.18 * 60, 0.23 * 60, 0.45 * 60);
+
+        stationTwoCleaningTimeDist = 
+        		new TriangularDistribution(getAnotherRNG(), 5.0*60, 6.0*60, 10.0*60);
+
+        failureDist =
+        		DoubleStream.of(MACHINE_MTBF)
+        			.mapToObj(ExponentialDistribution::new)
+        			.toArray(ExponentialDistribution[]::new);
+        
+        repairDist =
+        		DoubleStream.of(MACHINE_MTBR)
+        			.mapToObj(ExponentialDistribution::new)
+        			.toArray(ExponentialDistribution[]::new);   	
+    }
+    
+
     // Generates a new random random generator when called based on the seed
     // list in Seeds
 	// A set of variously seeded random number generators. One per distribution.
