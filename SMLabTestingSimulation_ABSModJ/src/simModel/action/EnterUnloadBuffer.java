@@ -31,6 +31,6 @@ public class EnterUnloadBuffer extends ConditionalAction {
         	model.unloadBuffer.emptySampleHolderCount++;
         }
             
-        model.unloadBuffer.queue(sampleHolder);
+        model.unloadBuffer.insertQue(sampleHolder);
 	}
 }

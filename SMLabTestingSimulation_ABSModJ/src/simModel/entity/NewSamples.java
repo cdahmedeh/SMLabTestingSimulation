@@ -21,11 +21,11 @@ public class NewSamples {
         return samples.peek() != null;
     }
 
-    public Sample next() {
+    public Sample removeQue() {
         return samples.pop();
     }
 
-    public void queue(final Sample entity) {
+    public void insertQue(final Sample entity) {
         samples.add(entity);
     }
 }

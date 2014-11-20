@@ -28,7 +28,7 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	public void actionEvent() {
         //Then move the holder onto the buffer. 
         SampleHolder sampleHolder = model.racetrack.take(Racetrack.STATION_ENTRANCES[stationId]);
-        model.testCellBuffer[stationId].queue(sampleHolder);
+        model.testCellBuffer[stationId].insertQue(sampleHolder);
 		
 	}
 }

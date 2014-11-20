@@ -44,7 +44,7 @@ public class SetupSimulation extends ScheduledAction
         // Create some sample holders, put them in the racetrack line.
         for (int i = 0; i < 70; i++) {
             SampleHolder sampleHolder = new SampleHolder();
-            model.racetrackLine[0].queue(sampleHolder);
+            model.racetrackLine[0].insertQue(sampleHolder);
         }
         
         model.loadUnloadMachine = new LoadUnloadMachine();

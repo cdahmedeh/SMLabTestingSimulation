@@ -31,7 +31,7 @@ public class Testing extends ConditionalActivity {
 		model.testingMachine[stationId][machineId].status = TestingMachineState.Testing;
 
         if (model.testingMachine[stationId][machineId].sampleHolder == null) {
-        	model.testingMachine[stationId][machineId].sampleHolder = model.testCellBuffer[stationId].next();
+        	model.testingMachine[stationId][machineId].sampleHolder = model.testCellBuffer[stationId].removeQue();
         }
 
         int testingTime = (int) model.rvp.generateTestingTime(stationId);
@@ -50,7 +50,7 @@ public class Testing extends ConditionalActivity {
 		if (model.testingMachine[stationId][machineId].testSuccess) {
 			model.testingMachine[stationId][machineId].sampleHolder.getSample().completedNextTest();
             
-            model.racetrackLine[stationId].queue(model.testingMachine[stationId][machineId].sampleHolder);
+            model.racetrackLine[stationId].insertQue(model.testingMachine[stationId][machineId].sampleHolder);
             model.testingMachine[stationId][machineId].sampleHolder = null;
             model.testingMachine[stationId][machineId].status = TestingMachineState.Idle;
             model.testingMachine[stationId][machineId].completedTests++;

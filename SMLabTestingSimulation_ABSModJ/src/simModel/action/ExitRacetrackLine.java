@@ -23,6 +23,6 @@ public class ExitRacetrackLine extends ConditionalAction {
 	@Override
 	public void actionEvent() {
 	    //Then move the holder onto the racetrack. 
-      model.racetrack.setSlot(Racetrack.STATION_EXITS[stationId], model.racetrackLine[stationId].next());
+      model.racetrack.setSlot(Racetrack.STATION_EXITS[stationId], model.racetrackLine[stationId].removeQue());
 	}
 }

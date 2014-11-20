@@ -20,11 +20,11 @@ public class RacetrackLine {
         return sampleHolders.peek() != null;
     }
 
-    public SampleHolder next() {
+    public SampleHolder removeQue() {
         return sampleHolders.pop();
     }
 
-    public void queue(final SampleHolder entity) {
+    public void insertQue(final SampleHolder entity) {
         sampleHolders.add(entity);
     }
 }

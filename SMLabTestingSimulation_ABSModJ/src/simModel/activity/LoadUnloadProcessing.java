@@ -22,7 +22,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 		// TODO: The busy wasn't needed for our version of the system.
 		model.loadUnloadMachine.busy = true;
 		
-        model.loadUnloadMachine.sampleHolder = model.unloadBuffer.next();
+        model.loadUnloadMachine.sampleHolder = model.unloadBuffer.removeQue();
         
         // TODO: May have been forgetten....
         if (!model.loadUnloadMachine.sampleHolder.hasSample()) {
@@ -46,11 +46,11 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 
         // If a new samples is in line to be processed, insert into holder.
         if (model.newSamples.hasNext()) {
-            model.loadUnloadMachine.sampleHolder.putSample(model.newSamples.next());
+            model.loadUnloadMachine.sampleHolder.putSample(model.newSamples.removeQue());
         }
         
         // Queue to return to racetrack.
-        model.racetrackLine[0].queue(model.loadUnloadMachine.sampleHolder);
+        model.racetrackLine[0].insertQue(model.loadUnloadMachine.sampleHolder);
         model.loadUnloadMachine.sampleHolder = null;
         
      // TODO: The busy wasn't needed for our version of the system.
