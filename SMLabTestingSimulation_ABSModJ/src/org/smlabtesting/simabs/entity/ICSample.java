@@ -27,7 +27,7 @@ public class ICSample {
      * Marks that the upcoming has been completed. Called by the testing machine
      * when it finishes testing this sample.
      */
-    public void completedNextTest() {
+    public void completeNextTest() {
         testsRemaining.pop();
     }
 }

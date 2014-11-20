@@ -11,7 +11,7 @@ import absmodJ.ConditionalActivity;
  * 
  * Participants: R.LoadUnloadMachine
  * Uses: Q.NewSamples, Q.UnloadBuffer, Q.RacetrackLine, 
- *       R.SampleHolder (implicit), iC.Sample (implicit)
+ *       iC.SampleHolder (implicit), iC.Sample (implicit)
  */
 public class LoadUnloadProcessing extends ConditionalActivity {
 	private SMLabModel model;
@@ -63,8 +63,8 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         }
 
         // If there is a new sample waiting to be tested, put it in the holder.
+    	// The New Samples queue automatically sorted rush samples first.
         if (model.qNewSamples.n() > 0) {
-        	// TODO: This queue will give priority to rush samples
             model.rLoadUnloadMachine.sampleHolder.sample = model.qNewSamples.removeQue();
         }
         

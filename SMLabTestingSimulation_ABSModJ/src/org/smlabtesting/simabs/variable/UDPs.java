@@ -19,7 +19,7 @@ public class UDPs {
      * @param stationId The identifier of the the test cell normally from 1 to 5.
      * @return A testing cycle time for a test cell in seconds. 
      */
-    public double uTestingTime(int stationId) {
-        return TESTING_CYCLE_TIMES[stationId];
+    public int uTestingTime(int stationId) {
+        return (int) TESTING_CYCLE_TIMES[stationId];
     }	
 }

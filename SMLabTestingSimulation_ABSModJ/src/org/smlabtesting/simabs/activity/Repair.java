@@ -17,8 +17,7 @@ import absmodJ.ConditionalActivity;
  * Thus, there is a separate activity instance for each test machine in every
  * test cell.
  * stationId = one of {C1 = 1, C2 = 2, C3, = 3, C4 = 4, C5 = 5}
- * TODO: machineId = UDP.testingMachine(CX) \ where n = number of machines cell
- *                   stationId.
+ * machineId = from 0 to numCellMachines[stationId]
  */
 public class Repair extends ConditionalActivity {
 	private SMLabModel model;
@@ -52,9 +51,8 @@ public class Repair extends ConditionalActivity {
 	@Override
 	protected void terminatingEvent() {
 		// Generate a new time for the machine to fail.
-		// TODO: Mention that it is initalized before hand.
-		// TODO: What about Cell 2?
-		model.rcTestingMachine[stationId][machineId].timeUntilFailure = (int) model.rvp.uFailureDuration(stationId);
+		// It is initalized at first when the system is created.
+		model.rcTestingMachine[stationId][machineId].timeUntilFailure = model.rvp.uFailureDuration(stationId);
 		
 		// The machine is ready to test again.
         model.rcTestingMachine[stationId][machineId].status = Idle;

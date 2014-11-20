@@ -9,17 +9,19 @@ import org.smlabtesting.simabs.model.SMLabModel;
 import absmodJ.ConditionalActivity;
 
 /**
- * This activity represents a Test Machine (inside a Test Cell) being repaired after a failure.
+ * This activity represents a Test Machine (inside a Test Cell) being cleaned
+ * after it exceeds its cleaning threshold.
  * 
- * Participants: RC.TestingMachine
+ * Participants: R.TestingMachine
  * 
- * TODO: This one does not really need stationId.
- * TODO: Update document to match this.
- * Thus, there is a separate activity instance for each test machine in every
- * test cell.
+ * There is a separate activity instance for each test machine in every
+ * test cell. 
+ * 
+ * In the CM, this activity can only be created for cell C2. This was done 
+ * differently here just to be consistent with Repair and Testing activity.
+ * 
  * stationId = one of {C1 = 1, C2 = 2, C3, = 3, C4 = 4, C5 = 5}
- * TODO: machineId = UDP.testingMachine(CX) \ where n = number of machines cell
- *                   stationId.
+ * machineId = from 0 to numCellMachines[stationId]
  */
 public class Cleaning extends ConditionalActivity {
 	private SMLabModel model;
@@ -46,8 +48,7 @@ public class Cleaning extends ConditionalActivity {
 	@Override
 	protected double duration() {
 		// The cleaning time is defined by a data model that is associated
-		// with a specific test cell.
-		// TODO: It only applies to C2 though.
+		// with a specific test cell. It is only defined for C2.
 		return model.rvp.uCleaningTime();
 	}
 	

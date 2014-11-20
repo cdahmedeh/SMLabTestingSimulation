@@ -15,18 +15,18 @@ import absmodJ.ConditionalActivity;
  * This activity represents a Test Machine (inside a Test Cell) performing a
  * test on a sample.
  * 
- * Participants: RC.TestingMachine[CX][mNum]
- * Uses: Q.TestCellBuffer, Q.RacetrackLine, R.SampleHolder (implicit)
+ * Participants: RC.TestingMachine[stationId][machineId]
+ * Uses: Q.TestCellBuffer, Q.RacetrackLine,
+ *       iC.SampleHolder (implicit), iC.Sample (implicit)
  * 
  * There are five instances in Q.TestCellBuffer and RC.TestingMachine. 
- * Instances are grouped by the same identifier CX. Then per test cell, there
- * is another identifier per test machine.
+ * Instances are grouped by the same identifier machineId = X. Then per 
+ * test cell, there is another identifier per test machine.
  * 
  * Thus, there is a separate activity instance for each test machine in every
  * test cell.
  * stationId = one of {C1 = 1, C2 = 2, C3, = 3, C4 = 4, C5 = 5}
- * TODO: machineId = UDP.testingMachine(CX) \ where n = number of machines cell
- *                   stationId.
+ * machineId = from 0 to numCellMachines[stationId]
  */
 public class Testing extends ConditionalActivity {
 	private SMLabModel model;
@@ -73,7 +73,7 @@ public class Testing extends ConditionalActivity {
         // First, check how much time line until the next failure and
         // compare it against the runtime.
         
-        int testingTime = (int) model.udp.uTestingTime(stationId); //TODO: Should it be double or int.
+        int testingTime = model.udp.uTestingTime(stationId);
 
         if (testingMachine.timeUntilFailure > testingTime) {
         	// If the test runs longer than time until failure, then test will not fail.
@@ -100,8 +100,9 @@ public class Testing extends ConditionalActivity {
 		RCTestingMachine testingMachine = model.rcTestingMachine[stationId][machineId];
 
 		if (testingMachine.testSuccess) {
-			// TODO: Put a comment for this.
-			testingMachine.sampleHolder.sample.completedNextTest();
+			// Remove one entry from the upcoming test sequence list.
+			// UP.completeNextText(sample) in the CM.
+			testingMachine.sampleHolder.sample.completeNextTest();
             
 			// Put the tested holder back inline to return to the racetrack only if the test succeeded.
             model.qRacetrackLine[stationId].insertQue(testingMachine.sampleHolder);
