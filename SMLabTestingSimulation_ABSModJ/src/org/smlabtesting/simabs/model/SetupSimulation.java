@@ -1,5 +1,7 @@
 package org.smlabtesting.simabs.model;
 
+import java.util.stream.IntStream;
+
 import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
@@ -16,49 +18,56 @@ public class SetupSimulation extends ScheduledAction
 {
 	SMLabModel model;
 	
-	// Constructor
-	public SetupSimulation(SMLabModel model) { this.model = model; }
-
-	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
-	int tsix = 0;  // set index to first entry.
-	public double timeSequence() 
-	{
-		return ts[tsix++];  // only invoked at t=0
+	public SetupSimulation(SMLabModel model) { 
+		this.model = model; 
 	}
 
-	public void actionEvent() 
-	{
-		// TODO: Include the parameter for setting the number of testing
-		//       machines per cell.
-		
-		// TODO: Why......?
+	// BEGIN - From template project
+	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
+	int tsix = 0;  // set index to first entry.
+	public double timeSequence() {
+		return ts[tsix++];  // only invoked at t=0
+	}
+	// END - From template project
+	
+	public void actionEvent() {
+		// Create the arrays to store the racetrack lines and test cell buffers.
+		// For the test cell buffer, entry 0 is never set because machineId = 0
+		// belong to the load/unload machine.
 		model.qRacetrackLine = new QRacetrackLine[6];
 		model.qTestCellBuffer = new QTestCellBuffer[6];
-		model.rcTestingMachine = new RCTestingMachine[6][3];
 		
-        // Create the rqRacetrack.
+		// Determine how large the testing machine arrays need to be.
+		int maxMachines = IntStream.of(model.parameters.numCellMachines).max().getAsInt();
+		
+		// Create the 2D array for storing the testing machines. Five test
+		// cells but with machineId = 0 not set as usual.
+		model.rcTestingMachine = new RCTestingMachine[6][maxMachines];
+		
+        // Create the racetrack.
         model.rqRacetrack = new RQRacetrack();
 
-        // Create the load/unload machine.
+        // Create the load/unload machine with its queues.
         model.qNewSamples = new QNewSamples();
         model.qUnloadBuffer = new QUnloadBuffer();
         model.qRacetrackLine[0] = new QRacetrackLine();
+        model.rcLoadUnloadMachine = new RCLoadUnloadMachine();
         
-        // Create some icSample holders, put them in the rqRacetrack line.
-        for (int i = 0; i < 70; i++) {
+        // Create some sample holders, put them in the racetrack line of 
+        // load/unload machine.
+        for (int i = 0; i < model.parameters.sampleHoldersCount; i++) {
             ICSampleHolder icSampleHolder = new ICSampleHolder();
             model.qRacetrackLine[0].insertQue(icSampleHolder);
         }
-        
-        model.rcLoadUnloadMachine = new RCLoadUnloadMachine();
                 
         // Create the test cells.
         for (int stationId = 1; stationId <= 5; stationId++) {
             model.qTestCellBuffer[stationId] = new QTestCellBuffer();
             model.qRacetrackLine[stationId] = new QRacetrackLine();
         
-            // Create testing machines in test cells.
-            for (int machineId = 0; machineId < 3; machineId++) {
+            // Create testing machines in test cells. Using the number of 
+            // test machines per cell from the parameter numCellMachines.
+            for (int machineId = 0; machineId < model.parameters.numCellMachines[stationId]; machineId++) {
                 model.rcTestingMachine[stationId][machineId] = new RCTestingMachine();
             }
         }

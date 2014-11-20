@@ -9,8 +9,6 @@ import java.util.Deque;
  * Maps to Q.UnloadBuffer
  */
 public class QUnloadBuffer {
-    public int maxEmptyHolders = 3; //TODO: Make me a parameter.
-
     // Containers
     private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(UNLOADBUFFER_CAPACITY);
 

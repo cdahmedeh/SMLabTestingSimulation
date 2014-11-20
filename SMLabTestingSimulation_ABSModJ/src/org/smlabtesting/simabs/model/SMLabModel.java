@@ -18,6 +18,7 @@ import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.variable.DVPs;
 import org.smlabtesting.simabs.variable.Output;
+import org.smlabtesting.simabs.variable.Parameters;
 import org.smlabtesting.simabs.variable.RVPs;
 import org.smlabtesting.simabs.variable.Seeds;
 import org.smlabtesting.simabs.variable.UDPs;
@@ -41,15 +42,17 @@ import absmodJ.Behaviour;
  * and event scheduling.
  * 
  * This class is a sub-class of AOSimlationModel which handles processing the
- * actual SBL and doing the time advanced algorithm.
+ * actual SBL and doing the time advance algorithm.
  * 
+ * All times are always, counted in second, and as often as possible, with the
+ * decimals truncated.
  */
 public class SMLabModel extends AOSimulationModel {
 	/* Debug Mode */
 	private final boolean debug;
 	
 	/* Parameter */
-	// TODO: Put parameters here.
+	public Parameters parameters;
 
 	/* Entities */
 	// The entites are initalized by the SetupSimulation action. The 
@@ -91,8 +94,13 @@ public class SMLabModel extends AOSimulationModel {
 	 * @param sd 	  Seeds used to generate the RVPs.
 	 * @param debug   Set to true if you want to see the SBL being printed to console.
 	 */
-	public SMLabModel(double t0time, double tftime, Seeds sd, boolean debug) {
+	public SMLabModel(double t0time, double tftime, Seeds sd, Parameters parameters, boolean debug) {
+		// Setup debug mode.
 		this.debug = debug;
+		
+		// Pass parameters in.		
+		this.parameters = parameters;
+		
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
 		
@@ -179,9 +187,10 @@ public class SMLabModel extends AOSimulationModel {
 			// There can be multiple testing macines per cell. There is a
 			// Repair, Cleaning and Testing activty for each and every one of 
 			// them.
-			// TODO: Include the parameter for setting the number of testing
-			//       machines per cell.
-			for (int j = 0; j < 3; j++) {
+			// 
+			// It uses the numCellMachines parameter to determine the number
+			// of test machines in the system per cell.
+			for (int j = 0; j < parameters.numCellMachines[i]; j++) {
 				if (Testing.precondition(this, i, j)) {
 					Testing testing = new Testing(this, i, j);
 					testing.startingEvent();

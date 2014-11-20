@@ -1,38 +1,38 @@
 package org.smlabtesting.simabs.executor;
-// File: Experiment.java
-// Description:
 
 import org.smlabtesting.simabs.model.SMLabModel;
+import org.smlabtesting.simabs.variable.Parameters;
 import org.smlabtesting.simabs.variable.Seeds;
 
 import cern.jet.random.engine.RandomSeedGenerator;
 
-// Main Method: Experiments
-// 
-class Experiment
-{
-   public static void main(String[] args)
-   {
-       int i, NUMRUNS = 1; 
-       double startTime=0.0, endTime=3600;
-       Seeds[] sds = new Seeds[NUMRUNS];
-       SMLabModel mname;  // Simulation object
-
-       // Lets get a set of uncorrelated seeds
-       RandomSeedGenerator rsg = new RandomSeedGenerator();
-       for(i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
+/**
+ * Runs the simulation model. 
+ */
+public class Experiment {
+   public static void main(String[] args) {
+	   // Number of runs to be performed.
+       int NUMRUNS = 1; 
        
-       // Loop for NUMRUN simulation runs for each case
-       // Case 1
+       // Start times and end times in seconds.
+       double startTime=0.0, endTime=3600;
+       
+       // Generate seeds per run.
+       RandomSeedGenerator rsg = new RandomSeedGenerator();
+       
+       Seeds[] sds = new Seeds[NUMRUNS];
+       for(int i=0; i<NUMRUNS ; i++) {
+    	   sds[i] = new Seeds(rsg);
+       }
+       
        long start = System.currentTimeMillis();
        
-       System.out.println(" Case 1");
-       for(i=0 ; i < NUMRUNS ; i++)
-       {
-          mname = new SMLabModel(startTime,endTime,sds[i], true);
-          mname.runSimulation();
-          // See examples for hints on collecting output
-          // and developping code for analysis
+       // Create the simulation model and do some runs.
+       SMLabModel model;  
+       for(int i = 0 ; i < NUMRUNS ; i++) {
+    	  Parameters parameters = new Parameters();
+          model = new SMLabModel(startTime,endTime,sds[i], parameters, true);
+          model.runSimulation();
        }
        
        long end = System.currentTimeMillis();

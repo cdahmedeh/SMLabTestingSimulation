@@ -5,6 +5,7 @@ import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
+import org.smlabtesting.simabs.variable.Parameters;
 
 import absmodJ.ConditionalAction;
 
@@ -47,7 +48,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
                         // number of reserved buffer spots for completed samples
                         // is still respected.
                         holder.sample == null
-                        && model.qUnloadBuffer.nEmpty < model.qUnloadBuffer.maxEmptyHolders
+                        && model.qUnloadBuffer.nEmpty < model.parameters.maxEmptyHolders
                    );
 	}
 	
