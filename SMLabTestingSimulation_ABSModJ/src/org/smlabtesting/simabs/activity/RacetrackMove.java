@@ -60,7 +60,7 @@ public class RacetrackMove extends ScheduledActivity {
         
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 
-		// as next in its sequence. Also check for vacancy in the test cell buffer.
+		// as next in its sequence. And then check if the unload buffer is full.
         if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
                 && sampleHolder != null
                 && sampleHolder.sample != null
@@ -77,7 +77,7 @@ public class RacetrackMove extends ScheduledActivity {
          		
      		// First check that here is a holder at the entrance point of the test 
      		// cell buffer. Then check if that holder has the current test cell 
-     		// as next in its sequence. Also check for vacancy in the test cell buffer.
+     		// as next in its sequence. And then check if the test cell buffer is full.
              if (model.qTestCellBuffer[stationId].n() == TEST_CELL_BUFFER_CAPACITY
                      && sampleHolder_ != null
                      && sampleHolder_.sample != null
