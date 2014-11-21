@@ -1,5 +1,7 @@
 package org.smlabtesting.simabs.model;
 
+import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
+
 import java.util.stream.IntStream;
 
 import org.smlabtesting.simabs.entity.ICSampleHolder;
@@ -10,6 +12,7 @@ import org.smlabtesting.simabs.entity.QUnloadBuffer;
 import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
+import org.smlabtesting.simabs.variable.Constants;
 
 import absmodJ.ScheduledAction;
 
@@ -55,7 +58,7 @@ public class SetupSimulation extends ScheduledAction
         
         // Create some sample holders, put them in the racetrack line of 
         // load/unload machine.
-        for (int i = 0; i < model.parameters.sampleHoldersCount; i++) {
+        for (int i = 0; i < NUM_SAMPLE_HOLDERS; i++) {
             ICSampleHolder icSampleHolder = new ICSampleHolder();
             model.qRacetrackLine[0].insertQue(icSampleHolder);
         }

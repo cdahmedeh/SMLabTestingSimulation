@@ -9,6 +9,8 @@ import java.util.Deque;
 public class ICSample {
     // Attributes
     public Deque<Integer> testsRemaining = new ArrayDeque<>();
+    //TODO: startTime
+    //TODO: rush
     
     // Public Methods
     
