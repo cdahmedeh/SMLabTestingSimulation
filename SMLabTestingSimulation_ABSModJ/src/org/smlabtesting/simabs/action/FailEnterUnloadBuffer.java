@@ -25,7 +25,8 @@ public class FailEnterUnloadBuffer extends ConditionalAction {
 		this.model = model;
 	}
 	
-	public static boolean precondition(SMLabModel model, int stationId) {
+	public static boolean precondition(SMLabModel model) {
+		int stationId = 0;
 		// Used to point to the holder that is at the test cell buffer 
 		// entrance point. Does not exist in CM.
 		ICSampleHolder holder = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
