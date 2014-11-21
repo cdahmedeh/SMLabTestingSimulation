@@ -29,7 +29,7 @@ public class RQRacetrack {
      * without actually removing it from there.
      *
      * @param position Zero-based index of where to get the holder from.
-     * @param sampleHolder The holder at that postiion of the track.
+     * @param sampleHolder The holder at that position of the track.
      */
     public RSampleHolder slots(final int position) {
         return sampleHolders.get(position);
