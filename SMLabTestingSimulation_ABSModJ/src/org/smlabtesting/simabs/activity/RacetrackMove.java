@@ -42,7 +42,7 @@ public class RacetrackMove extends ScheduledActivity {
 	@Override
 	public void startingEvent() {
         // Move the belt one slot forward.
-        model.rqRacetrack.shiftRacetrack(1);
+        model.rqRacetrack.shiftRacetrack(1); // UDP.shiftRacetrack().
 	}
 
 	@Override
