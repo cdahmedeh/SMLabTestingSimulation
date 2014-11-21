@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * A list where the first element index can be offsetted. Once the offset
+ * A list where the first element index can be offset. Once the offset
  * reaches the end of the list, it is cycled back.
  *
  * This is mostly used for the rqRacetrack where the icSample holders move in
@@ -58,7 +58,7 @@ public class OffsetList<E> implements List<E> {
      * on the offset.
      *
      * @param index The index of the element we want.
-     * @return The actual index of the element to retreive.
+     * @return The actual index of the element to retrieve.
      */
     private int offsetIndex(final int index) {
         return (index + offset) % size();
