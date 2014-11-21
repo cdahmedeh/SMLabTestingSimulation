@@ -7,10 +7,10 @@ import java.util.Deque;
  * Maps to iC.Sample
  */
 public class ICSample {
-    // Attributes
+    // Attributes (they are set by Arrival)
     public Deque<Integer> testsRemaining = new ArrayDeque<>();
-    //TODO: startTime
-    //TODO: rush
+    public double startTime = 0.0;
+    public boolean rush = false;
     
     // Public Methods
     

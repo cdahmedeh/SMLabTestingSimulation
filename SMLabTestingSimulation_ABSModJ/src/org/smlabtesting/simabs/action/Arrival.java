@@ -29,7 +29,8 @@ public class Arrival extends ScheduledAction {
         // Create a new sample with a randomly derived sequence and priority
         ICSample icSample = new ICSample();
         icSample.testsRemaining = model.rvp.uSequenceOfTests();
-        // TODO: icSample.rush = model.rvp.uSampleRush();
+        icSample.rush = model.rvp.uSampleRush();
+        icSample.startTime = model.getClock();
 		
         // Move the new sample into the new samples queue.
         model.qNewSamples.insertQue(icSample);

@@ -72,6 +72,11 @@ public class RVPs {
         return list;
 	}
     
+	public boolean uSampleRush() {
+		return doubleGen.nextFloat() <= 0.07;
+	}
+	
+	
     // Data Model Constants for RNGs
 
 	// Test sequences and their probabilty of actually occuring.
@@ -124,6 +129,8 @@ public class RVPs {
     // Repair time for a each station.
     private ExponentialDistribution[] repairDist;
     
+    // Used to determine if a sample is a rush priority or not. 
+    private RandomGenerator doubleGen = getAnotherRNG(); 
     
     private void initDistributions() {
         sequenceDist = 
