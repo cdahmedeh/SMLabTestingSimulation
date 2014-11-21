@@ -10,18 +10,18 @@ import java.util.Deque;
  */
 public class QTestCellBuffer {
     // Containers
-    private final Deque<ICSampleHolder> icSampleHolders = new ArrayDeque<ICSampleHolder>(TEST_CELL_BUFFER_CAPACITY);
+    private final Deque<ICSampleHolder> sampleHolders = new ArrayDeque<ICSampleHolder>(TEST_CELL_BUFFER_CAPACITY);
     
     // Attributes
-    public int n() {return icSampleHolders.size();}
+    public int n() {return sampleHolders.size();}
     
     // Methods for dealing with queues. In the CM, the methods are using the
     // global SP identifier.
     public ICSampleHolder removeQue() {
-        return icSampleHolders.pop();
+        return sampleHolders.pop();
     }
 
     public void insertQue(final ICSampleHolder entity) {
-        icSampleHolders.add(entity);
+        sampleHolders.add(entity);
     }
 }
