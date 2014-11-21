@@ -55,7 +55,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 		
 		// If the sample holder coming in has no sample, then increment the
 		// empty sample holder counter.
-        if(sampleHolder == null) {
+        if(sampleHolder.sample == null) {
         	model.qUnloadBuffer.nEmpty++;
         }
 		
