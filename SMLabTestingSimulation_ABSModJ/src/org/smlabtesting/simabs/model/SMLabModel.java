@@ -81,7 +81,7 @@ public class SMLabModel extends AOSimulationModel {
 	public UDPs udp = new UDPs(this);
 
 	/* Output container */
-	protected Output output = new Output(this);
+	public Output output = new Output(this);
 	// TODO: Define any methods to read some output.
 	
 	
