@@ -1,5 +1,10 @@
 package org.smlabtesting.simabs.activity;
 
+import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
+import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
+import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
+
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ScheduledActivity;
@@ -23,6 +28,9 @@ import absmodJ.ScheduledActivity;
  * In addition, using a time sequence instead of a conditional event with
  * duration means that the other activities don’t have to check that the
  * racetrack is moving.
+ *
+ * Finally, this activity is responsible for counting missed entrances to 
+ * any of the buffers for the stations.
  * 
  * Participants: RQ.Racetrack
  */
@@ -43,6 +51,40 @@ public class RacetrackMove extends ScheduledActivity {
 	public void startingEvent() {
         // Move the belt one slot forward.
         model.rqRacetrack.shiftRacetrack(1); // UDP.shiftRacetrack().
+
+        // Handle the missed counts for the load/unload machine.
+        
+		// Used to point to the holder that is at the unload buffer 
+		// entrance point. Does not exist in CM.
+		RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+        
+		// First check that here is a holder at the entrance point of the test 
+		// cell buffer. Then check if that holder has the current test cell 
+		// as next in its sequence. Also check for vacancy in the test cell buffer.
+        if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
+                && sampleHolder != null
+                && sampleHolder.sample != null
+                && sampleHolder.sample.testsRemaining.isEmpty() /* UDP.testsCompleted(sample) */) {
+        	model.output.totalFailedStationEntries[0]++;
+        }
+
+        // Handle the missed counts for the test cells.
+        
+        for (int stationId = 1; stationId < 6; stationId++) {
+            // Used to point to the holder that is at the test cell buffer 
+     		// entrance point. Does not exist in CM.
+           	RSampleHolder sampleHolder_ = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
+         		
+     		// First check that here is a holder at the entrance point of the test 
+     		// cell buffer. Then check if that holder has the current test cell 
+     		// as next in its sequence. Also check for vacancy in the test cell buffer.
+             if (model.qTestCellBuffer[stationId].n() == TEST_CELL_BUFFER_CAPACITY
+                     && sampleHolder_ != null
+                     && sampleHolder_.sample != null
+                     && sampleHolder_.sample.testsRemainingNext(stationId)) {
+            	 model.output.totalFailedStationEntries[stationId]++;
+             }
+        }
 	}
 
 	@Override

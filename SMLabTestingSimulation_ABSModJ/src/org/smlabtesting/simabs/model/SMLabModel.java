@@ -4,8 +4,6 @@ import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
 import org.smlabtesting.simabs.action.EnterUnloadBuffer;
 import org.smlabtesting.simabs.action.ExitRacetrackLine;
-import org.smlabtesting.simabs.action.FailEnterTestCellBuffer;
-import org.smlabtesting.simabs.action.FailEnterUnloadBuffer;
 import org.smlabtesting.simabs.activity.Cleaning;
 import org.smlabtesting.simabs.activity.LoadUnloadProcessing;
 import org.smlabtesting.simabs.activity.RacetrackMove;
@@ -15,8 +13,8 @@ import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
 import org.smlabtesting.simabs.entity.QTestCellBuffer;
 import org.smlabtesting.simabs.entity.QUnloadBuffer;
-import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
+import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.variable.DVPs;
 import org.smlabtesting.simabs.variable.Output;
@@ -177,13 +175,6 @@ public class SMLabModel extends AOSimulationModel {
 			}
 		}
 
-		// UnloadBuffer entrance failure activity.
-		if (FailEnterUnloadBuffer.precondition(this)) {
-			FailEnterUnloadBuffer failEnterUnloadBuffer = new FailEnterUnloadBuffer(this);
-			failEnterUnloadBuffer.actionEvent();
-			preconditions = true;
-		}
-		
 		// Test Cell activities and actions. There are five of them.
 		for (int i = 1; i < 6; i++) {
 			// Test cell buffer queue, one per test cell.
@@ -192,13 +183,7 @@ public class SMLabModel extends AOSimulationModel {
 				enterTestCellBuffer.actionEvent();
 				preconditions = true;
 			}
-
-			if (FailEnterTestCellBuffer.precondition(this, i)) {
-				FailEnterTestCellBuffer failEnterTestCellBuffer = new FailEnterTestCellBuffer(this, i);
-				failEnterTestCellBuffer.actionEvent();
-				preconditions = true;
-			}
-			
+		
 			// There can be multiple testing machines per cell. There is a
 			// Repair, Cleaning and Testing activity for each and every one of 
 			// them.
@@ -241,7 +226,61 @@ public class SMLabModel extends AOSimulationModel {
 			this.showSBL();			
 		}
 	}
+	
+	/**
+	 * Overriden to show the state of all entities when printing the SBL.
+	 */
+	@Override
+	protected void showSBL() {
+		super.showSBL();
+		
+		System.out.println("-------- Model Information -------- \n");
+		System.out
+				.print(String.format(
+						"Clock: %f, \n"
+						+ "Q.NewSamples.n: %d \n"
+						+ "\n"
+						+ "Station(L/U): \n"
+						+ "   Q.UnloadBuffer.n: %d, Q.UnloadBuffer.nEmpty: %d, \n"
+						+ "      numFailedStationEntries[0]: %d \n"
+						+ "   R.LoadUnloadMachine.busy: %b \n"
+						+ "   Q.RacetrackLine[UL].n:  %d \n",
+						this.getClock(), this.qNewSamples.n(),
+						this.qUnloadBuffer.n(), this.qUnloadBuffer.nEmpty,
+						this.output.totalFailedStationEntries[0],
+						this.rLoadUnloadMachine.busy,
+						this.qRacetrackLine[0].n()));
+		for (int stationId = 1; stationId < 6; stationId++) {
+			System.out.print(String.format(
+					"Station(%d): \n"
+					+ "   Q.TestCellBuffer.n: %d, totalFailedStationEntries: %d\n"
+					,
+					stationId,
+					this.qTestCellBuffer[stationId].n(),
+					this.output.totalFailedStationEntries[stationId])
+			);
 
+			for (int machineId = 0; machineId < this.parameters.numCellMachines[stationId]; machineId++) {
+				System.out.print(String.format(
+					"   RC.TestingMachine[%d][%d].status: %s \n"
+					,
+					stationId, 
+					machineId,
+					rcTestingMachine[stationId][machineId].status)
+				);
+			}
+
+			System.out.println(String.format(
+				"   Q.RacetrackLine[%d].n: %d"
+				, 
+				stationId,
+				this.qRacetrackLine[stationId].n())
+			);
+		}
+
+		System.out.println();
+	} 
+	
 	/**
 	 * Overridden and changed visibility to public to be able to retrieve timer
 	 * so that scheduled activities don't have to keep their own clock.
