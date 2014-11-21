@@ -26,7 +26,7 @@ public class FailEnterTestCellBuffer extends ConditionalAction {
 
 	public FailEnterTestCellBuffer(SMLabModel model, int stationId) {
 		this.model = model;
-		stationId = stationId;
+		this.stationId = stationId;
 	}
 	
 	public static boolean precondition(SMLabModel model, int stationId) {
