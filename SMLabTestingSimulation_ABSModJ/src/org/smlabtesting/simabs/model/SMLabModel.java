@@ -4,6 +4,8 @@ import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
 import org.smlabtesting.simabs.action.EnterUnloadBuffer;
 import org.smlabtesting.simabs.action.ExitRacetrackLine;
+import org.smlabtesting.simabs.action.FailEnterTestCellBuffer;
+import org.smlabtesting.simabs.action.FailEnterUnloadBuffer;
 import org.smlabtesting.simabs.activity.Cleaning;
 import org.smlabtesting.simabs.activity.LoadUnloadProcessing;
 import org.smlabtesting.simabs.activity.RacetrackMove;
@@ -55,7 +57,7 @@ public class SMLabModel extends AOSimulationModel {
 	public Parameters parameters;
 
 	/* Entities */
-	// The entites are initalized by the SetupSimulation action. The 
+	// The entities are initialized by the SetupSimulation action. The 
 	// SampleHolder entities are created in that same action but the Sample 
 	// entities are made in the Arrivals activity.
 	
@@ -104,19 +106,19 @@ public class SMLabModel extends AOSimulationModel {
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
 		
-		// Initialise the simulation model
+		// Initialize the simulation model
 		initAOSimulModel(t0time,tftime);   
 
-		// Prepare the entities by initalizing them.
+		// Prepare the entities by initializing them.
 		SetupSimulation init = new SetupSimulation(this);
 		scheduleAction(init); 
 		
-		// Schedule scheduled activties and actions.
+		// Schedule scheduled activities and actions.
 		scheduleScheduled();
 	}
 	
 	/**
-	 * Schedule all scheduled activties and actions that belong to this 
+	 * Schedule all scheduled activities and actions that belong to this 
 	 * system.
 	 */
 	protected void scheduleScheduled() {
@@ -125,8 +127,8 @@ public class SMLabModel extends AOSimulationModel {
 	}
 
 	/**
-	 * Overriden from AOSimulationModel to handle behavior bootstrapping and
-	 * to actions/activties missed by the time advance. 
+	 * Overridden from AOSimulationModel to handle behavior bootstrapping and
+	 * to actions/activities missed by the time advance. 
 	 */
 	@Override
 	protected void testPreconditions(Behaviour behObj) {
@@ -142,8 +144,8 @@ public class SMLabModel extends AOSimulationModel {
 	}
 	
 	/**
-	 * Call this continuiously until all preconditions are all false. It will
-	 * check all preconditions for all conditional activties and actions, 
+	 * Call this continuously until all preconditions are all false. It will
+	 * check all preconditions for all conditional activities and actions, 
 	 * and run an instance of them if the preconditions are met.
 	 * 
 	 * @return False if all preconditions fail. True if at least one passes.
@@ -174,6 +176,13 @@ public class SMLabModel extends AOSimulationModel {
 				preconditions = true;				
 			}
 		}
+
+		// UnloadBuffer entrance failure activity.
+		if (FailEnterUnloadBuffer.precondition(this)) {
+			FailEnterUnloadBuffer failEnterUnloadBuffer = new FailEnterUnloadBuffer(this);
+			failEnterUnloadBuffer.actionEvent();
+			preconditions = true;
+		}
 		
 		// Test Cell activties and actions. There are five of them.
 		for (int i = 1; i < 6; i++) {
@@ -184,8 +193,14 @@ public class SMLabModel extends AOSimulationModel {
 				preconditions = true;
 			}
 
-			// There can be multiple testing macines per cell. There is a
-			// Repair, Cleaning and Testing activty for each and every one of 
+			if (FailEnterTestCellBuffer.precondition(this, i)) {
+				FailEnterTestCellBuffer failEnterTestCellBuffer = new FailEnterTestCellBuffer(this, i);
+				failEnterTestCellBuffer.actionEvent();
+				preconditions = true;
+			}
+			
+			// There can be multiple testing machines per cell. There is a
+			// Repair, Cleaning and Testing activity for each and every one of 
 			// them.
 			// 
 			// It uses the numCellMachines parameter to determine the number
@@ -218,7 +233,7 @@ public class SMLabModel extends AOSimulationModel {
 	}
 	
 	/**
-	 * Overriden to show SBL if debug mode is enabled.
+	 * Overridden to show SBL if debug mode is enabled.
 	 */
 	@Override
 	protected void eventOccured() {
@@ -228,8 +243,8 @@ public class SMLabModel extends AOSimulationModel {
 	}
 
 	/**
-	 * Overriden and changed visibility to public to be able to retrieve timer
-	 * so that scheduled activties don't have to keep their own clock.
+	 * Overridden and changed visibility to public to be able to retrieve timer
+	 * so that scheduled activities don't have to keep their own clock.
 	 */
 	@Override
 	public double getClock() {
