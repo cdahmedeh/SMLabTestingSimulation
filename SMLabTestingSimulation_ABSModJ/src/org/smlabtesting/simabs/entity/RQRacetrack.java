@@ -37,7 +37,7 @@ public class RQRacetrack {
 
     /**
      * Shifts the track by n spaces forward (clockwise). This is based on the
-     * UP.shiftRacetrack() user-defined procedure in the CM. See OffsetList
+     * UDP.shiftRacetrack() user-defined procedure in the CM. See OffsetList
      * type for optimization trick.
      *  
      * @param n The number of positions to shift by. Positives values indicate
