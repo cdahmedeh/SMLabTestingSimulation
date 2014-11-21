@@ -4,6 +4,8 @@ import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
 import org.smlabtesting.simabs.action.EnterUnloadBuffer;
 import org.smlabtesting.simabs.action.ExitRacetrackLine;
+import org.smlabtesting.simabs.action.FailEnterTestCellBuffer;
+import org.smlabtesting.simabs.action.FailEnterUnloadBuffer;
 import org.smlabtesting.simabs.activity.Cleaning;
 import org.smlabtesting.simabs.activity.LoadUnloadProcessing;
 import org.smlabtesting.simabs.activity.RacetrackMove;
@@ -174,6 +176,13 @@ public class SMLabModel extends AOSimulationModel {
 				preconditions = true;				
 			}
 		}
+
+		// UnloadBuffer entrance failure activity.
+		if (FailEnterUnloadBuffer.precondition(this)) {
+			FailEnterUnloadBuffer failEnterUnloadBuffer = new FailEnterUnloadBuffer(this);
+			failEnterUnloadBuffer.actionEvent();
+			preconditions = true;
+		}
 		
 		// Test Cell activties and actions. There are five of them.
 		for (int i = 1; i < 6; i++) {
@@ -184,6 +193,12 @@ public class SMLabModel extends AOSimulationModel {
 				preconditions = true;
 			}
 
+			if (FailEnterTestCellBuffer.precondition(this, i)) {
+				FailEnterTestCellBuffer failEnterTestCellBuffer = new FailEnterTestCellBuffer(this, i);
+				failEnterTestCellBuffer.actionEvent();
+				preconditions = true;
+			}
+			
 			// There can be multiple testing macines per cell. There is a
 			// Repair, Cleaning and Testing activty for each and every one of 
 			// them.
