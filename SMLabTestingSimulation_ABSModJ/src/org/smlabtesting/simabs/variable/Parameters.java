@@ -1,8 +1,9 @@
 package org.smlabtesting.simabs.variable;
 
 /**
- * An object that contains an entry for every parameter in the model. The
- * values set in here are just placeholder defaults that will be changed
+ * An object that contains an entry for every parameter in the model. 
+ * 
+ * NOTE:The values set in here are just placeholder defaults that will be changed
  * for the experimentation step.  
  */
 public class Parameters {
