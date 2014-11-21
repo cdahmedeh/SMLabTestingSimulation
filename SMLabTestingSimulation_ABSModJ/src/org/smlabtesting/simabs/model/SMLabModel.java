@@ -37,9 +37,9 @@ import absmodJ.Behaviour;
  * - RVPs, UDPs and DVPs.
  * - The Output container.
  * - Input variables, if any.
- * x Note that constants are refered through Constants class statically.
+ * x Note that constants are referred through Constants class statically.
  * 
- * In addition, this class instantiates the activites and actions related to 
+ * In addition, this class instantiates the activities and actions related to 
  * this SM. Finally, it defines the algorithm of preconditions verifications
  * and event scheduling.
  * 
@@ -132,11 +132,11 @@ public class SMLabModel extends AOSimulationModel {
 	 */
 	@Override
 	protected void testPreconditions(Behaviour behObj) {
-		// Reschedule any behavior so that it's preconditions can be 
-		// tested again. Otherwise, repeatable activties are only done once.
+		// Reschedule any behavior so that its preconditions can be 
+		// tested again. Otherwise, repeatable activities are only done once.
 		reschedule(behObj);
 		
-		// Run through preconditions of all conditional activites and
+		// Run through preconditions of all conditional activities and
 		// conditional actions and start them if needed.
 		while(scanPreconditions());
 
@@ -184,7 +184,7 @@ public class SMLabModel extends AOSimulationModel {
 			preconditions = true;
 		}
 		
-		// Test Cell activties and actions. There are five of them.
+		// Test Cell activities and actions. There are five of them.
 		for (int i = 1; i < 6; i++) {
 			// Test cell buffer queue, one per test cell.
 			if (EnterTestCellBuffer.precondition(this, i)) {
