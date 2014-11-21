@@ -2,7 +2,7 @@ package org.smlabtesting.simabs.action;
 
 import static org.smlabtesting.simabs.variable.Constants.STATION_EXITS;
 
-import org.smlabtesting.simabs.entity.ICSampleHolder;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalAction;
@@ -12,7 +12,7 @@ import absmodJ.ConditionalAction;
  * merge onto the Racetrack.
  * 
  * Participants: Q.RacetrackLine[stationId]
- * Uses: RQ.Racetrack, iC.SampleHolder (implicit), iC.Sample (implicit)
+ * Uses: RQ.Racetrack, R.SampleHolder (implicit), iC.Sample (implicit)
  * 
  * There are six instances of Q.RacetrackLine. There is a separate action for each one.
  * stationId = one of {LU = 0, C1 = 1, C2 = 2, C3, = 3, C4 = 4, C5 = 5}
@@ -37,7 +37,7 @@ public class ExitRacetrackLine extends ConditionalAction {
 	@Override
 	public void actionEvent() {
 	    //Move the sample from the racetrack line queue to the racetrack
-		ICSampleHolder icSampleHolder = model.qRacetrackLine[stationId].removeQue();
-		model.rqRacetrack.setSlot(STATION_EXITS[stationId], icSampleHolder);
+		RSampleHolder sampleHolder = model.qRacetrackLine[stationId].removeQue();
+		model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolder);
 	}
 }

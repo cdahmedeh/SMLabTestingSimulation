@@ -9,18 +9,18 @@ import java.util.Deque;
 public class QRacetrackLine {
 
     // Containers
-    private final Deque<ICSampleHolder> sampleHolders = new ArrayDeque<ICSampleHolder>();
+    private final Deque<RSampleHolder> sampleHolders = new ArrayDeque<RSampleHolder>();
     
     // Attributes
     public int n() {return sampleHolders.size();}
 
     // Methods for dealing with queues. In the CM, the methods are using the
     // global SP identifier.
-    public ICSampleHolder removeQue() {
+    public RSampleHolder removeQue() {
         return sampleHolders.pop();
     }
 
-    public void insertQue(final ICSampleHolder entity) {
+    public void insertQue(final RSampleHolder entity) {
         sampleHolders.add(entity);
     }
 }

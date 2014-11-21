@@ -16,7 +16,7 @@ import absmodJ.ConditionalActivity;
  * 
  * Participants: RC.TestingMachine[stationId][machineId]
  * Uses: Q.TestCellBuffer, Q.RacetrackLine,
- *       iC.SampleHolder (implicit), iC.Sample (implicit)
+ *       R.SampleHolder (implicit), iC.Sample (implicit)
  * 
  * There are five instances in Q.TestCellBuffer and RC.TestingMachine. 
  * Instances are grouped by the same identifier machineId = X. Then per 

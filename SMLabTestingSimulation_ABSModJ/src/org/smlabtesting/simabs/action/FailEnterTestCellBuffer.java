@@ -3,7 +3,7 @@ package org.smlabtesting.simabs.action;
 import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
 import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
 
-import org.smlabtesting.simabs.entity.ICSampleHolder;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalAction;
@@ -14,7 +14,7 @@ import absmodJ.ConditionalAction;
  * cell as the next test in its sequence. The output variable totalFailedStationEntries for the cell is incremented.
  * 
  * Participants: Q.TestCellBuffer
- * Uses: RQ.Racetrack, iC.SampleHolder (implicit), iC.Sample (implicit)
+ * Uses: RQ.Racetrack, R.SampleHolder (implicit), iC.Sample (implicit)
 
  * There are five instances in Q.TestCellBuffer, one per test cell. There is 
  * a separate action for each one.
@@ -32,7 +32,7 @@ public class FailEnterTestCellBuffer extends ConditionalAction {
 	public static boolean precondition(SMLabModel model, int stationId) {
 		// Used to point to the holder that is at the test cell buffer 
 		// entrance point. Does not exist in CM.
-		ICSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
+		RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
 		
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 

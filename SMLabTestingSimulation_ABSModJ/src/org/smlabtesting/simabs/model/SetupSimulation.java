@@ -4,7 +4,7 @@ import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
 
 import java.util.stream.IntStream;
 
-import org.smlabtesting.simabs.entity.ICSampleHolder;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
 import org.smlabtesting.simabs.entity.QTestCellBuffer;
@@ -59,8 +59,8 @@ public class SetupSimulation extends ScheduledAction
         // Create some sample holders, put them in the racetrack line of 
         // load/unload machine.
         for (int i = 0; i < NUM_SAMPLE_HOLDERS; i++) {
-            ICSampleHolder icSampleHolder = new ICSampleHolder();
-            model.qRacetrackLine[0].insertQue(icSampleHolder);
+            RSampleHolder sampleHolder = new RSampleHolder();
+            model.qRacetrackLine[0].insertQue(sampleHolder);
         }
                 
         // Create the test cells.

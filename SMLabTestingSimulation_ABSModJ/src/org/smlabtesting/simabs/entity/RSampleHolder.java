@@ -2,9 +2,9 @@ package org.smlabtesting.simabs.entity;
 
 
 /**
- * Maps to iC.SampleHolder
+ * Maps to R.SampleHolder
  */
-public class ICSampleHolder {
+public class RSampleHolder {
     // Containers
     public ICSample sample;
 }

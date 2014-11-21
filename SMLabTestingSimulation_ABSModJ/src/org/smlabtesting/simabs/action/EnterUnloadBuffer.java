@@ -3,7 +3,7 @@ package org.smlabtesting.simabs.action;
 import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
 import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 
-import org.smlabtesting.simabs.entity.ICSampleHolder;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalAction;
@@ -14,7 +14,7 @@ import absmodJ.ConditionalAction;
  * and is ready to leave the system or when a sample holder is empty.
  *
  * Participants: Q.UnloadBuffer
- * Uses: Q.Racetrack, iC.SampleHolder (implicit), iC.Sample (implicit)
+ * Uses: Q.Racetrack, R.SampleHolder (implicit), iC.Sample (implicit)
  */
 public class EnterUnloadBuffer extends ConditionalAction {
 	private SMLabModel model;
@@ -26,7 +26,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	public static boolean precondition(SMLabModel model) {
 		// Used to point to the holder that is at the load/unload buffer 
 		// entrance point. Does not exist in CM.
-		ICSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
         
 		// Check that there is actually a holder in the entrance point of the
 		// load/unload buffer and that the buffer is not full. Note: the unload 
@@ -51,16 +51,16 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	@Override
 	public void actionEvent() {
 		// In the CM, this is declared later.
-		ICSampleHolder icSampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
 		
 		// If the sample holder coming in has no sample, then increment the
 		// empty sample holder counter.
-        if(icSampleHolder == null) {
+        if(sampleHolder == null) {
         	model.qUnloadBuffer.nEmpty++;
         }
 		
         // Move the sample holder from the racetrack to the unload buffer queue.
         model.rqRacetrack.setSlot(STATION_ENTRANCES[0], null);
-        model.qUnloadBuffer.insertQue(icSampleHolder);
+        model.qUnloadBuffer.insertQue(sampleHolder);
 	}
 }

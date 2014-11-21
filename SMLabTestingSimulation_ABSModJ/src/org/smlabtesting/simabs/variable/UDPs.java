@@ -1,7 +1,5 @@
 package org.smlabtesting.simabs.variable;
 
-import java.util.stream.DoubleStream;
-
 import org.smlabtesting.simabs.model.SMLabModel;
 
 public class UDPs {

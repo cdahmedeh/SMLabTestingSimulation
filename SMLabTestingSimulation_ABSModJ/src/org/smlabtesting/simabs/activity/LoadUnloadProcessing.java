@@ -11,7 +11,7 @@ import absmodJ.ConditionalActivity;
  * 
  * Participants: R.LoadUnloadMachine
  * Uses: Q.NewSamples, Q.UnloadBuffer, Q.RacetrackLine, 
- *       iC.SampleHolder (implicit), iC.Sample (implicit)
+ *       R.SampleHolder (implicit), iC.Sample (implicit)
  */
 public class LoadUnloadProcessing extends ConditionalActivity {
 	private SMLabModel model;
