@@ -72,7 +72,7 @@ public class Testing extends ConditionalActivity {
         // First, check how much time line until the next failure and
         // compare it against the runtime.
         
-        int testingTime = model.udp.uTestingTime(stationId);
+        int testingTime = model.dvp.uTestingTime(stationId);
 
         if (testingMachine.timeUntilFailure > testingTime) {
         	// If the test runs longer than time until failure, then test will not fail.
