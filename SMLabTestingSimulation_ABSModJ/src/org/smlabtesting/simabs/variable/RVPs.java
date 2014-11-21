@@ -130,7 +130,7 @@ public class RVPs {
     private ExponentialDistribution[] repairDist;
     
     // Used to determine if a sample is a rush priority or not. 
-    private RandomGenerator doubleGen = getAnotherRNG(); 
+    private RandomGenerator doubleGen; 
     
     private void initDistributions() {
         sequenceDist = 
@@ -156,7 +156,10 @@ public class RVPs {
         repairDist =
         		DoubleStream.of(MACHINE_MTBR)
         			.mapToObj(ExponentialDistribution::new)
-        			.toArray(ExponentialDistribution[]::new);   	
+        			.toArray(ExponentialDistribution[]::new);
+        
+        doubleGen = 
+        		getAnotherRNG();
     }
     
 
