@@ -245,8 +245,10 @@ public class SMLabModel extends AOSimulationModel {
 						+ "      numFailedStationEntries[0]: %d \n"
 						+ "   R.LoadUnloadMachine.busy: %b \n"
 						+ "   Q.RacetrackLine[UL].n:  %d \n",
-						this.getClock(), this.qNewSamples.n(),
-						this.qUnloadBuffer.n(), this.qUnloadBuffer.nEmpty,
+						this.getClock(),
+						this.qNewSamples.n(),
+						this.qUnloadBuffer.n(), 
+						this.qUnloadBuffer.nEmpty,
 						this.output.totalFailedStationEntries[0],
 						this.rLoadUnloadMachine.busy,
 						this.qRacetrackLine[0].n()));
