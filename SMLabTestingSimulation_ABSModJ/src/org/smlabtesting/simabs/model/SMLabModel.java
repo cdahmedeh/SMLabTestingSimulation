@@ -89,10 +89,11 @@ public class SMLabModel extends AOSimulationModel {
 	/**
 	 * Creates an instance of the SM Testing Lab simulation model.
 	 * 
-	 * @param t0time  The start time for the simulation.
-	 * @param tftime  The end time for the simulation. Exclusive.
-	 * @param sd 	  Seeds used to generate the RVPs.
-	 * @param debug   Set to true if you want to see the SBL being printed to console.
+	 * @param t0time  		The start time for the simulation.
+	 * @param tftime  		The end time for the simulation. Exclusive.
+	 * @param sd 	  		Seeds used to generate the RVPs.
+	 * @param parameters	The parameters used to run the simulation with.
+	 * @param debug   		Set to true if you want to see the SBL being printed to console.
 	 */
 	public SMLabModel(double t0time, double tftime, Seeds sd, Parameters parameters, boolean debug) {
 		// Setup debug mode.
