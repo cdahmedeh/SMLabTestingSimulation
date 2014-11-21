@@ -26,7 +26,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	public static boolean precondition(SMLabModel model) {
 		// Used to point to the holder that is at the load/unload buffer 
 		// entrance point. Does not exist in CM.
-		ICSampleHolder holder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		ICSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
         
 		// Check that there is actually a holder in the entrance point of the
 		// load/unload buffer and that the buffer is not full. Note: the unload 
@@ -35,15 +35,15 @@ public class EnterUnloadBuffer extends ConditionalAction {
                 && (
                 		// Either there is a sample that has completed all tests
                 		// and it can always go in.
-                        holder.sample != null  
-                        && holder.sample.testsRemaining.isEmpty() /* UDP.testsCompleted(sample) */
+                        sampleHolder.sample != null  
+                        && sampleHolder.sample.testsRemaining.isEmpty() /* UDP.testsCompleted(sample) */
                         
                         || /* OR */
                         
                         // Or there is an empty sample holder and that the 
                         // number of reserved buffer spots for completed samples
                         // is still respected.
-                        holder.sample == null
+                        sampleHolder.sample == null
                         && model.qUnloadBuffer.nEmpty < model.parameters.maxEmptyHolders
                    );
 	}
