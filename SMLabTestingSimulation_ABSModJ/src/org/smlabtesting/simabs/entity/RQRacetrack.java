@@ -9,7 +9,7 @@ import org.smlabtesting.simabs.types.OffsetList;
  */
 public class RQRacetrack {
     // Containers
-    public final OffsetList<RSampleHolder> sampleHolders = new OffsetList<>(BELT_SLOTS_COUNT);
+    public final OffsetList<RSampleHolder> slots = new OffsetList<>(BELT_SLOTS_COUNT);
 
     // Public methods
     
@@ -21,7 +21,7 @@ public class RQRacetrack {
      * @param sampleHolder The holder to slot into the track.
      */
     public void setSlot(final int position, final RSampleHolder sampleHolder) {
-        sampleHolders.set(position, sampleHolder);
+        slots.set(position, sampleHolder);
     }
    
     /**
@@ -32,7 +32,7 @@ public class RQRacetrack {
      * @param sampleHolder The holder at that position of the track.
      */
     public RSampleHolder slots(final int position) {
-        return sampleHolders.get(position);
+        return slots.get(position);
     }
 
     /**
@@ -44,6 +44,6 @@ public class RQRacetrack {
      * 			clockwise movement while negative counter-clockwise. 
      */
 	public void shiftRacetrack(int n) {
-		sampleHolders.offset(n);
+		slots.offset(n);
 	}
 }
