@@ -4,15 +4,14 @@ import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
 
 import java.util.stream.IntStream;
 
-import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
 import org.smlabtesting.simabs.entity.QTestCellBuffer;
 import org.smlabtesting.simabs.entity.QUnloadBuffer;
-import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
+import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
-import org.smlabtesting.simabs.variable.Constants;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 
 import absmodJ.ScheduledAction;
 

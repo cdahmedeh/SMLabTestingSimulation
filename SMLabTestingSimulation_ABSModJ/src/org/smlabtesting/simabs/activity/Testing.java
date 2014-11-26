@@ -100,8 +100,7 @@ public class Testing extends ConditionalActivity {
 
 		if (testingMachine.testSuccess) {
 			// Remove one entry from the upcoming test sequence list.
-			// UP.completeNextText(sample) in the CM.
-			testingMachine.sampleHolder.sample.completeNextTest();
+			model.udp.completeNextText(testingMachine.sampleHolder.sample);
             
 			// Put the tested holder back inline to return to the racetrack only if the test succeeded.
             model.qRacetrackLine[stationId].insertQue(testingMachine.sampleHolder);

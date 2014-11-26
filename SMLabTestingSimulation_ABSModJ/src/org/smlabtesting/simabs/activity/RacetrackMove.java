@@ -50,7 +50,7 @@ public class RacetrackMove extends ScheduledActivity {
 	@Override
 	public void startingEvent() {
         // Move the belt one slot forward.
-        model.rqRacetrack.shiftRacetrack(1); // UDP.shiftRacetrack().
+        model.udp.shiftRacetrack(model.rqRacetrack);
 
         // Handle the missed counts for the load/unload machine.
         
@@ -64,7 +64,7 @@ public class RacetrackMove extends ScheduledActivity {
         if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
                 && sampleHolder != null
                 && sampleHolder.sample != null
-                && sampleHolder.sample.testsRemaining.isEmpty() /* UDP.testsCompleted(sample) */) {
+                && model.udp.testsCompleted(sampleHolder.sample)) {
         	model.output.totalFailedStationEntries[0]++;
         }
 
@@ -81,7 +81,7 @@ public class RacetrackMove extends ScheduledActivity {
              if (model.qTestCellBuffer[stationId].n() == TEST_CELL_BUFFER_CAPACITY
                      && sampleHolder_ != null
                      && sampleHolder_.sample != null
-                     && sampleHolder_.sample.testsRemainingNext(stationId)) {
+                     && model.udp.testsRemainingNext(sampleHolder_.sample, stationId)) {
             	 model.output.totalFailedStationEntries[stationId]++;
              }
         }

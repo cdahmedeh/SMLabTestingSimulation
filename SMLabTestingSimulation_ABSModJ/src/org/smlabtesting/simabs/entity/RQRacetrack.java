@@ -35,15 +35,4 @@ public class RQRacetrack {
         return slots.get(position);
     }
 
-    /**
-     * Shifts the track by n spaces forward (clockwise). This is based on the
-     * UDP.shiftRacetrack() user-defined procedure in the CM. See OffsetList
-     * type for optimization trick.
-     *  
-     * @param n The number of positions to shift by. Positives values indicate
-     * 			clockwise movement while negative counter-clockwise. 
-     */
-	public void shiftRacetrack(int n) {
-		slots.offset(n);
-	}
 }

@@ -1,5 +1,7 @@
 package org.smlabtesting.simabs.variable;
 
+import org.smlabtesting.simabs.entity.ICSample;
+import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 /**
@@ -13,4 +15,21 @@ public class UDPs {
 	public UDPs(SMLabModel model) {
 		this.model = model; 
 	}
+	
+	public boolean testsCompleted(ICSample sample) {
+		return sample.testsRemaining.isEmpty();
+	}
+
+	public void completeNextText(ICSample sample) {
+		sample.testsRemaining.pop();
+	}
+
+	public boolean testsRemainingNext(ICSample sample, int stationId) {
+		return !sample.testsRemaining.isEmpty() && sample.testsRemaining.peek() == stationId;
+	}
+	
+	public void shiftRacetrack(RQRacetrack rqRacetrack) {
+		rqRacetrack.slots.offset(1);
+	}
+
 }

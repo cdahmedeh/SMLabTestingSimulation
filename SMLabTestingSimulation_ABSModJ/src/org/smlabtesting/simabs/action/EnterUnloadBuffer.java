@@ -36,7 +36,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
                 		// Either there is a sample that has completed all tests
                 		// and it can always go in.
                         sampleHolder.sample != null  
-                        && sampleHolder.sample.testsRemaining.isEmpty() /* UDP.testsCompleted(sample) */
+                        && model.udp.testsCompleted(sampleHolder.sample)
                         
                         || /* OR */
                         

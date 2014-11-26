@@ -40,7 +40,7 @@ public class EnterTestCellBuffer extends ConditionalAction {
         return model.qTestCellBuffer[stationId].n() < TEST_CELL_BUFFER_CAPACITY
                 && sampleHolder != null
                 && sampleHolder.sample != null
-                && sampleHolder.sample.testsRemainingNext(stationId); // UDP.testsRemainingNext(sample, stationId)
+                && model.udp.testsRemainingNext(sampleHolder.sample, stationId);
 	}
 	
 	@Override
