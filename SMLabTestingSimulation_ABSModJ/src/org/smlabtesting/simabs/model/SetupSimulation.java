@@ -2,7 +2,6 @@ package org.smlabtesting.simabs.model;
 
 import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
 
-import java.util.stream.IntStream;
 
 import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
@@ -40,7 +39,11 @@ public class SetupSimulation extends ScheduledAction
 		model.qTestCellBuffer = new QTestCellBuffer[6];
 		
 		// Determine how large the testing machine arrays need to be.
-		int maxMachines = IntStream.of(model.parameters.numCellMachines).max().getAsInt();
+		int maxMachines = 0;
+		for(int i = 1; i < 6; i++){
+			if(model.parameters.numCellMachines[i] > maxMachines)
+				maxMachines = model.parameters.numCellMachines[i];
+		}
 		
 		// Create the 2D array for storing the testing machines. Five test
 		// cells but with machineId = 0 not set as usual.

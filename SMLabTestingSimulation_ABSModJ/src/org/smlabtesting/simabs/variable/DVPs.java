@@ -1,7 +1,5 @@
 package org.smlabtesting.simabs.variable;
 
-import java.util.stream.DoubleStream;
-
 import org.smlabtesting.simabs.model.SMLabModel;
 
 public class DVPs {
@@ -13,8 +11,7 @@ public class DVPs {
 	}
 	
 	// Constants
-    private static final double[] TESTING_CYCLE_TIMES = DoubleStream
-    		.of(0, 0.77, 0.85 , 1.04, 1.24 , 1.7).map(i -> i * 60).toArray();
+    private static final double[] TESTING_CYCLE_TIMES = new double [] {0 * 60, 0.77 * 60, 0.85 * 60 , 1.04 * 60, 1.24 * 60, 1.7 * 60};
     
     /**
      * @param stationId The identifier of the the test cell normally from 1 to 5.

@@ -4,8 +4,6 @@ import static java.lang.Double.MAX_VALUE;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
@@ -68,7 +66,11 @@ public class RVPs {
 		//       a chocolate bar.
 		Deque<Integer> list = new ArrayDeque<Integer>();
 		int sequenceNumber = sequenceDist.sample();
-        IntStream.of(SEQUENCES[sequenceNumber]).forEach(list::add);
+		
+		for(int i = 0; i < SEQUENCES[sequenceNumber].length; i++){
+			list.add(SEQUENCES[sequenceNumber][i]);
+		}
+		
         return list;
 	}
     
@@ -79,7 +81,7 @@ public class RVPs {
 	
     // Data Model Constants for RNGs
 
-	// Test sequences and their probabilty of actually occuring.
+	// Test sequences and their probability of actually occurring.
     private static final int[] SEQUENCE_ID = {0,1,2,3,4,5,6,7,8};
     private static final double[] SEQUENCE_PROBABILITIES = {0.09, 0.13, 0.15, 0.12, 0.07, 0.11, 0.14, 0.06, 0.13};
     private static final int[][] SEQUENCES = {
@@ -104,8 +106,8 @@ public class RVPs {
     
 	// Station failure times and fix times. Integer.MAX_VALUE values indicate that they never
 	// occur for said station. Both converted to seconds.
-    private static final double[] MACHINE_MTBF = DoubleStream.of(MAX_VALUE, 14, MAX_VALUE, 9, 15, 16).map(i -> i * 3600).toArray();
-    private static final double[] MACHINE_MTBR = DoubleStream.of(MAX_VALUE, 11, MAX_VALUE, 7, 14, 13).map(i -> i * 60).toArray();
+    private static final double[] MACHINE_MTBF = new double [] {MAX_VALUE, 14 * 3600, MAX_VALUE, 9 * 3600, 15 * 3600, 16 * 3600};
+    private static final double[] MACHINE_MTBR = new double [] {MAX_VALUE, 11 * 60,   MAX_VALUE, 7 * 60,   14 * 60,   13 * 60};
 	
 	// Actual RNGs distribution models.
     // TODO: Update CM to use the new models.
@@ -136,11 +138,10 @@ public class RVPs {
         sequenceDist = 
         		new EnumeratedIntegerDistribution(getAnotherRNG(), SEQUENCE_ID, SEQUENCE_PROBABILITIES);
         
-    	sampleArrivalDist = 
-    			DoubleStream.of(INCOMING_SAMPLE_RATES)
-    				.map(rate -> 3600/rate)
-    				.mapToObj(ExponentialDistribution::new)
-    				.toArray(ExponentialDistribution[]::new);
+    	sampleArrivalDist = new ExponentialDistribution[INCOMING_SAMPLE_RATES.length];
+    	for(int i = 0; i < INCOMING_SAMPLE_RATES.length; i++){
+    		sampleArrivalDist[i] = new ExponentialDistribution(3600.0 / INCOMING_SAMPLE_RATES[i]);
+    	}
     	
     	loadUnloadMachineCycleTimeDist = 
         		new TriangularDistribution(getAnotherRNG(), 0.18 * 60, 0.23 * 60, 0.45 * 60);
@@ -148,15 +149,15 @@ public class RVPs {
         stationTwoCleaningTimeDist = 
         		new TriangularDistribution(getAnotherRNG(), 5.0*60, 6.0*60, 10.0*60);
 
-        failureDist =
-        		DoubleStream.of(MACHINE_MTBF)
-        			.mapToObj(ExponentialDistribution::new)
-        			.toArray(ExponentialDistribution[]::new);
+        failureDist = new ExponentialDistribution[MACHINE_MTBF.length];
+        for(int i = 0; i < MACHINE_MTBF.length; i++){
+        	failureDist[i] = new ExponentialDistribution(MACHINE_MTBF[i]);
+        }
         
-        repairDist =
-        		DoubleStream.of(MACHINE_MTBR)
-        			.mapToObj(ExponentialDistribution::new)
-        			.toArray(ExponentialDistribution[]::new);
+        repairDist = new ExponentialDistribution[MACHINE_MTBR.length];
+        for(int i = 0; i < MACHINE_MTBR.length; i++){
+            repairDist[i] = new ExponentialDistribution(MACHINE_MTBR[i]);
+        }
         
         doubleGen = 
         		getAnotherRNG();
