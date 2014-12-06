@@ -2,6 +2,7 @@ package org.smlabtesting.simabs.variable;
 
 import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.entity.RQRacetrack;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 /**
@@ -29,7 +30,11 @@ public class UDPs {
 	}
 	
 	public void shiftRacetrack(RQRacetrack rqRacetrack) {
-		rqRacetrack.slots.offset(1);
+		rqRacetrack.offset = (rqRacetrack.offset + 1) % rqRacetrack.n();
 	}
-
+	
+    public RSampleHolder slots(RQRacetrack rqRacetrack, final int position) {
+        return rqRacetrack.slots[position];
+    }
+    
 }

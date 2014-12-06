@@ -31,13 +31,13 @@ public class ExitRacetrackLine extends ConditionalAction {
 	  // then check if the exit point of this queue onto the racetrack is actually vacant..
       return 
     		  model.qRacetrackLine[stationId].n() > 0 
-    		  && model.rqRacetrack.slots(STATION_EXITS[stationId]) == null;
+    		  && model.rqRacetrack.slots[STATION_EXITS[stationId]] == null;
 	}
 	
 	@Override
 	public void actionEvent() {
 	    //Move the sample from the racetrack line queue to the racetrack
 		RSampleHolder sampleHolder = model.qRacetrackLine[stationId].removeQue();
-		model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolder);
+		model.rqRacetrack.slots[STATION_EXITS[stationId]] = sampleHolder;
 	}
 }
