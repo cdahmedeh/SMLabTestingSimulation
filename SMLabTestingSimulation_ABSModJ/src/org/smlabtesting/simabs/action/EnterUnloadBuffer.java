@@ -25,12 +25,14 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	
 	public static boolean precondition(SMLabModel model) {
 		// Used to point to the holder that is at the load/unload buffer 
-		// entrance point. Does not exist in CM.
+		// entrance point. We first get the sampleHolderId,
+        // and retrieve the sample holder from it.
 		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
 		if(sampleHolderId != null){
 			int i;
 			i = 0;
 		}
+        
 		RSampleHolder sampleHolder = null;
 		if(sampleHolderId != null){
 			sampleHolder = model.udp.getSampleHolder(sampleHolderId);
