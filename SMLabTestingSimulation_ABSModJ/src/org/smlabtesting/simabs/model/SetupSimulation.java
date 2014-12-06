@@ -54,6 +54,7 @@ public class SetupSimulation extends ScheduledAction
 
         // Create the load/unload machine with its queues.
         model.qNewSamples = new QNewSamples();
+        model.qNewSamplesRush = new QNewSamples();
         model.qUnloadBuffer = new QUnloadBuffer();
         model.qRacetrackLine[0] = new QRacetrackLine();
         model.rLoadUnloadMachine = new RLoadUnloadMachine();
