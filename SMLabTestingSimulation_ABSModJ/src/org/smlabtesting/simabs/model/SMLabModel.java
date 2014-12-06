@@ -16,6 +16,7 @@ import org.smlabtesting.simabs.entity.QUnloadBuffer;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.variable.DVPs;
 import org.smlabtesting.simabs.variable.Output;
 import org.smlabtesting.simabs.variable.Parameters;
@@ -58,6 +59,7 @@ public class SMLabModel extends AOSimulationModel {
 	// The entities are initialized by the SetupSimulation action. The 
 	// SampleHolder entities are created in that same action but the Sample 
 	// entities are made in the Arrivals activity.
+	public RSampleHolder[] rSampleHolders;
 	
 	// Racetrack related
 	public RQRacetrack rqRacetrack;

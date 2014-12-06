@@ -37,7 +37,7 @@ public class ExitRacetrackLine extends ConditionalAction {
 	@Override
 	public void actionEvent() {
 	    //Move the sample from the racetrack line queue to the racetrack
-		RSampleHolder sampleHolder = model.qRacetrackLine[stationId].removeQue();
-		model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolder);
+		Integer sampleHolderID = model.qRacetrackLine[stationId].removeQue();
+		model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolderID);
 	}
 }

@@ -6,7 +6,7 @@ package org.smlabtesting.simabs.entity;
  */
 public class RLoadUnloadMachine {
     // Containers
-    public RSampleHolder sampleHolder = null;
+    public Integer sampleHolderId = null;
 	
     // Attributes
     public boolean busy = false;

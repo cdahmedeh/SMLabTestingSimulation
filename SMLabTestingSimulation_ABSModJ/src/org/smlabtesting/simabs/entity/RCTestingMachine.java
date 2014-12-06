@@ -15,7 +15,7 @@ public class RCTestingMachine {
     }
     
     // Containers
-    public RSampleHolder sampleHolder = null;
+    public Integer sampleHolderId = null;
     
     // Attributes
     public Status status = Idle;
