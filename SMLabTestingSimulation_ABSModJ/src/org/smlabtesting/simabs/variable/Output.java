@@ -8,17 +8,27 @@ public class Output{
 	
 	//SSOVs
 	public int[] totalFailedStationEntries = new int[]{0,0,0,0,0,0};
-	//TODO lateRegularSamples
-	//TODO lateRushSamples
-	//TODO totalNumRegularSamples
-	//TODO totalNumRushSamples
+	public int lateRegularSamples = 0;
+	public int lateRushSamples = 0;
+	public int totalNumRegularSamples = 0;
+	public int totalNumRushSamples = 0;
 	
 	//DSOVs
-	//TODO percentageLateRegularSamples
-	//TODO percentageLateRushSamples
+	public double percentageLateRegularSamples = 0;
+	public double percentageLateRushSamples = 0;
 	
 
 	public Output(SMLabModel model) {
 		this.model = model;
+	}
+	
+	public void percentageLateRegularSamples()
+	{
+		percentageLateRegularSamples = lateRegularSamples/totalNumRegularSamples;
+	}
+	
+	public void percentageLateRushSamples()
+	{
+		percentageLateRushSamples = lateRushSamples/totalNumRushSamples;
 	}
 }
