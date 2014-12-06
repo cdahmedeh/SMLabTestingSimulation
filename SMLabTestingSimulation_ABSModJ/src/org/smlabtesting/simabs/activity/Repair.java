@@ -51,7 +51,7 @@ public class Repair extends ConditionalActivity {
 	@Override
 	protected void terminatingEvent() {
 		// Generate a new time for the machine to fail.
-		// It is initalized at first when the system is created.
+		// It is initialized at first when the system is created.
 		model.rcTestingMachine[stationId][machineId].timeUntilFailure = model.rvp.uFailureDuration(stationId);
 		
 		// The machine is ready to test again.
