@@ -10,19 +10,19 @@ import java.util.Deque;
  */
 public class QUnloadBuffer {
     // Containers
-    private final Deque<Integer> sampleHoldersId = new ArrayDeque<Integer>(UNLOADBUFFER_CAPACITY);
+    private final Deque<RSampleHolder> sampleHolders = new ArrayDeque<RSampleHolder>(UNLOADBUFFER_CAPACITY);
 
     // Attributes
     public int nEmpty = 0;
-    public int n() {return sampleHoldersId.size();}
+    public int n() {return sampleHolders.size();}
     
     // Methods for dealing with queues. In the CM, the methods are using the
     // global SP identifier.
-    public Integer removeQue() {
-        return sampleHoldersId.pop();
+    public RSampleHolder removeQue() {
+        return sampleHolders.pop();
     }
 
-    public void insertQue(final Integer entityId) {
-        sampleHoldersId.add(entityId);
+    public void insertQue(final RSampleHolder entity) {
+        sampleHolders.add(entity);
     }
 }

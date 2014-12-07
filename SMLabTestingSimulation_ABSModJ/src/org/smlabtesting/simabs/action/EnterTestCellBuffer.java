@@ -5,7 +5,6 @@ import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACI
 
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
-import org.smlabtesting.simabs.variable.UDPs;
 
 import absmodJ.ConditionalAction;
 
@@ -33,7 +32,7 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	public static boolean precondition(SMLabModel model, int stationId) {
 		// Used to point to the holder that is at the test cell buffer 
 		// entrance point. Does not exist in CM.
-		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
+		RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
 		
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 
@@ -47,9 +46,9 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	@Override
 	public void actionEvent() {
         // Move the sample from the racetrack to the unload buffer queue.
-        RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
+        RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
         model.rqRacetrack.setSlot(STATION_ENTRANCES[stationId], null);
-        model.qTestCellBuffer[stationId].insertQue(sampleHolder.id);
+        model.qTestCellBuffer[stationId].insertQue(sampleHolder);
 	}
 }
 

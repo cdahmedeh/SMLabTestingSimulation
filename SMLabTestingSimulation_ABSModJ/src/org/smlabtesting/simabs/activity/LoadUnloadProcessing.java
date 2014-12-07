@@ -1,6 +1,5 @@
 package org.smlabtesting.simabs.activity;
 
-import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;
@@ -36,11 +35,11 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 		
 		// Take the next sample holder in line from the unload buffer and load
 		// it in the machine
-        model.rLoadUnloadMachine.sampleHolderId = model.qUnloadBuffer.removeQue();
-        RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rLoadUnloadMachine.sampleHolderId);
+        model.rLoadUnloadMachine.sampleHolder = model.qUnloadBuffer.removeQue();
+        
         // If the holder was an empty,  decrement the empty holder counter as 
         // it will be removed.
-        if (sampleHolder != null && sampleHolder.sample == null) {
+        if (model.rLoadUnloadMachine.sampleHolder.sample == null) {
         	model.qUnloadBuffer.nEmpty--;
         }
 	}
@@ -56,24 +55,22 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	protected void terminatingEvent() {
 		// If the holder in the machine has a sample, remove it from the 
 		// system.
-		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rLoadUnloadMachine.sampleHolderId);
-        
-		if (sampleHolder == null)
-        	return;
-        	
+        if (model.rLoadUnloadMachine.sampleHolder != null) {
         	// No Behavior belongs to ICSample, so these are implicit.        	
             // ICSample icSample = model.rcLoadUnloadMachine.sampleHolder.sample;
             // SP.Leave(icSample)
-            sampleHolder.sample = null;
-            
+            model.rLoadUnloadMachine.sampleHolder.sample = null;
+        }
+
         // If there is a new sample waiting to be tested, put it in the holder.
     	// The New Samples queue automatically sorted rush samples first.
         if (model.qNewSamples.n() > 0) {
-            sampleHolder.sample = model.qNewSamples.removeQue();
+            model.rLoadUnloadMachine.sampleHolder.sample = model.qNewSamples.removeQue();
         }
         
         // Put the holder in line to return to the racetrack.
-        model.qRacetrackLine[0].insertQue(sampleHolder.id);
+        model.qRacetrackLine[0].insertQue(model.rLoadUnloadMachine.sampleHolder);
+        model.rLoadUnloadMachine.sampleHolder = null;
         
         // The machine status is set to idle.
         model.rLoadUnloadMachine.busy = false;

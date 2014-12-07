@@ -26,7 +26,7 @@ import absmodJ.ScheduledActivity;
  * ever become false, thus generating an infinite loop.
  * 
  * In addition, using a time sequence instead of a conditional event with
- * duration means that the other activities don't have to check that the
+ * duration means that the other activities don’t have to check that the
  * racetrack is moving.
  *
  * Finally, this activity is responsible for counting missed entrances to 
@@ -56,17 +56,13 @@ public class RacetrackMove extends ScheduledActivity {
         
 		// Used to point to the holder that is at the unload buffer 
 		// entrance point. Does not exist in CM.
-		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
-		RSampleHolder sampleHolder = null;
-		if(sampleHolderId != null){
-			sampleHolder = model.udp.getSampleHolder(sampleHolderId);
-		}
+		RSampleHolder sampleHolder = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
         
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 
 		// as next in its sequence. And then check if the unload buffer is full.
         if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
-                && sampleHolderId != null
+                && sampleHolder != null
                 && sampleHolder.sample != null
                 && model.udp.testsCompleted(sampleHolder.sample)) {
         	model.output.totalFailedStationEntries[0]++;
@@ -77,11 +73,7 @@ public class RacetrackMove extends ScheduledActivity {
         for (int stationId = 1; stationId < 6; stationId++) {
             // Used to point to the holder that is at the test cell buffer 
      		// entrance point. Does not exist in CM.
-           	Integer sampleHolderId_ = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
-    		RSampleHolder sampleHolder_ = null;
-    		if(sampleHolderId_ != null){
-    			sampleHolder = model.udp.getSampleHolder(sampleHolderId_);
-    		}
+           	RSampleHolder sampleHolder_ = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
          		
      		// First check that here is a holder at the entrance point of the test 
      		// cell buffer. Then check if that holder has the current test cell 

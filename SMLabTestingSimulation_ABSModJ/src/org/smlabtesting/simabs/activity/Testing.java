@@ -6,7 +6,6 @@ import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsRepair
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Testing;
 
 import org.smlabtesting.simabs.entity.RCTestingMachine;
-import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ConditionalActivity;
@@ -45,7 +44,7 @@ public class Testing extends ConditionalActivity {
 		// from a previous failure.
 		return model.rcTestingMachine[stationId][machineId].status == Idle && 
 				(model.qTestCellBuffer[stationId].n() > 0 
-				|| model.rcTestingMachine[stationId][machineId].sampleHolderId != null);
+				|| model.rcTestingMachine[stationId][machineId].sampleHolder != null);
 	}
 	
 	@Override
@@ -60,8 +59,8 @@ public class Testing extends ConditionalActivity {
 		// If there a holder in queue for testing and there is no holder 
 		// already in the machine from a previous failure, then insert the
 		// waiting holder into the machine
-        if (testingMachine.sampleHolderId == null) {
-        	testingMachine.sampleHolderId = model.qTestCellBuffer[stationId].removeQue();
+        if (testingMachine.sampleHolder == null) {
+        	testingMachine.sampleHolder = model.qTestCellBuffer[stationId].removeQue();
         }
         // Otherwise, there is a sample holder already in the machine. So it
         // will be retested.
@@ -101,12 +100,11 @@ public class Testing extends ConditionalActivity {
 
 		if (testingMachine.testSuccess) {
 			// Remove one entry from the upcoming test sequence list.
-			RSampleHolder sampleHolder = model.udp.getSampleHolder(testingMachine.sampleHolderId);
-			model.udp.completeNextText(sampleHolder.sample);
+			model.udp.completeNextText(testingMachine.sampleHolder.sample);
             
 			// Put the tested holder back inline to return to the racetrack only if the test succeeded.
-            model.qRacetrackLine[stationId].insertQue(sampleHolder.id);
-            sampleHolder = null;
+            model.qRacetrackLine[stationId].insertQue(testingMachine.sampleHolder);
+            testingMachine.sampleHolder = null;
             testingMachine.status = Idle;
             
             // Subtract the machine runtime from the failure time. Except for
