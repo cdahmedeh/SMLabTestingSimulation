@@ -4,7 +4,6 @@ import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
-
 import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
 
 /**
@@ -40,7 +39,12 @@ public class UDPs {
 			return null;
 		RSampleHolder sampleHolder = model.rSampleHolders[id];
 		if( sampleHolder.id != id){
-			throw new IllegalArgumentException("The sampleHolder id requested does not match the sampleHolder id array convention");
+			sampleHolder = null;
+			for(int i = 0; i < NUM_SAMPLE_HOLDERS; i++){
+				if(model.rSampleHolders[i].id == id){
+					sampleHolder = model.rSampleHolders[i];
+				}
+			}
 		}
 		return sampleHolder;
 	}

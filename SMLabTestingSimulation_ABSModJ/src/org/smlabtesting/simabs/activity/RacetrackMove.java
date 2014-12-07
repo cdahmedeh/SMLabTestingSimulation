@@ -66,7 +66,7 @@ public class RacetrackMove extends ScheduledActivity {
 		// cell buffer. Then check if that holder has the current test cell 
 		// as next in its sequence. And then check if the unload buffer is full.
         if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
-                && sampleHolder != null
+                && sampleHolderId != null
                 && sampleHolder.sample != null
                 && model.udp.testsCompleted(sampleHolder.sample)) {
         	model.output.totalFailedStationEntries[0]++;

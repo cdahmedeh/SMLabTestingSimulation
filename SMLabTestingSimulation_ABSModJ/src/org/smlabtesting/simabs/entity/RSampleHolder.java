@@ -7,8 +7,8 @@ package org.smlabtesting.simabs.entity;
 public class RSampleHolder {
     // Containers
     public ICSample sample;
-    public final Integer id;
-    private static Integer idSerialNum = 0;
+    public Integer id;
+    public static Integer idSerialNum = 0;
     
     public RSampleHolder(){
     	id = idSerialNum++;

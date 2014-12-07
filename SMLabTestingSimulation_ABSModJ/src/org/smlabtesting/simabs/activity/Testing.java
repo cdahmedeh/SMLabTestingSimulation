@@ -57,7 +57,7 @@ public class Testing extends ConditionalActivity {
 		// Machine becomes busy
 		testingMachine.status = Testing;
 
-		// If there is a holder in queue for testing and there is no holder 
+		// If there a holder in queue for testing and there is no holder 
 		// already in the machine from a previous failure, then insert the
 		// waiting holder into the machine
         if (testingMachine.sampleHolderId == null) {
