@@ -60,9 +60,10 @@ public class SetupSimulation extends ScheduledAction
         
         // Create some sample holders, put them in the racetrack line of 
         // load/unload machine.
+        model.sampleHolders = new RSampleHolder[NUM_SAMPLE_HOLDERS];
         for (int i = 0; i < NUM_SAMPLE_HOLDERS; i++) {
-            RSampleHolder sampleHolder = new RSampleHolder();
-            model.qRacetrackLine[0].insertQue(sampleHolder);
+            model.sampleHolders[i] = new RSampleHolder();
+            model.qRacetrackLine[0].insertQue(i);
         }
                 
         // Create the test cells.

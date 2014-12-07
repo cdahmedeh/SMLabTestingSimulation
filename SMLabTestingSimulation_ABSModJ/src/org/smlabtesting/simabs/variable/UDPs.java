@@ -2,6 +2,7 @@ package org.smlabtesting.simabs.variable;
 
 import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.entity.RQRacetrack;
+import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 /**
@@ -30,6 +31,18 @@ public class UDPs {
 	
 	public void shiftRacetrack(RQRacetrack rqRacetrack) {
 		rqRacetrack.slots.offset(1);
+	}
+	
+	public RSampleHolder getSampleHolder(Integer id){
+		if(id == null)
+			return null;
+		
+		RSampleHolder sampleHolder = model.sampleHolders[id];
+		
+		if(sampleHolder.id != id)
+			throw new IllegalArgumentException("Requested id value mismatch with sampleHolders array order");
+		
+		return sampleHolder;
 	}
 
 }
