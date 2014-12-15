@@ -20,4 +20,10 @@ public class Constants {
 	// Monthly costs of each station save for the load/unload machine 
 	public static final int[] MONTHLY_MACHINE_COST = {-1, 10000, 12400, 8500, 9800, 11200};
 	public static final int MONTHTLY_SAMPLEHOLDER_COST = 387;
+	
+	//A regular sample is on time if it is below this max time (1 hour)
+	public static final int REGULAR_SAMPLE_MAX_TIME = 60 * 60;
+	
+	//A rush sample is on time if it is below this max time (30 min)
+	public static final int RUSH_SAMPLE_MAX_TIME = 30 * 60;
 }

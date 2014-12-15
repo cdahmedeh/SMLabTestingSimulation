@@ -61,13 +61,18 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 		// If the holder in the machine has a sample, remove it from the system.
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rLoadUnloadMachine.sampleHolderId);
 		
-		if(sampleHolder == null)
+		// TODO: Merge quick-untested fix.
+		if(sampleHolder == null) {
 			return;
-		
+		} else {
         	// No Behavior belongs to ICSample, so these are implicit.        	
             // ICSample icSample = model.rcLoadUnloadMachine.sampleHolder.sample;
             // SP.Leave(icSample)
-            sampleHolder.sample = null;
+        	if(sampleHolder.sample != null) {
+        		model.udp.sampleFinished(sampleHolder.sample);
+        	}
+        	sampleHolder.sample = null;
+        }
 
         // If there is a new sample waiting to be tested, put it in the holder.
     	// The New Samples queue automatically sorted rush samples first.
