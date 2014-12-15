@@ -33,14 +33,12 @@ public class EnterTestCellBuffer extends ConditionalAction {
 		// Used to point to the holder that is at the test cell buffer 
 		// entrance point. Does not exist in CM.
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
-		
+
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 
 		// as next in its sequence. Also check for vacancy in the test cell buffer.
-        return model.qTestCellBuffer[stationId].n() < TEST_CELL_BUFFER_CAPACITY
-                && sampleHolder != null
-                && sampleHolder.sample != null
-                && model.udp.testsRemainingNext(sampleHolder.sample, stationId);
+		boolean canEnter = model.udp.canEnterCellBufferQueue(sampleHolder, stationId);
+        return canEnter;
 	}
 	
 	@Override

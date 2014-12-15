@@ -29,9 +29,9 @@ public class ExitRacetrackLine extends ConditionalAction {
 	public static boolean precondition(SMLabModel model, int stationId) {
       // First check that here is a holder inline to merge onto the track and 
 	  // then check if the exit point of this queue onto the racetrack is actually vacant..
-      return 
-    		  model.qRacetrackLine[stationId].n() > 0 
-    		  && model.rqRacetrack.slots(STATION_EXITS[stationId]) == null;
+		boolean canExit = model.udp.canExitRacetrackQueue(stationId);
+		
+		return canExit;
 	}
 	
 	@Override
