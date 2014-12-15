@@ -67,7 +67,7 @@ public class SMLabModel extends AOSimulationModel {
 	public QRacetrackLine[] qRacetrackLine;
 	
 	// Load/Unload Machine related
-	public QNewSamples qNewSamples;
+	public QNewSamples qNewSamples,qNewSamplesRush;
 	public QUnloadBuffer qUnloadBuffer;
 	public RLoadUnloadMachine rLoadUnloadMachine;
 	
@@ -251,6 +251,8 @@ public class SMLabModel extends AOSimulationModel {
 						+ "   Q.RacetrackLine[UL].n:  %d \n",
 						this.getClock(),
 						this.qNewSamples.n(),
+						this.qNewSamplesRush.n(),
+
 						this.qUnloadBuffer.n(), 
 						this.qUnloadBuffer.nEmpty,
 						this.output.totalFailedStationEntries[0],
