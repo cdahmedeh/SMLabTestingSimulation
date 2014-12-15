@@ -67,7 +67,7 @@ public class SMLabModel extends AOSimulationModel {
 	public QRacetrackLine[] qRacetrackLine;
 	
 	// Load/Unload Machine related
-	public QNewSamples qNewSamples,qNewSamplesRush;
+	public QNewSamples qNewSamples, qNewSamplesRush;
 	public QUnloadBuffer qUnloadBuffer;
 	public RLoadUnloadMachine rLoadUnloadMachine;
 	
