@@ -24,11 +24,13 @@ public class Output{
 	
 	public void percentageLateRegularSamples()
 	{
-		percentageLateRegularSamples = lateRegularSamples/totalNumRegularSamples;
+		if(totalNumRegularSamples > 0)
+			percentageLateRegularSamples = (double) lateRegularSamples / (double) totalNumRegularSamples;
 	}
 	
 	public void percentageLateRushSamples()
 	{
-		percentageLateRushSamples = lateRushSamples/totalNumRushSamples;
+		if(totalNumRushSamples > 0)
+			percentageLateRushSamples = (double) lateRushSamples / (double) totalNumRushSamples;
 	}
 }

@@ -16,6 +16,8 @@ import org.smlabtesting.simabs.entity.QUnloadBuffer;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
+import org.smlabtesting.simabs.entity.RSampleHolder;
+import org.smlabtesting.simabs.variable.Constants;
 import org.smlabtesting.simabs.variable.DVPs;
 import org.smlabtesting.simabs.variable.Output;
 import org.smlabtesting.simabs.variable.Parameters;
@@ -281,9 +283,70 @@ public class SMLabModel extends AOSimulationModel {
 			);
 		}
 
+		printRacetrackView();
+		System.out.println();
+		
+		//Print outputs:
+		
+		this.output.percentageLateRegularSamples();
+		this.output.percentageLateRushSamples();
+		System.out.println("Regular percentage late: "+this.output.percentageLateRegularSamples);
+		System.out.println("Rush percentage late: "+this.output.percentageLateRushSamples);
+		
+		//Print failed station entries
+		System.out.print("Total Failed Station Entries: < ");
+		System.out.print(output.totalFailedStationEntries[0]);
+		for(int i = 1; i < 6; i++){
+			System.out.print(", "+ output.totalFailedStationEntries[i]);
+		}
+		System.out.print(" > ");
 		System.out.println();
 	} 
 	
+	/**
+	 * Prints a visual representation of the 48 racetrack slots, for logging purposes.
+	 */
+	private void printRacetrackView() {
+		//Print the 'top' row, so belt indexes 15-36
+		System.out.println(" ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___");
+		for(int i = 15; i < 37; i++){
+			String sHolder = getSlotRepresentation(i);
+			System.out.print("|"+sHolder);
+		}
+		System.out.println("|");
+		System.out.println("|___|Ex4|___|___|___|In4|___|___|___|Ex3|___|___|___|In3|___|___|___|Ex2|___|___|___|In2|");
+		//Print the left and right sides of the belt, so right belt indexes = 37, 38, and left belt indexes = 14, 13
+		String innerBeltSpace = "                                                                               ";
+		System.out.println("|"+getSlotRepresentation(14)+"|"+innerBeltSpace+"|"+getSlotRepresentation(37)+"|");
+		System.out.println("|___|"+innerBeltSpace+"|___|");
+		System.out.println("|"+getSlotRepresentation(13)+"|"+innerBeltSpace+"|"+getSlotRepresentation(38)+"|");
+
+		//Print the bottom side of the belt, so belt indexes 39-47 and 0-12
+		String bottom = "";
+		System.out.println("|___|___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___|___|");
+		for(int i = 39; i < (47 + 13 + 1); ++i){
+			String sHolder = getSlotRepresentation(i%48);
+			bottom =sHolder +"|" + bottom;
+		}
+		System.out.println("|"+bottom);
+		System.out.println("|In5|___|___|___|Ex5|___|___|___|In0|___|___|___|Ex0|___|___|___|In1|___|___|___|Ex1|___|");
+	}
+	
+	/**
+	 * Determines whether a slot on the racetrack (at index slotId) has nothing ("   "), an empty sample holder ("[ ]"), or a sample holder with a sample ("[x]")
+	 * @param slotId index of the slot
+	 * @return the string representing the slot content (or lack thereof)
+	 */
+	private String getSlotRepresentation(int slotId){
+		String sHolder = "   ";
+		if(this.rqRacetrack.slots.get(slotId) != null && this.rqRacetrack.slots.get(slotId).sample != null){
+			sHolder = "[x]";
+		} else if(this.rqRacetrack.slots.get(slotId) != null && this.rqRacetrack.slots.get(slotId).sample == null){
+			sHolder = "[ ]";
+		}
+		return sHolder;
+	}
+
 	/**
 	 * Overridden and changed visibility to public to be able to retrieve timer
 	 * so that scheduled activities don't have to keep their own clock.

@@ -59,6 +59,9 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         	// No Behavior belongs to ICSample, so these are implicit.        	
             // ICSample icSample = model.rcLoadUnloadMachine.sampleHolder.sample;
             // SP.Leave(icSample)
+        	if(model.rLoadUnloadMachine.sampleHolder.sample != null){
+        		model.udp.sampleFinished(model.rLoadUnloadMachine.sampleHolder.sample);
+        	}
             model.rLoadUnloadMachine.sampleHolder.sample = null;
         }
 

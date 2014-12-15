@@ -28,6 +28,9 @@ public class UDPs {
 	}
 
 	public boolean testsRemainingNext(ICSample sample, int stationId) {
+		if(sample == null)
+			return false;
+		
 		return !sample.testsRemaining.isEmpty() && sample.testsRemaining.peek() == stationId;
 	}
 	
@@ -50,7 +53,30 @@ public class UDPs {
 				&& sampleHolder.sample != null
 				&& testsRemainingNext(sampleHolder.sample, stationId);
 		
+		// Check for the case when a sample holder would have needed to enter a station, 
+		// but could not due to the qTestCellBuffer being full. Increment output variable.
+		if(!canEnter && sampleHolder != null && testsRemainingNext(sampleHolder.sample, stationId)){
+			model.output.totalFailedStationEntries[stationId]++;
+		}
+		
 		return canEnter;
 	}
 
+	/**
+	 * Called when a sample is exiting the SUI, takes care of incrementing the appropriate output variables
+	 * @param sample The sample that is exiting the SUI
+	 */
+	public void sampleFinished(ICSample sample){
+		if(sample.rush){
+			model.output.totalNumRushSamples++;
+			if((model.getClock() - sample.startTime) > Constants.RUSH_SAMPLE_MAX_TIME){
+				 model.output.lateRushSamples++;
+			}
+		} else {
+			model.output.totalNumRegularSamples++;
+			if((model.getClock() - sample.startTime) > Constants.REGULAR_SAMPLE_MAX_TIME){
+				 model.output.lateRegularSamples++;
+			}
+		}
+	}
 }
