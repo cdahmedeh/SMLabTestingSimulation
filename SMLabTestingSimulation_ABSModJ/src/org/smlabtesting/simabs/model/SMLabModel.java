@@ -243,6 +243,7 @@ public class SMLabModel extends AOSimulationModel {
 				.print(String.format(
 						"Clock: %f, \n"
 						+ "Q.NewSamples.n: %d \n"
+						+ "Q.NewSamplesRush.n: %d \n"
 						+ "\n"
 						+ "Station(L/U): \n"
 						+ "   Q.UnloadBuffer.n: %d, Q.UnloadBuffer.nEmpty: %d, \n"
