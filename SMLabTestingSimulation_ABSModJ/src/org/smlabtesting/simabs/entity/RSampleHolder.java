@@ -8,9 +8,8 @@ public class RSampleHolder {
     // Containers
     public ICSample sample;
     public final Integer id;
-    private static int serialId;
     
-    public RSampleHolder(){
-    	id = serialId++;
+    public RSampleHolder(int id){
+    	this.id = id;
     }
 }

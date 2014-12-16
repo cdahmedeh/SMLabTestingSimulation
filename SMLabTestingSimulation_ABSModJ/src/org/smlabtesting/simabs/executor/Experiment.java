@@ -15,7 +15,7 @@ public class Experiment {
        int NUMRUNS = 1; 
        
        // Start times and end times in seconds.
-       double startTime=0.0, endTime=3600*24;
+       double startTime=0.0, endTime=3600*24*10;
        
        // Generate seeds per run.
        RandomSeedGenerator rsg = new RandomSeedGenerator();
@@ -28,11 +28,12 @@ public class Experiment {
        long start = System.currentTimeMillis();
        
        // Create the simulation model and do some runs.
-       SMLabModel model;  
        for(int i = 0 ; i < NUMRUNS ; i++) {
+    	  SMLabModel model;  
     	  Parameters parameters = new Parameters();
-          model = new SMLabModel(startTime,endTime,sds[i], parameters, true);
+          model = new SMLabModel(startTime,endTime,sds[i], parameters, false);
           model.runSimulation();
+//          model.printOutputs();
        }
        
        long end = System.currentTimeMillis();

@@ -63,7 +63,7 @@ public class SetupSimulation extends ScheduledAction
         // load/unload machine.
         model.sampleHolders = new RSampleHolder[NUM_SAMPLE_HOLDERS];
         for (int i = 0; i < NUM_SAMPLE_HOLDERS; i++) {
-            model.sampleHolders[i] = new RSampleHolder();
+            model.sampleHolders[i] = new RSampleHolder(i);
             model.qRacetrackLine[0].insertQue(i);
         }
                 

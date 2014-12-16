@@ -4,6 +4,7 @@ import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
 import org.smlabtesting.simabs.action.EnterUnloadBuffer;
 import org.smlabtesting.simabs.action.ExitRacetrackLine;
+import org.smlabtesting.simabs.action.OutputAction;
 import org.smlabtesting.simabs.activity.Cleaning;
 import org.smlabtesting.simabs.activity.LoadUnloadProcessing;
 import org.smlabtesting.simabs.activity.RacetrackMove;
@@ -126,6 +127,7 @@ public class SMLabModel extends AOSimulationModel {
 	protected void scheduleScheduled() {
 		scheduleAction(new Arrival(this));
 		scheduleActivity(new RacetrackMove(this));
+		scheduleAction(new OutputAction(this));
 	}
 
 	/**
@@ -291,20 +293,7 @@ public class SMLabModel extends AOSimulationModel {
 		System.out.println();
 		
 		//Print outputs:
-		
-		this.output.percentageLateRegularSamples();
-		this.output.percentageLateRushSamples();
-		System.out.println("Regular percentage late: "+this.output.percentageLateRegularSamples);
-		System.out.println("Rush percentage late: "+this.output.percentageLateRushSamples);
-		
-		//Print failed station entries
-		System.out.print("Total Failed Station Entries: < ");
-		System.out.print(output.totalFailedStationEntries[0]);
-		for(int i = 1; i < 6; i++){
-			System.out.print(", "+ output.totalFailedStationEntries[i]);
-		}
-		System.out.print(" > ");
-		System.out.println();
+		printOutputs();
 	} 
 	
 	/**
@@ -359,6 +348,38 @@ public class SMLabModel extends AOSimulationModel {
 	@Override
 	public double getClock() {
 		return super.getClock();
+	}
+
+	public void printOutputs() {
+		this.output.percentageLateRegularSamples();
+		this.output.percentageLateRushSamples();
+		System.out.println("Regular percentage late: "+this.output.percentageLateRegularSamples);
+		System.out.println("Rush percentage late: "+this.output.percentageLateRushSamples);
+		
+		//Print failed station entries
+		System.out.print("Total Failed Station Entries: < ");
+		System.out.print(output.totalFailedStationEntries[0]);
+		for(int i = 1; i < 6; i++){
+			System.out.print(", "+ output.totalFailedStationEntries[i]);
+		}
+		System.out.print(" > ");
+		System.out.println();
+	}
+
+	public void printTabulatedOutputs() {
+		this.output.percentageLateRegularSamples();
+		this.output.percentageLateRushSamples();
+		System.out.print(this.getClock());
+		System.out.print("\t");
+		System.out.print(this.output.percentageLateRegularSamples);
+		System.out.print("\t");
+		System.out.print(this.output.percentageLateRushSamples);
+		System.out.print("\t");
+		System.out.print(output.totalFailedStationEntries[0]);
+		for(int i = 1; i < 6; i++){
+			System.out.print("\t"+ output.totalFailedStationEntries[i]);
+		}		
+		System.out.println();
 	}
 }
 
