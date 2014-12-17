@@ -13,11 +13,11 @@ public class OutputAction extends ScheduledAction {
 
 	}
 	
-	private static int time = -3600;
+	private static int time = -3600*24;
 	
 	@Override
 	protected double timeSequence() {
-		return time = time + 3600;
+		return time = time + 3600*24;
 	}
 
 	@Override
