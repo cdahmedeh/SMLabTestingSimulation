@@ -1,4 +1,4 @@
-package org.smlabtesting.simabs.activity;
+package org.smlabtesting.simabs.action;
 
 import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
 import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
@@ -7,6 +7,7 @@ import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
+import absmodJ.ScheduledAction;
 import absmodJ.ScheduledActivity;
 
 /**
@@ -34,7 +35,7 @@ import absmodJ.ScheduledActivity;
  * 
  * Participants: RQ.Racetrack
  */
-public class RacetrackMove extends ScheduledActivity {
+public class RacetrackMove extends ScheduledAction {
 
 	private SMLabModel model;
 
@@ -48,22 +49,12 @@ public class RacetrackMove extends ScheduledActivity {
 	}
 
 	@Override
-	public void startingEvent() {
+	public void actionEvent() {
         // Move the belt one slot forward.
         model.udp.shiftRacetrack(model.rqRacetrack);
 
         // Handle the missed counts for all the machines.
         model.udp.updateMissedCounts();
-	}
-
-	@Override
-	protected double duration() {
-		return 0;
-	}
-	
-	@Override
-	protected void terminatingEvent() {
-		
 	}
 
 }
