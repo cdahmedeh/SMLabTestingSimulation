@@ -1,6 +1,10 @@
 package org.smlabtesting.simabs.model;
 
+import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
+import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
 import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
+
+
 
 
 import org.smlabtesting.simabs.entity.QNewSamples;
@@ -53,8 +57,9 @@ public class SetupSimulation extends ScheduledAction
         model.rqRacetrack = new RQRacetrack();
 
         // Create the load/unload machine with its queues.
-        model.qNewSamples = new QNewSamples();
-        model.qNewSamplesRush = new QNewSamples();
+        model.qNewSamples = new QNewSamples[2];
+        model.qNewSamples[REGULAR] = new QNewSamples();
+        model.qNewSamples[RUSH] = new QNewSamples();
         model.qUnloadBuffer = new QUnloadBuffer();
         model.qRacetrackLine[0] = new QRacetrackLine();
         model.rLoadUnloadMachine = new RLoadUnloadMachine();

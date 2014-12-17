@@ -1,5 +1,8 @@
 package org.smlabtesting.simabs.action;
 
+import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
+import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+
 import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.model.SMLabModel;
 
@@ -8,7 +11,7 @@ import absmodJ.ScheduledAction;
 /**
  * This action describes when a new sample arrives to the new samples queue.
  * 
- * Participants: Q.NewSamples
+ * Participants: Q.NewSamples, Q.NewSamplesRush
  * Uses: iC.Sample (implicit)
  */
 public class Arrival extends ScheduledAction {
@@ -33,10 +36,10 @@ public class Arrival extends ScheduledAction {
         icSample.startTime = model.getClock();
 		
         // Move the new sample into the new samples queue.
-        if(icSample.rush) {
-        	model.qNewSamplesRush.insertQue(icSample);
+        if( icSample.rush ) {
+        	model.qNewSamples[RUSH].insertQue(icSample);
         } else {
-        	model.qNewSamples.insertQue(icSample);
+        	model.qNewSamples[REGULAR].insertQue(icSample);
         }
 	}
 }

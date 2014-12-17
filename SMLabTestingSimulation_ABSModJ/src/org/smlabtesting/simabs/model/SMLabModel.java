@@ -1,5 +1,8 @@
 package org.smlabtesting.simabs.model;
 
+import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
+import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+
 import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
 import org.smlabtesting.simabs.action.EnterUnloadBuffer;
@@ -68,7 +71,7 @@ public class SMLabModel extends AOSimulationModel {
 	public QRacetrackLine[] qRacetrackLine;
 	
 	// Load/Unload Machine related
-	public QNewSamples qNewSamples, qNewSamplesRush;
+	public QNewSamples[] qNewSamples;
 	public QUnloadBuffer qUnloadBuffer;
 	public RLoadUnloadMachine rLoadUnloadMachine;
 	
@@ -244,8 +247,8 @@ public class SMLabModel extends AOSimulationModel {
 		System.out
 				.print(String.format(
 						"Clock: %f, \n"
-						+ "Q.NewSamples.n: %d \n"
-						+ "Q.NewSamplesRush.n: %d \n"
+						+ "Q.NewSamples[REGULAR].n: %d \n"
+						+ "Q.NewSamples[RUSH].n: %d \n"
 						+ "\n"
 						+ "Station(L/U): \n"
 						+ "   Q.UnloadBuffer.n: %d, Q.UnloadBuffer.nEmpty: %d, \n"
@@ -253,8 +256,8 @@ public class SMLabModel extends AOSimulationModel {
 						+ "   R.LoadUnloadMachine.busy: %b \n"
 						+ "   Q.RacetrackLine[UL].n:  %d \n",
 						this.getClock(),
-						this.qNewSamples.n(),
-						this.qNewSamplesRush.n(),
+						this.qNewSamples[REGULAR].n(),
+						this.qNewSamples[RUSH].n(),
 
 						this.qUnloadBuffer.n(), 
 						this.qUnloadBuffer.nEmpty,
