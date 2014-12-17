@@ -11,7 +11,7 @@ import absmodJ.ScheduledAction;
 /**
  * This action describes when a new sample arrives to the new samples queue.
  * 
- * Participants: Q.NewSamples, Q.NewSamplesRush
+ * Participants: Q.NewSamples
  * Uses: iC.Sample (implicit)
  */
 public class Arrival extends ScheduledAction {
