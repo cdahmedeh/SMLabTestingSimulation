@@ -22,7 +22,7 @@ public class OutputAction extends ScheduledAction {
 
 	@Override
 	protected void actionEvent() {
-		model.printTabulatedOutputs();
+		//model.printTabulatedOutputs();
 	}
 
 }
