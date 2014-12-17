@@ -1,5 +1,7 @@
 package org.smlabtesting.simabs.variable;
 
+import java.util.Arrays;
+
 import org.smlabtesting.simabs.model.SMLabModel;
 
 public class Output{
@@ -32,5 +34,17 @@ public class Output{
 	{
 		if(totalNumRushSamples > 0)
 			percentageLateRushSamples = (double) lateRushSamples / (double) totalNumRushSamples;
+	}
+	
+	public Output copy() {
+		Output output = new Output(model);
+		output.totalFailedStationEntries = Arrays.copyOf(totalFailedStationEntries, totalFailedStationEntries.length);
+		output.lateRegularSamples = this.lateRegularSamples;
+		output.lateRushSamples = this.lateRushSamples;
+		output.totalNumRegularSamples = this.totalNumRegularSamples;
+		output.totalNumRushSamples = this.totalNumRushSamples;
+		output.percentageLateRegularSamples = this.percentageLateRegularSamples;
+		output.percentageLateRushSamples = this.percentageLateRushSamples;
+		return output;
 	}
 }
