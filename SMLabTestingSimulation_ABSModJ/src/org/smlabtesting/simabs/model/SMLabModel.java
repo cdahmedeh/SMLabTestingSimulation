@@ -7,9 +7,9 @@ import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
 import org.smlabtesting.simabs.action.EnterUnloadBuffer;
 import org.smlabtesting.simabs.action.ExitRacetrackLine;
+import org.smlabtesting.simabs.action.RacetrackMove;
 import org.smlabtesting.simabs.activity.Cleaning;
 import org.smlabtesting.simabs.activity.LoadUnloadProcessing;
-import org.smlabtesting.simabs.activity.RacetrackMove;
 import org.smlabtesting.simabs.activity.Repair;
 import org.smlabtesting.simabs.activity.Testing;
 import org.smlabtesting.simabs.entity.QNewSamples;
@@ -128,7 +128,7 @@ public class SMLabModel extends AOSimulationModel {
 	 */
 	protected void scheduleScheduled() {
 		scheduleAction(new Arrival(this));
-		scheduleActivity(new RacetrackMove(this));
+		scheduleAction(new RacetrackMove(this));
 	}
 
 	/**
