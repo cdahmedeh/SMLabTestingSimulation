@@ -1,5 +1,9 @@
 package org.smlabtesting.simabs.activity;
 
+import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
+import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+
+import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
@@ -77,10 +81,10 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         // If there is a new sample waiting to be tested, put it in the holder.
     	// The New Samples queue automatically sorted rush samples first.
 		// TODO: Merge quick-untested fix.
-        if(model.qNewSamplesRush.n() > 0) {
-            sampleHolder.sample = model.qNewSamplesRush.removeQue();
-        } else if (model.qNewSamples.n() > 0) {
-            sampleHolder.sample = model.qNewSamples.removeQue();
+        if(model.qNewSamples[RUSH].n() > 0) {
+            sampleHolder.sample = model.qNewSamples[RUSH].removeQue();
+        } else if (model.qNewSamples[REGULAR].n() > 0) {
+            sampleHolder.sample = model.qNewSamples[REGULAR].removeQue();
         }
         
         // Put the holder in line to return to the racetrack.

@@ -52,16 +52,14 @@ public class UDPs {
 	}
 	
 		
-	public boolean canExitRacetrackQueue(int stationId) 
-	{
+	public boolean canExitRacetrackQueue(int stationId) {
 		boolean canExit = model.qRacetrackLine[stationId].n() > 0 
 				&& model.rqRacetrack.slots(STATION_EXITS[stationId]) == null;
 		
 		return canExit;
 	}
 	
-	public boolean canEnterCellBufferQueue(RSampleHolder sampleHolder, int stationId)
-	{
+	public boolean canEnterCellBufferQueue(RSampleHolder sampleHolder, int stationId) {
 		boolean canEnter = model.qTestCellBuffer[stationId].n() < TEST_CELL_BUFFER_CAPACITY
 				&& sampleHolder != null 
 				&& sampleHolder.sample != null
@@ -80,7 +78,7 @@ public class UDPs {
 	 * Called when a sample is exiting the SUI, takes care of incrementing the appropriate output variables
 	 * @param sample The sample that is exiting the SUI
 	 */
-	public void sampleFinished(ICSample sample){
+	public void sampleFinished(ICSample sample) {
 		if(sample.rush){
 			model.output.totalNumRushSamples++;
 			if((model.getClock() - sample.startTime) > Constants.RUSH_SAMPLE_MAX_TIME){
