@@ -10,8 +10,7 @@ public class QNewSamples {
 	// Types of samples.
 	public static int REGULAR = 0;
 	public static int RUSH = 1;
-	
-	
+		
     // Containers
     public final Deque<ICSample> samples = new ArrayDeque<ICSample>();
 	

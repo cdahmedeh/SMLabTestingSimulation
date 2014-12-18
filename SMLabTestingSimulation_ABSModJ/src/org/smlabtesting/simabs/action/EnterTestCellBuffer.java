@@ -1,7 +1,6 @@
 package org.smlabtesting.simabs.action;
 
 import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
-import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
@@ -45,12 +44,8 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	public void actionEvent() {
         // Move the sample from the racetrack to the unload buffer queue.
         RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
-        
-        if (sampleHolder == null)
-        	return;
-        
         model.rqRacetrack.setSlot(STATION_ENTRANCES[stationId], null);
-        model.qTestCellBuffer[stationId].insertQue(sampleHolder.id);
+        model.qTestCellBuffer[stationId].insertQue(sampleHolder.id);        	
 	}
 }
 

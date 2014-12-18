@@ -31,7 +31,7 @@ public class Experiment {
 	   double startTime = 0;
 	   double endTime = 3600 * 24 * 15;
 	   
-	   runExperiment(sds, new Parameters(5, new int[]{1,15,15,15,15,15}), startTime, endTime, NUMRUNS, confidence);
+	   runExperiment(sds, new Parameters(5, new int[]{1,1,1,1,1,1}), startTime, endTime, NUMRUNS, confidence);
 	}
 	
 	public static void runExperiment(Seeds[] seeds, Parameters params, double WARM_UP_END_T, double RUN_END_T, int NUMRUNS, double confidence){
