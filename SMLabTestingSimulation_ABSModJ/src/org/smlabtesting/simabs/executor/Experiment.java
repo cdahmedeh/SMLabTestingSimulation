@@ -12,7 +12,7 @@ import org.smlabtesting.simabs.variable.Seeds;
 import cern.jet.random.engine.RandomSeedGenerator;
 
 /**
- * Runs the simulation model. 
+ * Runs the simulation model.  
  */
 public class Experiment {
    public static void main(String[] args) {
