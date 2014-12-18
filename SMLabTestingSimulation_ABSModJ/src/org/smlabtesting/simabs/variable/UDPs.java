@@ -41,14 +41,20 @@ public class UDPs {
 	}
 	
 	public RSampleHolder getSampleHolder(Integer id){
-		if(id == null)
-			return null;
-		
+		if(id == null) {
+			throw new IllegalArgumentException("Sample Holder ID cannot be null.");
+		}
+			
 		RSampleHolder sampleHolder = model.sampleHolders[id];
 		
-		if(sampleHolder.id != id)
-			throw new IllegalArgumentException("Requested id value mismatch with sampleHolders array order");
+		if (sampleHolder == null) {
+			throw new NullPointerException("The request sample holder does not exist.");
+		}
 		
+		if(sampleHolder.id != id) {
+			throw new IllegalArgumentException("Requested id value mismatch with sampleHolders array order");
+		}
+
 		return sampleHolder;
 	}
 	
