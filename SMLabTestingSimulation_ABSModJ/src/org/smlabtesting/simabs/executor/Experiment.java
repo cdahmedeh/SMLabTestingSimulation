@@ -32,7 +32,7 @@ public class Experiment {
 	   double startTime = 0;
 	   double endTime = 3600 * 24 * 15;
 	   
-	   runExperiment(sds, new Parameters(5, new int[]{1,15,15,15,15,15}), startTime, endTime, NUMRUNS, confidence);
+	   runExperiment(sds, new Parameters(5, new int[]{1,25,25,25,25,25}), startTime, endTime, NUMRUNS, confidence);
 	}
 	
 	public static void runExperiment(Seeds[] seeds, Parameters params, double WARM_UP_END_T, double RUN_END_T, int NUMRUNS, double confidence){
@@ -54,7 +54,7 @@ public class Experiment {
 	   System.out.println("----------RESULTS----------\n");
 	   System.out.print("Parameters: \nmaxEmptyHolders = "+params.maxEmptyHolders + "\n& numCellMachines = ");
 	   System.out.print("< "+params.numCellMachines[0]);
-	   for(int j = 0; j < 6; j++){
+	   for(int j = 1; j < 6; j++){
 		  System.out.print(", " + params.numCellMachines[j]);
 	   }
 	   System.out.println(" >\n");
