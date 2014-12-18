@@ -1,5 +1,7 @@
 package org.smlabtesting.simabs.executor;
 
+import absmodJ.ConfidenceInterval;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +19,7 @@ public class Experiment {
    public static void main(String[] args) {
 
 	   int NUMRUNS = 50;
+	   double confidence = 0.90;
 	   
 	   // Generate seeds per run.
        RandomSeedGenerator rsg = new RandomSeedGenerator();
@@ -29,12 +32,12 @@ public class Experiment {
 	   double startTime = 0;
 	   double endTime = 3600 * 24 * 15;
 	   
-	   runExperiment(sds, new Parameters(5, new int[]{1,1,1,1,1,1}), startTime, endTime, NUMRUNS);
+	   runExperiment(sds, new Parameters(5, new int[]{1,15,15,15,15,15}), startTime, endTime, NUMRUNS, confidence);
 	}
 	
-	public static void runExperiment(Seeds[] seeds, Parameters params, double WARM_UP_END_T, double RUN_END_T, int NUMRUNS){
-	   double[] percentageRegularSamples = new double [NUMRUNS];
-	   double[] percentageRushSamples = new double [NUMRUNS];
+	public static void runExperiment(Seeds[] seeds, Parameters params, double WARM_UP_END_T, double RUN_END_T, int NUMRUNS, double confidence){
+	   double[] percentageLateRegularSamples = new double [NUMRUNS];
+	   double[] percentageLateRushSamples = new double [NUMRUNS];
 	   int[] missedEntries = new int[] {0,0,0,0,0,0};
 	   
 	   for(int i = 0; i < NUMRUNS; i++){
@@ -42,8 +45,8 @@ public class Experiment {
 		   model.runSimulation();
 		   model.output.percentageLateRegularSamples();
 		   model.output.percentageLateRushSamples();
-		   percentageRegularSamples[i] += model.output.percentageLateRegularSamples;
-		   percentageRushSamples[i] += model.output.percentageLateRushSamples;
+		   percentageLateRegularSamples[i] += model.output.percentageLateRegularSamples;
+		   percentageLateRushSamples[i] += model.output.percentageLateRushSamples;
 		   for(int j = 1; j < 6; j++){
 			   missedEntries[j] += model.output.totalFailedStationEntries[j] / (double) NUMRUNS;
 		   }
@@ -66,8 +69,37 @@ public class Experiment {
 	   System.out.println(" >");
 	   System.out.println("Run #\t%LateRegularSample\t%LateRushSample");
 	   for(int i = 0; i < NUMRUNS; i++){
-		  System.out.println((i+1)+"\t"+percentageRegularSamples[i]+"\t"+percentageRushSamples[i]);
+		  System.out.println((i+1)+"\t"+percentageLateRegularSamples[i]+"\t"+percentageLateRushSamples[i]);
 	   }
+	   double avgLateRegSamples = 0;
+	   double avgLateRushSamples = 0;
+	   
+	   for(int i = 0; i < NUMRUNS; i++){
+		   avgLateRegSamples += percentageLateRegularSamples[i] / (double) NUMRUNS;
+		   avgLateRushSamples += percentageLateRushSamples[i] / (double) NUMRUNS;
+	   }
+	   
+	   ConfidenceInterval intervalReg = new ConfidenceInterval(percentageLateRegularSamples, confidence);
+	   ConfidenceInterval intervalRush = new ConfidenceInterval(percentageLateRushSamples, confidence);
+	   
+	   if(avgLateRegSamples <= 0.02 && avgLateRushSamples <= 0.1){
+		   System.out.println("WOOHOO percent late OK");
+	   }else{
+		   System.out.println("Percent late too high.");
+	   }
+	   
+	   System.out.printf("-------------------------------------------------------------------------------------\n");
+       System.out.printf("Comparison    Point estimate(ybar(n))  s(n)     zeta   CI Min   CI Max |zeta/ybar(n)|\n");
+       System.out.printf("-------------------------------------------------------------------------------------\n");
+       System.out.printf("    intervalReg %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n",
+    		   intervalReg.getPointEstimate(), intervalReg.getVariance(), intervalReg.getZeta(), 
+    		   intervalReg.getCfMin(), intervalReg.getCfMax(),
+    	         Math.abs(intervalReg.getZeta()/intervalReg.getPointEstimate()));
+       System.out.printf("    intervalRush %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n", 
+    		   intervalRush.getPointEstimate(), intervalRush.getVariance(), intervalRush.getZeta(), 
+    		   intervalRush.getCfMin(), intervalRush.getCfMax(),
+	             Math.abs(intervalRush.getZeta()/intervalRush.getPointEstimate()));
+       System.out.printf("-------------------------------------------------------------------------------------\n");
 	   
 	}
 	
