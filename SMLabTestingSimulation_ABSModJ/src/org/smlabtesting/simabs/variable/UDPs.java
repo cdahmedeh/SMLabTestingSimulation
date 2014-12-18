@@ -42,7 +42,7 @@ public class UDPs {
 	
 	public RSampleHolder getSampleHolder(Integer id){
 		if(id == null) {
-			throw new IllegalArgumentException("Sample Holder ID cannot be null.");
+			return null;
 		}
 			
 		RSampleHolder sampleHolder = model.sampleHolders[id];
