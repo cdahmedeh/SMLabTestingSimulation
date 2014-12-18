@@ -1,7 +1,9 @@
 package org.smlabtesting.simabs.variable;
 
+import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
 import static org.smlabtesting.simabs.variable.Constants.STATION_EXITS;
 import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
+import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.ICSample;
 import org.smlabtesting.simabs.entity.RQRacetrack;
@@ -14,7 +16,6 @@ import org.smlabtesting.simabs.model.SMLabModel;
  * UDP.testsCompleted(sample) 					is implemented in: EnterUnloadBuffer.precondition(...) (see comments there)
  */
 public class UDPs {
-	@SuppressWarnings("unused")
 	private SMLabModel model;
 	public UDPs(SMLabModel model) {
 		this.model = model; 
@@ -65,12 +66,6 @@ public class UDPs {
 				&& sampleHolder.sample != null
 				&& testsRemainingNext(sampleHolder.sample, stationId);
 		
-		// Check for the case when a sample holder would have needed to enter a station, 
-		// but could not due to the qTestCellBuffer being full. Increment output variable.
-		if(!canEnter && sampleHolder != null && testsRemainingNext(sampleHolder.sample, stationId)){
-			model.output.totalFailedStationEntries[stationId]++;
-		}
-		
 		return canEnter;
 	}
 
@@ -90,5 +85,36 @@ public class UDPs {
 				 model.output.lateRegularSamples++;
 			}
 		}
+	}
+	
+	public void updateMissedCounts() {
+		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[0]));
+	
+		// First check that here is a holder at the entrance point of the test 
+		// cell buffer. Then check if that holder has the current test cell 
+		// as next in its sequence. And then check if the unload buffer is full.
+        if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
+                && sampleHolder != null
+                && sampleHolder.sample != null
+                && model.udp.testsCompleted(sampleHolder.sample)) {
+        	model.output.totalFailedStationEntries[0]++;
+        }
+
+        // Handle the missed counts for the test cells.
+        for (int stationId = 1; stationId < 6; stationId++) {
+            // Used to point to the holder that is at the test cell buffer 
+     		// entrance point. Does not exist in CM.
+           	RSampleHolder sampleHolder_ = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
+         		
+     		// First check that here is a holder at the entrance point of the test 
+     		// cell buffer. Then check if that holder has the current test cell 
+     		// as next in its sequence. And then check if the test cell buffer is full.
+             if (model.qTestCellBuffer[stationId].n() == TEST_CELL_BUFFER_CAPACITY
+                     && sampleHolder_ != null
+                     && sampleHolder_.sample != null
+                     && model.udp.testsRemainingNext(sampleHolder_.sample, stationId)) {
+            	 model.output.totalFailedStationEntries[stationId]++;
+             }
+        }
 	}
 }

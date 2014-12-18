@@ -52,39 +52,8 @@ public class RacetrackMove extends ScheduledActivity {
         // Move the belt one slot forward.
         model.udp.shiftRacetrack(model.rqRacetrack);
 
-        // Handle the missed counts for the load/unload machine.
-        
-		// Used to point to the holder that is at the unload buffer 
-		// entrance point. Does not exist in CM.
-		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[0]));
-        
-		// First check that here is a holder at the entrance point of the test 
-		// cell buffer. Then check if that holder has the current test cell 
-		// as next in its sequence. And then check if the unload buffer is full.
-        if (model.qUnloadBuffer.n() == UNLOADBUFFER_CAPACITY
-                && sampleHolder != null
-                && sampleHolder.sample != null
-                && model.udp.testsCompleted(sampleHolder.sample)) {
-        	model.output.totalFailedStationEntries[0]++;
-        }
-
-        // Handle the missed counts for the test cells.
-        
-        for (int stationId = 1; stationId < 6; stationId++) {
-            // Used to point to the holder that is at the test cell buffer 
-     		// entrance point. Does not exist in CM.
-           	RSampleHolder sampleHolder_ = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
-         		
-     		// First check that here is a holder at the entrance point of the test 
-     		// cell buffer. Then check if that holder has the current test cell 
-     		// as next in its sequence. And then check if the test cell buffer is full.
-             if (model.qTestCellBuffer[stationId].n() == TEST_CELL_BUFFER_CAPACITY
-                     && sampleHolder_ != null
-                     && sampleHolder_.sample != null
-                     && model.udp.testsRemainingNext(sampleHolder_.sample, stationId)) {
-            	 model.output.totalFailedStationEntries[stationId]++;
-             }
-        }
+        // Handle the missed counts for all the machines.
+        model.udp.updateMissedCounts();
 	}
 
 	@Override
