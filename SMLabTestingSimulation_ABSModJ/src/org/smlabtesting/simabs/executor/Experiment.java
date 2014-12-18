@@ -79,92 +79,76 @@ public class Experiment {
 		   avgLateRushSamples += percentageLateRushSamples[i] / (double) NUMRUNS;
 	   }
 	   
-	   ConfidenceInterval intervalReg = new ConfidenceInterval(percentageLateRegularSamples, confidence);
-	   ConfidenceInterval intervalRush = new ConfidenceInterval(percentageLateRushSamples, confidence);
-	   
 	   if(avgLateRegSamples <= 0.02 && avgLateRushSamples <= 0.1){
 		   System.out.println("WOOHOO percent late OK");
 	   }else{
 		   System.out.println("Percent late too high.");
 	   }
 	   
-	   System.out.printf("-------------------------------------------------------------------------------------\n");
-       System.out.printf("Comparison    Point estimate(ybar(n))  s(n)     zeta   CI Min   CI Max |zeta/ybar(n)|\n");
-       System.out.printf("-------------------------------------------------------------------------------------\n");
-       System.out.printf("    intervalReg %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n",
-    		   intervalReg.getPointEstimate(), intervalReg.getVariance(), intervalReg.getZeta(), 
-    		   intervalReg.getCfMin(), intervalReg.getCfMax(),
-    	         Math.abs(intervalReg.getZeta()/intervalReg.getPointEstimate()));
-       System.out.printf("    intervalRush %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n", 
-    		   intervalRush.getPointEstimate(), intervalRush.getVariance(), intervalRush.getZeta(), 
-    		   intervalRush.getCfMin(), intervalRush.getCfMax(),
-	             Math.abs(intervalRush.getZeta()/intervalRush.getPointEstimate()));
-       System.out.printf("-------------------------------------------------------------------------------------\n");
-	   
 	}
 	
 	public static void getWarmUp(){
-		   ExecutorService executor = Executors.newFixedThreadPool(4);
-		   
-		   // Number of runs to be performed.
-	       int NUMRUNS = 50; 
-	       
-	       // Start times and end times in seconds.
-	       int interval = 3600*24/4;
-	       int count = 30*4;
-	       double startTime=0.0, endTime=interval*count;
-	       
-	       // Generate seeds per run.
-	       RandomSeedGenerator rsg = new RandomSeedGenerator();
-	       
-	       Seeds[] sds = new Seeds[NUMRUNS];
-	       for(int i=0; i<NUMRUNS ; i++) {
-	    	   sds[i] = new Seeds(rsg);
-	       }
-	       
-	       long start = System.currentTimeMillis();
-	       
-	       Runs runs = new Runs(count);
-	       
-	       // Create the simulation model and do some runs.
-	       for(int i = 0 ; i < NUMRUNS ; i++) {
-	    	  SMLabModel model;  
-	    	  Parameters parameters = new Parameters();
-	          model = new SMLabModel(startTime,endTime,sds[i], parameters, false);
-	          
-	          final int j = i; //TODO: Crazy voodoo magic!
-	          executor.execute(new Runnable() {
+	   ExecutorService executor = Executors.newFixedThreadPool(4);
+	   
+	   // Number of runs to be performed.
+       int NUMRUNS = 50; 
+       
+       // Start times and end times in seconds.
+       int interval = 3600*24/4;
+       int count = 30*4;
+       double startTime=0.0, endTime=interval*count;
+       
+       // Generate seeds per run.
+       RandomSeedGenerator rsg = new RandomSeedGenerator();
+       
+       Seeds[] sds = new Seeds[NUMRUNS];
+       for(int i=0; i<NUMRUNS ; i++) {
+    	   sds[i] = new Seeds(rsg);
+       }
+       
+       long start = System.currentTimeMillis();
+       
+       Runs runs = new Runs(count);
+       
+       // Create the simulation model and do some runs.
+       for(int i = 0 ; i < NUMRUNS ; i++) {
+    	  SMLabModel model;  
+    	  Parameters parameters = new Parameters();
+          model = new SMLabModel(startTime,endTime,sds[i], parameters, false);
+          
+          final int j = i; //TODO: Crazy voodoo magic!
+          executor.execute(new Runnable() {
 
-	        	  @Override
-	        	  public void run() {
-	        		  Run run = new Run();
-	        		  for (int t = 0; t < count; t++) {
-	        			  model.setTimef(t*interval);
-	        			  model.runSimulation();
-	        			  run.add(t*interval, model.output);
-	        		  }
+        	  @Override
+        	  public void run() {
+        		  Run run = new Run();
+        		  for (int t = 0; t < count; t++) {
+        			  model.setTimef(t*interval);
+        			  model.runSimulation();
+        			  run.add(t*interval, model.output);
+        		  }
 
-	        		  runs.add(run);
+        		  runs.add(run);
 
-	        		  System.out.println(j);
-	        	  }
-	          });
-	          
+        		  System.out.println(j);
+        	  }
+          });
+          
 
-	          //          model.printOutputs();
-	       }
-	       
-	       try {
-	           executor.shutdown();
-	    	   executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
-	       } catch (InterruptedException e) {
-	    	   // TODO Auto-generated catch block
-	    	   e.printStackTrace();
-	       }
-	       
-	       runs.printAverages(interval);
-	       
-	       long end = System.currentTimeMillis();
-	       System.out.println(end - start);
+          //          model.printOutputs();
+       }
+       
+       try {
+           executor.shutdown();
+    	   executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+       } catch (InterruptedException e) {
+    	   // TODO Auto-generated catch block
+    	   e.printStackTrace();
+       }
+       
+       runs.printAverages(interval);
+       
+       long end = System.currentTimeMillis();
+       System.out.println(end - start);
 	}
 }
