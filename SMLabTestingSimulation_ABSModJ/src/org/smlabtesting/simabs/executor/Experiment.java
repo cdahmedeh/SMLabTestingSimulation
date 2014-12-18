@@ -46,14 +46,14 @@ public class Experiment {
 		   model.output.percentageLateRushSamples();
 		   percentageLateRegularSamples[i] += model.output.percentageLateRegularSamples;
 		   percentageLateRushSamples[i] += model.output.percentageLateRushSamples;
-		   for(int j = 1; j < 6; j++){
+		   for(int j = 0; j < 6; j++){
 			   missedEntries[j] += model.output.totalFailedStationEntries[j] / (double) NUMRUNS;
 		   }
 	   }
 	   System.out.println("----------RESULTS----------\n");
 	   System.out.print("Parameters: \nmaxEmptyHolders = "+params.maxEmptyHolders + "\n& numCellMachines = ");
 	   System.out.print("< "+params.numCellMachines[0]);
-	   for(int j = 0; j < 6; j++){
+	   for(int j = 1; j < 6; j++){
 		  System.out.print(", " + params.numCellMachines[j]);
 	   }
 	   System.out.println(" >\n");
