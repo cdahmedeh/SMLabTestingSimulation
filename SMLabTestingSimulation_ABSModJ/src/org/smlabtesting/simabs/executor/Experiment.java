@@ -1,12 +1,11 @@
 package org.smlabtesting.simabs.executor;
 
-import absmodJ.ConfidenceInterval;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.smlabtesting.simabs.model.SMLabModel;
+import org.smlabtesting.simabs.types.SuperConfidenceInterval;
 import org.smlabtesting.simabs.variable.Parameters;
 import org.smlabtesting.simabs.variable.Seeds;
 
@@ -18,7 +17,7 @@ import cern.jet.random.engine.RandomSeedGenerator;
 public class Experiment {
    public static void main(String[] args) {
 
-	   int NUMRUNS = 50;
+	   int NUMRUNS = 3;
 	   double confidence = 0.90;
 	   
 	   // Generate seeds per run.
@@ -79,8 +78,8 @@ public class Experiment {
 		   avgLateRushSamples += percentageLateRushSamples[i] / (double) NUMRUNS;
 	   }
 	   
-	   ConfidenceInterval intervalReg = new ConfidenceInterval(percentageLateRegularSamples, confidence);
-	   ConfidenceInterval intervalRush = new ConfidenceInterval(percentageLateRushSamples, confidence);
+	   SuperConfidenceInterval intervalReg = new SuperConfidenceInterval(percentageLateRegularSamples, confidence);
+	   SuperConfidenceInterval intervalRush = new SuperConfidenceInterval(percentageLateRushSamples, confidence);
 	   
 	   if(avgLateRegSamples <= 0.02 && avgLateRushSamples <= 0.1){
 		   System.out.println("WOOHOO percent late OK");
@@ -92,13 +91,13 @@ public class Experiment {
        System.out.printf("Comparison    Point estimate(ybar(n))  s(n)     zeta   CI Min   CI Max |zeta/ybar(n)|\n");
        System.out.printf("-------------------------------------------------------------------------------------\n");
        System.out.printf("    intervalReg %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n",
-    		   intervalReg.getPointEstimate(), intervalReg.getVariance(), intervalReg.getZeta(), 
-    		   intervalReg.getCfMin(), intervalReg.getCfMax(),
-    	         Math.abs(intervalReg.getZeta()/intervalReg.getPointEstimate()));
+    		   intervalReg.getMean(), intervalReg.getStandardDeviation(), intervalReg.getZeta(), 
+    		   intervalReg.getLowerCI(), intervalReg.getUpperCI(),
+    		   	intervalRush.getR());
        System.out.printf("    intervalRush %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n", 
-    		   intervalRush.getPointEstimate(), intervalRush.getVariance(), intervalRush.getZeta(), 
-    		   intervalRush.getCfMin(), intervalRush.getCfMax(),
-	             Math.abs(intervalRush.getZeta()/intervalRush.getPointEstimate()));
+    		   intervalRush.getMean(), intervalRush.getStandardDeviation(), intervalRush.getZeta(), 
+    		   intervalRush.getLowerCI(), intervalRush.getUpperCI(),
+	             intervalRush.getR());
        System.out.printf("-------------------------------------------------------------------------------------\n");
 	   
 	}
