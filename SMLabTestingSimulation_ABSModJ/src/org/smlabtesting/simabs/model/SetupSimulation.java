@@ -2,10 +2,12 @@ package org.smlabtesting.simabs.model;
 
 import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
 import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+import static org.smlabtesting.simabs.variable.Constants.C1;
+import static org.smlabtesting.simabs.variable.Constants.C2;
+import static org.smlabtesting.simabs.variable.Constants.C5;
+import static org.smlabtesting.simabs.variable.Constants.LU;
 import static org.smlabtesting.simabs.variable.Constants.NUM_SAMPLE_HOLDERS;
-
-
-
+import static org.smlabtesting.simabs.variable.Constants.STATION_COUNT;
 
 import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.QRacetrackLine;
@@ -39,19 +41,19 @@ public class SetupSimulation extends ScheduledAction
 		// Create the arrays to store the racetrack lines and test cell buffers.
 		// For the test cell buffer, entry 0 is never set because machineId = 0
 		// belong to the load/unload machine.
-		model.qRacetrackLine = new QRacetrackLine[6];
-		model.qTestCellBuffer = new QTestCellBuffer[6];
+		model.qRacetrackLine = new QRacetrackLine[STATION_COUNT];
+		model.qTestCellBuffer = new QTestCellBuffer[STATION_COUNT];
 		
 		// Determine how large the testing machine arrays need to be.
 		int maxMachines = 0;
-		for(int i = 1; i < 6; i++){
+		for(int i = C1; i < STATION_COUNT; i++){
 			if(model.parameters.numCellMachines[i] > maxMachines)
 				maxMachines = model.parameters.numCellMachines[i];
 		}
 		
 		// Create the 2D array for storing the testing machines. Five test
 		// cells but with machineId = 0 not set as usual.
-		model.rcTestingMachine = new RCTestingMachine[6][maxMachines];
+		model.rcTestingMachine = new RCTestingMachine[STATION_COUNT][maxMachines];
 		
         // Create the racetrack.
         model.rqRacetrack = new RQRacetrack();
@@ -61,7 +63,7 @@ public class SetupSimulation extends ScheduledAction
         model.qNewSamples[REGULAR] = new QNewSamples();
         model.qNewSamples[RUSH] = new QNewSamples();
         model.qUnloadBuffer = new QUnloadBuffer();
-        model.qRacetrackLine[0] = new QRacetrackLine();
+        model.qRacetrackLine[LU] = new QRacetrackLine();
         model.rLoadUnloadMachine = new RLoadUnloadMachine();
         
         // Create some sample holders, put them in the racetrack line of 
@@ -69,11 +71,11 @@ public class SetupSimulation extends ScheduledAction
         model.sampleHolders = new RSampleHolder[NUM_SAMPLE_HOLDERS];
         for (int i = 0; i < NUM_SAMPLE_HOLDERS; i++) {
             model.sampleHolders[i] = new RSampleHolder(i);
-            model.qRacetrackLine[0].insertQue(i);
+            model.qRacetrackLine[LU].insertQue(i);
         }
                 
         // Create the test cells.
-        for (int stationId = 1; stationId <= 5; stationId++) {
+        for (int stationId = LU; stationId <= C5; stationId++) {
             model.qTestCellBuffer[stationId] = new QTestCellBuffer();
             model.qRacetrackLine[stationId] = new QRacetrackLine();
         
@@ -82,8 +84,8 @@ public class SetupSimulation extends ScheduledAction
             for (int machineId = 0; machineId < model.parameters.numCellMachines[stationId]; machineId++) {
                 model.rcTestingMachine[stationId][machineId] = new RCTestingMachine();
                 
-                // For machines that are not number 2, setup a failure time.
-                if (stationId != 2) {
+                // For machines that are not number C2, setup a failure time.
+                if (stationId != C2) {
                 	model.rcTestingMachine[stationId][machineId].timeUntilFailure
                 		= model.rvp.uFailureDuration(stationId);
                 }
