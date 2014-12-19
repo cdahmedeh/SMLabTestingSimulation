@@ -1,9 +1,11 @@
 package org.smlabtesting.simabs.action;
 
+import static org.smlabtesting.simabs.variable.Constants.LU;
 import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
 
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
+import org.smlabtesting.simabs.variable.Constants;
 
 import absmodJ.ConditionalAction;
 
@@ -25,7 +27,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	public static boolean precondition(SMLabModel model) {
 		// Used to point to the holder that is at the load/unload buffer 
 		// entrance point. Does not exist in CM.
-		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[LU]);
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
         
 		if( sampleHolder == null ) { //TODO: Consider removal.
@@ -41,7 +43,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	@Override
 	public void actionEvent() {
 		// In the CM, this is declared later.
-		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[LU]);
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
 		
 		if( sampleHolder == null ) { //TODO: Consider removal.
@@ -55,7 +57,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
         }
 		
         // Move the sample holder from the racetrack to the unload buffer queue.
-        model.rqRacetrack.setSlot(STATION_ENTRANCES[0], null);
+        model.rqRacetrack.setSlot(STATION_ENTRANCES[LU], null);
         model.qUnloadBuffer.insertQue(sampleHolder.id);
 	}
 }

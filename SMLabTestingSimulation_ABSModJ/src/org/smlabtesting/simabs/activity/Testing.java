@@ -4,10 +4,12 @@ import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsCleaning;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.NeedsRepair;
 import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Testing;
+import static org.smlabtesting.simabs.variable.Constants.C2;
 
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
+import org.smlabtesting.simabs.variable.Constants;
 
 import absmodJ.ConditionalActivity;
 
@@ -111,7 +113,7 @@ public class Testing extends ConditionalActivity {
             
             // Subtract the machine runtime from the failure time. Except for
             // test cell number 2 that never fails.
-            if (stationId != 2) {
+            if (stationId != C2) {
                 testingMachine.timeUntilFailure -= testingMachine.runTime;            	
             }
             
@@ -119,7 +121,7 @@ public class Testing extends ConditionalActivity {
             testingMachine.completedTests++;
             
             // Cell C2 needs to be cleaned after 300 tests.
-            if (stationId == 2 && (testingMachine.completedTests % 300 == 0)) {
+            if (stationId == C2 && (testingMachine.completedTests % 300 == 0)) {
             	testingMachine.status = NeedsCleaning;
             }
         } else {

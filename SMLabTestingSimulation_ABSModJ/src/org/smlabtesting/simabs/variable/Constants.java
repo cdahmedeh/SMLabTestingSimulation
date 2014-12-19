@@ -13,6 +13,10 @@ public class Constants {
 	// How many slots fit in the racetrack.
 	public static final int BELT_SLOTS_COUNT = 48;
 	
+	// Station IDs and count
+	public static final int STATION_COUNT = 6;
+	public static final int LU = 0, C1 = 1, C2 = 2, C3 = 3, C4 = 4, C5 = 5;
+	
 	// Enter/Exit points for the load/unload machines and test cells.
 	public static final int[] STATION_EXITS = {0, 8, 16, 24, 32, 40}; 			// Out from the station to the racetrack.
 	public static final int[] STATION_ENTRANCES = {4, 12, 20, 28, 36, 44};		// In from the racetrack to the station.

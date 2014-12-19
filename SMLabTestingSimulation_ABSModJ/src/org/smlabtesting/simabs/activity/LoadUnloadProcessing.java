@@ -2,10 +2,11 @@ package org.smlabtesting.simabs.activity;
 
 import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
 import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+import static org.smlabtesting.simabs.variable.Constants.LU;
 
-import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
+import org.smlabtesting.simabs.variable.Constants;
 
 import absmodJ.ConditionalActivity;
 
@@ -86,7 +87,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         }
         
         // Put the holder in line to return to the racetrack.
-        model.qRacetrackLine[0].insertQue(model.rLoadUnloadMachine.sampleHolderId);
+        model.qRacetrackLine[LU].insertQue(model.rLoadUnloadMachine.sampleHolderId);
         model.rLoadUnloadMachine.sampleHolderId = null;
         
         // The machine status is set to idle.
