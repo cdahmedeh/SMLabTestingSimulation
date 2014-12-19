@@ -2,7 +2,7 @@ package org.smlabtesting.simabs.variable;
 
 public class Constants {
 	// The capacity of the unload buffer.
-	public static final int UNLOADBUFFER_CAPACITY = 5;
+	public static final int UNLOADBUFFER_CAPACITY = 50;
 
 	// The capacity of all test cell buffer queues.
 	public static final int TEST_CELL_BUFFER_CAPACITY = 3;

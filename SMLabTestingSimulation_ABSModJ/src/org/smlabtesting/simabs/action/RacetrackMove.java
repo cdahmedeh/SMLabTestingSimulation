@@ -1,14 +1,8 @@
 package org.smlabtesting.simabs.action;
 
-import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
-import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
-import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
-
-import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ScheduledAction;
-import absmodJ.ScheduledActivity;
 
 /**
  * This action describes the movement of the track as the holders get shifted 

@@ -27,18 +27,18 @@ public class ExitRacetrackLine extends ConditionalAction {
 	}
 	
 	public static boolean precondition(SMLabModel model, int stationId) {
-      // First check that here is a holder inline to merge onto the track and 
-	  // then check if the exit point of this queue onto the racetrack is actually vacant..
-		boolean canExit = model.udp.canExitRacetrackQueue(stationId);
-		
-		return canExit;
+		// First check that here is a holder inline to merge onto the track and 
+		// then check if the exit point of this queue onto the racetrack is 
+		// actually vacant.
+		return model.udp.canExitRacetrackQueue(stationId);
 	}
 	
 	@Override
 	public void actionEvent() {
 	    //Move the sample from the racetrack line queue to the racetrack
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.qRacetrackLine[stationId].removeQue());
-		if(sampleHolder != null)
+		if(sampleHolder != null) { //TODO: To consider removal.
 			model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolder.id);
+		}
 	}
 }

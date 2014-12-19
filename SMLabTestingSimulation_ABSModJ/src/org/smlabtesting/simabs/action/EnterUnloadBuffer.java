@@ -26,38 +26,28 @@ public class EnterUnloadBuffer extends ConditionalAction {
 	public static boolean precondition(SMLabModel model) {
 		// Used to point to the holder that is at the load/unload buffer 
 		// entrance point. Does not exist in CM.
-		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[0]));
+		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
         
-		if(sampleHolder == null)
+		if( sampleHolder == null ) { //TODO: Consider removal.
 			return false;
-		
+		}
+			
 		// Check that there is actually a holder in the entrance point of the
 		// load/unload buffer and that the buffer is not full. Note: the unload 
 		// buffer has a length of 5.
-		return ( model.rqRacetrack.slots(STATION_ENTRANCES[0]) != null && model.qUnloadBuffer.n() < UNLOADBUFFER_CAPACITY ) 
-                && (
-                		// Either there is a sample that has completed all tests
-                		// and it can always go in.
-                        sampleHolder.sample != null  
-                        && model.udp.testsCompleted(sampleHolder.sample)
-                        
-                        || /* OR */
-                        
-                        // Or there is an empty sample holder and that the 
-                        // number of reserved buffer spots for completed samples
-                        // is still respected.
-                        sampleHolder.sample == null
-                        && model.qUnloadBuffer.nEmpty < model.parameters.maxEmptyHolders
-                   );
+		return model.udp.canEnterUnloadBuffer(sampleHolder);
 	}
 	
 	@Override
 	public void actionEvent() {
 		// In the CM, this is declared later.
-		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[0]));
+		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[0]);
+		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
 		
-		if(sampleHolder == null)
+		if( sampleHolder == null ) { //TODO: Consider removal.
 			return;
+		}
 		
 		// If the sample holder coming in has no sample, then increment the
 		// empty sample holder counter.
