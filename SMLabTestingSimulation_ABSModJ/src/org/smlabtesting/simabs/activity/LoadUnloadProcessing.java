@@ -6,7 +6,6 @@ import static org.smlabtesting.simabs.variable.Constants.LU;
 
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
-import org.smlabtesting.simabs.variable.Constants;
 
 import absmodJ.ConditionalActivity;
 

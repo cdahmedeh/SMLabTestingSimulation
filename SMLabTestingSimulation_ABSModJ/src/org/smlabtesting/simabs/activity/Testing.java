@@ -9,7 +9,6 @@ import static org.smlabtesting.simabs.variable.Constants.C2;
 import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
-import org.smlabtesting.simabs.variable.Constants;
 
 import absmodJ.ConditionalActivity;
 
