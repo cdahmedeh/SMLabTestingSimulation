@@ -26,8 +26,6 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(SMLabModel model) {
-		// TODO: The busy attribute wasn't needed for our version of the system.
-		
 		// The unload buffer has a holder waiting in line and the load unload 
 		// machine is not currently processing another holder
 		return model.qUnloadBuffer.n() > 0 && model.rLoadUnloadMachine.busy == false;
@@ -43,7 +41,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         model.rLoadUnloadMachine.sampleHolderId = model.qUnloadBuffer.removeQue();
         
         RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rLoadUnloadMachine.sampleHolderId);
-        if(sampleHolder == null)
+        if(sampleHolder == null) //TODO: To be removed.
         	return;
         
         // If the holder was an empty,  decrement the empty holder counter as 

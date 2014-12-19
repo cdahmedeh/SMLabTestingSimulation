@@ -1,7 +1,6 @@
 package org.smlabtesting.simabs.action;
 
 import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
-import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
 
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
