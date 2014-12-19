@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 public class Output{
-	@SuppressWarnings("unused")
 	private SMLabModel model;
 	
 	//SSOVs
