@@ -75,7 +75,7 @@ public class SetupSimulation extends ScheduledAction
         }
                 
         // Create the test cells.
-        for (int stationId = LU; stationId <= C5; stationId++) {
+        for (int stationId = C1; stationId <= C5; stationId++) {
             model.qTestCellBuffer[stationId] = new QTestCellBuffer();
             model.qRacetrackLine[stationId] = new QRacetrackLine();
         
