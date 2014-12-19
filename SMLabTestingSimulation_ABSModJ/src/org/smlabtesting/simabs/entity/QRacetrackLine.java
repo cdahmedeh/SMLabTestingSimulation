@@ -7,7 +7,6 @@ import java.util.Deque;
  * Maps to Q.Racetrack
  */
 public class QRacetrackLine {
-
     // Containers
     private final Deque<Integer> sampleHolderIds = new ArrayDeque<Integer>();
     

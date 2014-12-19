@@ -14,7 +14,6 @@ public class QNewSamples {
     // Containers
     public final Deque<ICSample> samples = new ArrayDeque<ICSample>();
 	
-
     // Attributes
     public int n() {return samples.size();}
     
