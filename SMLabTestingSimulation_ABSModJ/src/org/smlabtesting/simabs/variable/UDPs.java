@@ -69,10 +69,10 @@ public class UDPs {
 		return canExit;
 	}
 
-	// First check that here is a holder at the entrance point of the test 
-	// cell buffer. Then check if that holder has the current test cell 
-	// as next in its sequence. Also check for vacancy in the test cell buffer.
 	public boolean canEnterCellBufferQueue(RSampleHolder sampleHolder, int stationId) {
+		// First check that here is a holder at the entrance point of the test 
+		// cell buffer. Then check if that holder has the current test cell 
+		// as next in its sequence. Also check for vacancy in the test cell buffer.
 		boolean canEnter = model.qTestCellBuffer[stationId].n() < TEST_CELL_BUFFER_CAPACITY
 				&& sampleHolder != null 
 				&& sampleHolder.sample != null
