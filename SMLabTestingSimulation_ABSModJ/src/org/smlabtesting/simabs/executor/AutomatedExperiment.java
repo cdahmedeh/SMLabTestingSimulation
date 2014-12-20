@@ -49,9 +49,8 @@ public class AutomatedExperiment {
 				
 				// Check if the lateness is good enough...
 				if(output.percentageLateRegularSamples <= 0.1 && output.percentageLateRushSamples <= 0.02){
-					System.out.println("WOOHOO percent late OK");
-				}else{
-					System.out.println("Percent late too high.");
+					System.out.println("Good lateness results found!");
+					break;
 				}
 
 				
