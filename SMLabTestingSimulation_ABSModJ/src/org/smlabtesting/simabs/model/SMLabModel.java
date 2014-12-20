@@ -2,6 +2,9 @@ package org.smlabtesting.simabs.model;
 
 import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
 import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+import static org.smlabtesting.simabs.variable.Constants.C1;
+import static org.smlabtesting.simabs.variable.Constants.LU;
+import static org.smlabtesting.simabs.variable.Constants.STATION_COUNT;
 
 import org.smlabtesting.simabs.action.Arrival;
 import org.smlabtesting.simabs.action.EnterTestCellBuffer;
@@ -20,6 +23,7 @@ import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.entity.RSampleHolder;
+import org.smlabtesting.simabs.variable.Constants;
 import org.smlabtesting.simabs.variable.DVPs;
 import org.smlabtesting.simabs.variable.Output;
 import org.smlabtesting.simabs.variable.Parameters;
@@ -173,7 +177,7 @@ public class SMLabModel extends AOSimulationModel {
 		}
 
 		// Racetrack return queue activity. There is one for all six stations.
-		for (int i = 0; i < 6; i++) {
+		for (int i = LU; i < STATION_COUNT; i++) {
 			if (ExitRacetrackLine.precondition(this, i)) {
 				ExitRacetrackLine exitRacetrackLine = new ExitRacetrackLine(this, i);
 				exitRacetrackLine.actionEvent();
@@ -182,7 +186,7 @@ public class SMLabModel extends AOSimulationModel {
 		}
 
 		// Test Cell activities and actions. There are five of them.
-		for (int i = 1; i < 6; i++) {
+		for (int i = C1; i < STATION_COUNT; i++) {
 			// Test cell buffer queue, one per test cell.
 			if (EnterTestCellBuffer.precondition(this, i)) {
 				EnterTestCellBuffer enterTestCellBuffer = new EnterTestCellBuffer(this, i);

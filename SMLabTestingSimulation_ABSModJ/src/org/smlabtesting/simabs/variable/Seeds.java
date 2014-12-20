@@ -23,6 +23,10 @@ public class Seeds {
 	private Map<Integer, Integer> seeds = new HashMap<>();
 	private int current = 0;
 
+	public Seeds() {
+		this.rsg = new RandomSeedGenerator();
+	}
+	
 	public Seeds(RandomSeedGenerator rsg) {
 		this.rsg = rsg;
 	}
@@ -40,7 +44,7 @@ public class Seeds {
 
 	public void feedSeeds(long seed, int amount) {
 		Random random = new Random(seed);
-		IntStream.range(0, amount).forEach(i -> random.nextInt());
+		IntStream.range(0, amount).forEach(i -> seeds.put(i, random.nextInt(Integer.MAX_VALUE)));
 	}
 	
 	public int next() {
