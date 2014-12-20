@@ -1,10 +1,9 @@
 package org.smlabtesting.simabs.variable;
 
-import java.util.Arrays;
-
 import org.smlabtesting.simabs.model.SMLabModel;
 
 public class Output{
+	@SuppressWarnings("unused")
 	private SMLabModel model;
 	
 	//SSOVs
@@ -39,15 +38,13 @@ public class Output{
 		return percentageLateRushSamples;
 	}
 	
-	public Output copy() {
-		Output output = new Output(model);
-		output.totalFailedStationEntries = Arrays.copyOf(totalFailedStationEntries, totalFailedStationEntries.length);
-		output.lateRegularSamples = this.lateRegularSamples;
-		output.lateRushSamples = this.lateRushSamples;
-		output.totalNumRegularSamples = this.totalNumRegularSamples;
-		output.totalNumRushSamples = this.totalNumRushSamples;
-		output.percentageLateRegularSamples = this.percentageLateRegularSamples;
-		output.percentageLateRushSamples = this.percentageLateRushSamples;
-		return output;
+	public void reset() {
+		totalFailedStationEntries = new int[]{0,0,0,0,0,0};
+		lateRegularSamples = 0;
+		lateRushSamples = 0;
+		totalNumRegularSamples = 0;
+		totalNumRushSamples = 0;
+		percentageLateRegularSamples = 0;
+		percentageLateRushSamples = 0;
 	}
 }
