@@ -2,32 +2,73 @@ package org.smlabtesting.simabs.executor;
 
 import org.smlabtesting.simabs.model.SMLabModel;
 import org.smlabtesting.simabs.types.ConfidenceInterval;
+import org.smlabtesting.simabs.variable.Output;
 import org.smlabtesting.simabs.variable.Parameters;
 import org.smlabtesting.simabs.variable.Seeds;
 
 /**
- * Runs an experiment simulation model. Used to run experiment by hand.  
+ * Runs the simulation model.  
  */
-public class Experiment {
+public class AutomatedExperiment {
 	// Experiment configuration.
 	private static final int NUM_RUNS = 10;					// Number of runs.
 	private static final double CONFIDENCE_LEVEL = 0.90;	// Desired confidence level.
 
 	private static final double START_TIME = 0;				// When to start
-	private static final double END_TIME = 3600 * 24 * 4;	// When to stop. (5 days)
-	private static final double WARM_UP = 3600 * 24 * 1;		// Warm up cut off point.
+	private static final double END_TIME = 3600 * 24 * 20;	// When to stop. (20 days)
+	private static final double WARM_UP = 3600 * 24 * 7;	// Warm up cut off point. (~7 days)
 
-	private static final Parameters params = new Parameters(// Simulation parameters. To be changed per experiment.
-			3,												// Number of empty allowed holders in the unload buffer
-			new int[]{-1, 4, 5, 6, 7, 8}					// Number of machines per cell. First value is ignored
+	private static final Parameters initParams = new Parameters(// Simulation parameters. To be changed per experiment.
+			5,												// Number of empty allowed holders in the unload buffer
+			new int[]{-1, 1, 1, 1, 1, 1}					// Number of machines per cell. First value is ignored
 															// as LU machine has no testing machines.								
 	);
 		
 	public static void main(String[] args) {
-		runExperiment();
+		Parameters parameters = initParams;
+		
+		// For every possible max empty holder configuration.
+		for (int i = 5; i >= 1; i--) {
+			System.out.println("=============== Maximum Empty Sample Holders: " + i);
+			parameters.maxEmptyHolders = i;
+		
+			// Try adding 20 times or until we get good lateness.
+			for (int j = 0; j < 20; j++) {
+				// Run the sim...
+				Output output = runExperiment(parameters);
+				
+				// Find station with largest bottleneck. Ignore load/unload.
+				int largest = 0;
+				int largestIndex = 0;
+				for (int k = 1; k < output.totalFailedStationEntries.length; k++) {
+					if (output.totalFailedStationEntries[k] > largest) {
+						largest = output.totalFailedStationEntries[k];
+						largestIndex = k;
+					}
+				}
+				
+				// Check if the lateness is good enough...
+				if(output.percentageLateRegularSamples <= 0.1 && output.percentageLateRushSamples <= 0.02){
+					System.out.println("WOOHOO percent late OK");
+				}else{
+					System.out.println("Percent late too high.");
+				}
+
+				
+				// Increase number of stations for that one.
+				parameters.numCellMachines[largestIndex]++;
+				
+				System.out.println("===== Increasing number of machines for test cell C" + largestIndex);
+			}
+			
+			System.out.println("===== Tried twenty times and nothing good found...");
+		}
+		
+		
+		
 	}
 	
-	public static void runExperiment(){
+	public static Output runExperiment(Parameters params){
 		// Generate some seeds		
 		Seeds[] sds = new Seeds[NUM_RUNS];
 		for(int i=0; i<NUM_RUNS ; i++) {
@@ -66,14 +107,17 @@ public class Experiment {
 		
 		// Print the results.
 		printResults(percentagesLateRegularSamples, percentagesLateRushSamples,	missedEntries);
+		
+		// Return the missed entries for decision making using the output container.
+		return getAveragesAsOutput(percentagesLateRegularSamples, percentagesLateRushSamples, missedEntries);
 	}
 
 	private static void printResults(double[] percentagesLateRegularSamples, double[] percentagesLateRushSamples, int[] missedEntries) {
 		System.out.println("----------RESULTS----------\n");
-		System.out.print("Parameters: \nmaxEmptyHolders = "+params.maxEmptyHolders + "\n& numCellMachines = ");
-		System.out.print("< "+params.numCellMachines[0]);
+		System.out.print("Parameters: \nmaxEmptyHolders = "+initParams.maxEmptyHolders + "\n& numCellMachines = ");
+		System.out.print("< "+initParams.numCellMachines[0]);
 		for(int j = 1; j < 6; j++){
-			System.out.print(", " + params.numCellMachines[j]);
+			System.out.print(", " + initParams.numCellMachines[j]);
 		}
 		System.out.println(" >\n");
 		System.out.println("Number of Runs= "+ NUM_RUNS);
@@ -118,5 +162,21 @@ public class Experiment {
 				intervalRush.getLowerCI(), intervalRush.getUpperCI(),
 				intervalRush.getR());
 		System.out.printf("-------------------------------------------------------------------------------------\n");
+	}
+	
+	private static Output getAveragesAsOutput(double[] percentagesLateRegularSamples, double[] percentagesLateRushSamples, int[] missedEntries) {
+		double avgLateRegSamples = 0;
+		double avgLateRushSamples = 0;
+		
+		for(int i = 0; i < NUM_RUNS; i++){
+			avgLateRegSamples += percentagesLateRegularSamples[i] / (double) NUM_RUNS;
+			avgLateRushSamples += percentagesLateRushSamples[i] / (double) NUM_RUNS;
+		}
+		
+		Output averageOutput = new Output(null);
+		averageOutput.percentageLateRegularSamples = avgLateRegSamples;
+		averageOutput.percentageLateRushSamples = avgLateRushSamples;	
+		averageOutput.totalFailedStationEntries = missedEntries; //already average
+		return averageOutput;
 	}
 }
