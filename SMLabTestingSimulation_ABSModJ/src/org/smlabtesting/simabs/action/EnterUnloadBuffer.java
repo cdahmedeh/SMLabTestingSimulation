@@ -28,11 +28,7 @@ public class EnterUnloadBuffer extends ConditionalAction {
 		// entrance point. Does not exist in CM.
 		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[LU]);
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
-        
-		if( sampleHolder == null ) { //TODO: Consider removal.
-			return false;
-		}
-			
+        	
 		// Check that there is actually a holder in the entrance point of the
 		// load/unload buffer and that the buffer is not full. Note: the unload 
 		// buffer has a length of 5.
@@ -44,10 +40,6 @@ public class EnterUnloadBuffer extends ConditionalAction {
 		// In the CM, this is declared later.
 		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[LU]);
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
-		
-		if( sampleHolder == null ) { //TODO: Consider removal.
-			return;
-		}
 		
 		// If the sample holder coming in has no sample, then increment the
 		// empty sample holder counter.

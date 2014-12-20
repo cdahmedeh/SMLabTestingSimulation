@@ -37,8 +37,6 @@ public class ExitRacetrackLine extends ConditionalAction {
 	public void actionEvent() {
 	    //Move the sample from the racetrack line queue to the racetrack
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.qRacetrackLine[stationId].removeQue());
-		if(sampleHolder != null) { //TODO: To consider removal.
-			model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolder.id);
-		}
+		model.rqRacetrack.setSlot(STATION_EXITS[stationId], sampleHolder.id);
 	}
 }
