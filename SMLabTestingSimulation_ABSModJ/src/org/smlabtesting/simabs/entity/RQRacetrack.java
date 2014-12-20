@@ -14,7 +14,7 @@ public class RQRacetrack {
     // Public methods
     
     /**
-     * Puts the provided icSample holder into the the specified position. Make
+     * Puts the provided sample holder into the the specified position. Make
      * sure that there is room for it first by check if the slot is null.
      *
      * @param position Zero-based index of where to put the holder in.
@@ -25,11 +25,10 @@ public class RQRacetrack {
     }
    
     /**
-     * Gets a reference to the icSample holder in that position on the rqRacetrack
+     * Gets a reference to the sample holder in that position on the race track
      * without actually removing it from there.
      *
      * @param position Zero-based index of where to get the holder from.
-     * @param sampleHolderId The holder id at that position of the track.
      */
     public Integer slots(final int position) {
         return slots.get(position);
