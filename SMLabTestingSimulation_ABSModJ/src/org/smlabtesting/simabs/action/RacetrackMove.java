@@ -1,14 +1,8 @@
 package org.smlabtesting.simabs.action;
 
-import static org.smlabtesting.simabs.variable.Constants.STATION_ENTRANCES;
-import static org.smlabtesting.simabs.variable.Constants.TEST_CELL_BUFFER_CAPACITY;
-import static org.smlabtesting.simabs.variable.Constants.UNLOADBUFFER_CAPACITY;
-
-import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
 import absmodJ.ScheduledAction;
-import absmodJ.ScheduledActivity;
 
 /**
  * This action describes the movement of the track as the holders get shifted 
@@ -27,8 +21,12 @@ import absmodJ.ScheduledActivity;
  * ever become false, thus generating an infinite loop.
  * 
  * In addition, using a time sequence instead of a conditional event with
- * duration means that the other activities don�t have to check that the
+ * duration means that the other activities don't have to check that the
  * racetrack is moving.
+ * 
+ * With this trick, we basically have all our conditional and actions depends
+ * on the occurrence of this action. This results in performance improvements,
+ * and greatly reduces the number of precondition tests required.    
  *
  * Finally, this activity is responsible for counting missed entrances to 
  * any of the buffers for the stations.

@@ -60,13 +60,19 @@ public class UDPs {
 	
 		
 	public boolean canExitRacetrackQueue(int stationId) {
+		// First check that here is a holder inline to merge onto the track and 
+		// then check if the exit point of this queue onto the racetrack is
+		// actually vacant.
 		boolean canExit = model.qRacetrackLine[stationId].n() > 0 
 				&& model.rqRacetrack.slots(STATION_EXITS[stationId]) == null;
 		
 		return canExit;
 	}
-	
+
 	public boolean canEnterCellBufferQueue(RSampleHolder sampleHolder, int stationId) {
+		// First check that here is a holder at the entrance point of the test 
+		// cell buffer. Then check if that holder has the current test cell 
+		// as next in its sequence. Also check for vacancy in the test cell buffer.
 		boolean canEnter = model.qTestCellBuffer[stationId].n() < TEST_CELL_BUFFER_CAPACITY
 				&& sampleHolder != null 
 				&& sampleHolder.sample != null
@@ -75,6 +81,28 @@ public class UDPs {
 		return canEnter;
 	}
 
+	public boolean canEnterUnloadBuffer(RSampleHolder sampleHolder) {
+		// Check that there is actually a holder in the entrance point of the
+		// load/unload buffer and that the buffer is not full. Note: the unload 
+		// buffer has a length of 5.
+		
+		return ( sampleHolder != null && model.qUnloadBuffer.n() < UNLOADBUFFER_CAPACITY ) 
+                && (
+                		// Either there is a sample that has completed all tests
+                		// and it can always go in.
+                        sampleHolder.sample != null  
+                        && model.udp.testsCompleted(sampleHolder.sample)
+                        
+                        || /* OR */
+                        
+                        // Or there is an empty sample holder and that the 
+                        // number of reserved buffer spots for completed samples
+                        // is still respected.
+                        sampleHolder.sample == null
+                        && model.qUnloadBuffer.nEmpty < model.parameters.maxEmptyHolders
+                   );
+	}
+	
 	/**
 	 * Called when a sample is exiting the SUI, takes care of incrementing the appropriate output variables
 	 * @param sample The sample that is exiting the SUI
@@ -94,6 +122,8 @@ public class UDPs {
 	}
 	
 	public void updateMissedCounts() {
+		//Handle the missed counts for all the machines.
+		
 		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[0]));
 	
 		// First check that here is a holder at the entrance point of the test 

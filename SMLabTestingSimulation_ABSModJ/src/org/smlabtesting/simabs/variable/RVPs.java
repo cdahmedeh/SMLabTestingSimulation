@@ -61,9 +61,6 @@ public class RVPs {
     }
     
 	public Deque<Integer> uSequenceOfTests() {
-		// TODO: If anyone finds an elegant way to do this and keep Java's
-		//       stupid type erasure system out of the way, you'll get
-		//       a chocolate bar.
 		Deque<Integer> list = new ArrayDeque<Integer>();
 		int sequenceNumber = sequenceDist.sample();
 		

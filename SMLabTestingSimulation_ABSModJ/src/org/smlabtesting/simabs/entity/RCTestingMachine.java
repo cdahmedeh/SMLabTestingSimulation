@@ -5,8 +5,6 @@ import static org.smlabtesting.simabs.entity.RCTestingMachine.Status.Idle;
 
 /**
  * Maps to RC.TestingMachine
- * 
- * TODO: Document init process in CM.
  */
 public class RCTestingMachine {
 	// Possible testing machine statuses.

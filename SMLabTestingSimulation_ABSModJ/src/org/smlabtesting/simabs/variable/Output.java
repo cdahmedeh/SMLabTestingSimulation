@@ -22,15 +22,29 @@ public class Output{
 		this.model = model;
 	}
 	
-	public void percentageLateRegularSamples()
+	public double percentageLateRegularSamples()
 	{
 		if(totalNumRegularSamples > 0)
 			percentageLateRegularSamples = (double) lateRegularSamples / (double) totalNumRegularSamples;
+		
+		return percentageLateRegularSamples;
 	}
 	
-	public void percentageLateRushSamples()
+	public double percentageLateRushSamples()
 	{
 		if(totalNumRushSamples > 0)
 			percentageLateRushSamples = (double) lateRushSamples / (double) totalNumRushSamples;
+		
+		return percentageLateRushSamples;
+	}
+	
+	public void reset() {
+		totalFailedStationEntries = new int[]{0,0,0,0,0,0};
+		lateRegularSamples = 0;
+		lateRushSamples = 0;
+		totalNumRegularSamples = 0;
+		totalNumRushSamples = 0;
+		percentageLateRegularSamples = 0;
+		percentageLateRushSamples = 0;
 	}
 }

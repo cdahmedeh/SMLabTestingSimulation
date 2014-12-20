@@ -11,6 +11,17 @@ public class Parameters {
 	public int maxEmptyHolders = 5;
 	
 	// Number of testing machines for each test cell. (Value 0 is ignored by
-	// loops because it machineId = 0 belongs to load/unload machine.
+	// loops because machineId = 0 belongs to load/unload machine.
 	public int[] numCellMachines = {-1, 1, 1, 1, 1, 1};
+	
+	public Parameters(){
+			
+	}
+	
+	public Parameters(int maxEmpty, int[] numMachines){
+		maxEmptyHolders = maxEmpty;
+		numCellMachines = numMachines;
+	}
+	
+	
 }

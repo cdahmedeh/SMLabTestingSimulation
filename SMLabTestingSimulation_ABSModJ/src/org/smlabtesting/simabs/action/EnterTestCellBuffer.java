@@ -29,21 +29,21 @@ public class EnterTestCellBuffer extends ConditionalAction {
 	}
 	
 	public static boolean precondition(SMLabModel model, int stationId) {
-		// Used to point to the holder that is at the test cell buffer 
-		// entrance point. Does not exist in CM.
-		RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
+		// References the holder that is at the test cell buffer entrance point.
+		Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
+		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
 
 		// First check that here is a holder at the entrance point of the test 
 		// cell buffer. Then check if that holder has the current test cell 
 		// as next in its sequence. Also check for vacancy in the test cell buffer.
-		boolean canEnter = model.udp.canEnterCellBufferQueue(sampleHolder, stationId);
-        return canEnter;
+		return model.udp.canEnterCellBufferQueue(sampleHolder, stationId);
 	}
 	
 	@Override
 	public void actionEvent() {
-        // Move the sample from the racetrack to the unload buffer queue.
-        RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rqRacetrack.slots(STATION_ENTRANCES[stationId]));
+        // Move the sample from the racetrack to the test cell buffer queue.
+        Integer sampleHolderId = model.rqRacetrack.slots(STATION_ENTRANCES[stationId]);
+		RSampleHolder sampleHolder = model.udp.getSampleHolder(sampleHolderId);
         model.rqRacetrack.setSlot(STATION_ENTRANCES[stationId], null);
         model.qTestCellBuffer[stationId].insertQue(sampleHolder.id);        	
 	}

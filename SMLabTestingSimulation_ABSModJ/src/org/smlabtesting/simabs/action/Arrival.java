@@ -37,7 +37,7 @@ public class Arrival extends ScheduledAction {
         icSample.startTime = model.getClock();
 		
         // Move the new sample into the appropriate new samples queue based on
-        // it's priority.
+        // its priority.
         if( icSample.rush ) {
         	model.qNewSamples[RUSH].insertQue(icSample);
         } else {

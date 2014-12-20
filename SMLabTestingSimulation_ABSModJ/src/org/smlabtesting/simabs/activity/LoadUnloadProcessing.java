@@ -2,8 +2,8 @@ package org.smlabtesting.simabs.activity;
 
 import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
 import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+import static org.smlabtesting.simabs.variable.Constants.LU;
 
-import org.smlabtesting.simabs.entity.QNewSamples;
 import org.smlabtesting.simabs.entity.RSampleHolder;
 import org.smlabtesting.simabs.model.SMLabModel;
 
@@ -26,8 +26,6 @@ public class LoadUnloadProcessing extends ConditionalActivity {
 	}
 	
 	public static boolean precondition(SMLabModel model) {
-		// TODO: The busy attribute wasn't needed for our version of the system.
-		
 		// The unload buffer has a holder waiting in line and the load unload 
 		// machine is not currently processing another holder
 		return model.qUnloadBuffer.n() > 0 && model.rLoadUnloadMachine.busy == false;
@@ -43,8 +41,6 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         model.rLoadUnloadMachine.sampleHolderId = model.qUnloadBuffer.removeQue();
         
         RSampleHolder sampleHolder = model.udp.getSampleHolder(model.rLoadUnloadMachine.sampleHolderId);
-        if(sampleHolder == null)
-        	return;
         
         // If the holder was an empty,  decrement the empty holder counter as 
         // it will be removed.
@@ -88,7 +84,7 @@ public class LoadUnloadProcessing extends ConditionalActivity {
         }
         
         // Put the holder in line to return to the racetrack.
-        model.qRacetrackLine[0].insertQue(model.rLoadUnloadMachine.sampleHolderId);
+        model.qRacetrackLine[LU].insertQue(model.rLoadUnloadMachine.sampleHolderId);
         model.rLoadUnloadMachine.sampleHolderId = null;
         
         // The machine status is set to idle.
