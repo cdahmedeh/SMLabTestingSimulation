@@ -112,7 +112,7 @@ public class Experiment {
 		System.out.printf("    intervalReg %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n",
 				intervalReg.getMean(), intervalReg.getStandardDeviation(), intervalReg.getZeta(), 
 				intervalReg.getLowerCI(), intervalReg.getUpperCI(),
-				intervalRush.getR());
+				intervalReg.getR());
 		System.out.printf("    intervalRush %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n", 
 				intervalRush.getMean(), intervalRush.getStandardDeviation(), intervalRush.getZeta(), 
 				intervalRush.getLowerCI(), intervalRush.getUpperCI(),
