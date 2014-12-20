@@ -1,169 +1,110 @@
 package org.smlabtesting.simabs.executor;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import org.smlabtesting.simabs.model.SMLabModel;
 import org.smlabtesting.simabs.types.SuperConfidenceInterval;
 import org.smlabtesting.simabs.variable.Parameters;
 import org.smlabtesting.simabs.variable.Seeds;
 
-import cern.jet.random.engine.RandomSeedGenerator;
-
 /**
  * Runs the simulation model.  
  */
 public class Experiment {
-   public static void main(String[] args) {
+	// Experiment configuration.
+	private static final int NUM_RUNS = 10;					// Number of runs.
+	private static final double CONFIDENCE_LEVEL = 0.90;	// Desired confidence level.
 
-	   int NUMRUNS = 3;
-	   double confidence = 0.90;
-	   
-	   // Generate seeds per run.
-       RandomSeedGenerator rsg = new RandomSeedGenerator();
-       
-       Seeds[] sds = new Seeds[NUMRUNS];
-       for(int i=0; i<NUMRUNS ; i++) {
-    	   sds[i] = new Seeds(rsg);
-       }
-       
-	   double startTime = 0;
-	   double endTime = 3600 * 24 * 5;
-	   
-	   runExperiment(sds, new Parameters(1, new int[]{-9,15,15,15,15,15}), startTime, endTime, NUMRUNS, confidence);
+	private static final double startTime = 0;				// When to start
+	private static final double endTime = 3600 * 24 * 5;	// When to stop. (5 days)
+	private static final double warmUp = 3600 * 24 * 1;		// Warm up cut off point.
+
+	private static final Parameters params = new Parameters(// Simulation parameters. To be changed per experiment.
+			5,												// Number of empty allowed holders in the unload buffer
+			new int[]{-1, 1, 1, 1, 1, 1}					// Number of machines per cell. First value is ignored
+															// as LU machine has no testing machines.								
+	);
+		
+	public static void main(String[] args) {
+		runExperiment();
 	}
 	
-	public static void runExperiment(Seeds[] seeds, Parameters params, double WARM_UP_END_T, double RUN_END_T, int NUMRUNS, double confidence){
-	   double[] percentageLateRegularSamples = new double [NUMRUNS];
-	   double[] percentageLateRushSamples = new double [NUMRUNS];
-	   int[] missedEntries = new int[] {0,0,0,0,0,0};
-	   
-	   for(int i = 0; i < NUMRUNS; i++){
-		   SMLabModel model = new SMLabModel(WARM_UP_END_T, RUN_END_T, seeds[i], params, false);
-		   model.runSimulation();
-		   model.output.percentageLateRegularSamples();
-		   model.output.percentageLateRushSamples();
-		   percentageLateRegularSamples[i] += model.output.percentageLateRegularSamples;
-		   percentageLateRushSamples[i] += model.output.percentageLateRushSamples;
-		   for(int j = 0; j < 6; j++){
-			   missedEntries[j] += model.output.totalFailedStationEntries[j] / (double) NUMRUNS;
-		   }
-	   }
-	   System.out.println("----------RESULTS----------\n");
-	   System.out.print("Parameters: \nmaxEmptyHolders = "+params.maxEmptyHolders + "\n& numCellMachines = ");
-	   System.out.print("< "+params.numCellMachines[0]);
-	   for(int j = 1; j < 6; j++){
-		  System.out.print(", " + params.numCellMachines[j]);
-	   }
-	   System.out.println(" >\n");
-	   System.out.println("Number of Runs= "+ NUMRUNS);
-	   System.out.println("-----------");
-	   
+	public static void runExperiment(){
+		// Generate some seeds		
+		Seeds[] sds = new Seeds[NUM_RUNS];
+		for(int i=0; i<NUM_RUNS ; i++) {
+			sds[i] = new Seeds();
+		}
 
-	   System.out.print("< "+missedEntries[0]);
-	   for(int j = 1; j < 6; j++){
-		  System.out.print(", " + missedEntries[j]);
-	   }
-	   System.out.println(" >");
-	   System.out.println("Run #\t%LateRegularSample\t%LateRushSample");
-	   for(int i = 0; i < NUMRUNS; i++){
-		  System.out.println((i+1)+"\t"+percentageLateRegularSamples[i]+"\t"+percentageLateRushSamples[i]);
-	   }
-	   double avgLateRegSamples = 0;
-	   double avgLateRushSamples = 0;
-	   
-	   for(int i = 0; i < NUMRUNS; i++){
-		   avgLateRegSamples += percentageLateRegularSamples[i] / (double) NUMRUNS;
-		   avgLateRushSamples += percentageLateRushSamples[i] / (double) NUMRUNS;
-	   }
-	   
-	   SuperConfidenceInterval intervalReg = new SuperConfidenceInterval(percentageLateRegularSamples, confidence);
-	   SuperConfidenceInterval intervalRush = new SuperConfidenceInterval(percentageLateRushSamples, confidence);
-	   
-	   if(avgLateRegSamples <= 0.02 && avgLateRushSamples <= 0.1){
-		   System.out.println("WOOHOO percent late OK");
-	   }else{
-		   System.out.println("Percent late too high.");
-	   }
-	   
-	   System.out.printf("-------------------------------------------------------------------------------------\n");
-       System.out.printf("Comparison    Point estimate(ybar(n))  s(n)     zeta   CI Min   CI Max |zeta/ybar(n)|\n");
-       System.out.printf("-------------------------------------------------------------------------------------\n");
-       System.out.printf("    intervalReg %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n",
-    		   intervalReg.getMean(), intervalReg.getStandardDeviation(), intervalReg.getZeta(), 
-    		   intervalReg.getLowerCI(), intervalReg.getUpperCI(),
-    		   	intervalRush.getR());
-       System.out.printf("    intervalRush %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n", 
-    		   intervalRush.getMean(), intervalRush.getStandardDeviation(), intervalRush.getZeta(), 
-    		   intervalRush.getLowerCI(), intervalRush.getUpperCI(),
-	             intervalRush.getR());
-       System.out.printf("-------------------------------------------------------------------------------------\n");
-	   
+		// Outputs to be stored and averaged per run.
+		double[] percentagesLateRegularSamples = new double [NUM_RUNS];
+		double[] percentagesLateRushSamples = new double [NUM_RUNS];
+		int[] missedEntries = new int[] {0,0,0,0,0,0};
+
+		// Run the experiment multiple times.
+		for(int i = 0; i < NUM_RUNS; i++){
+			SMLabModel model = new SMLabModel(startTime, endTime, sds[i], params, false);
+			model.runSimulation();
+
+			// Collect results.
+			percentagesLateRegularSamples[i] += model.output.percentageLateRegularSamples();
+			percentagesLateRushSamples[i] += model.output.percentageLateRushSamples();
+			for(int j = 0; j < 6; j++){
+				missedEntries[j] += model.output.totalFailedStationEntries[j] / (double) NUM_RUNS;
+			}
+		}
+		
+		// Print the results.
+		printResults(percentagesLateRegularSamples, percentagesLateRushSamples,	missedEntries);
 	}
-	
-	public static void getWarmUp(){
-		   ExecutorService executor = Executors.newFixedThreadPool(4);
-		   
-		   // Number of runs to be performed.
-	       int NUMRUNS = 50; 
-	       
-	       // Start times and end times in seconds.
-	       int interval = 3600*24/4;
-	       int count = 30*4;
-	       double startTime=0.0, endTime=interval*count;
-	       
-	       // Generate seeds per run.
-	       RandomSeedGenerator rsg = new RandomSeedGenerator();
-	       
-	       Seeds[] sds = new Seeds[NUMRUNS];
-	       for(int i=0; i<NUMRUNS ; i++) {
-	    	   sds[i] = new Seeds(rsg);
-	       }
-	       
-	       long start = System.currentTimeMillis();
-	       
-	       Runs runs = new Runs(count);
-	       
-	       // Create the simulation model and do some runs.
-	       for(int i = 0 ; i < NUMRUNS ; i++) {
-	    	  SMLabModel model;  
-	    	  Parameters parameters = new Parameters();
-	          model = new SMLabModel(startTime,endTime,sds[i], parameters, false);
-	          
-	          final int j = i; //TODO: Crazy voodoo magic!
-	          executor.execute(new Runnable() {
 
-	        	  @Override
-	        	  public void run() {
-	        		  Run run = new Run();
-	        		  for (int t = 0; t < count; t++) {
-	        			  model.setTimef(t*interval);
-	        			  model.runSimulation();
-	        			  run.add(t*interval, model.output);
-	        		  }
+	private static void printResults(double[] percentagesLateRegularSamples, double[] percentagesLateRushSamples, int[] missedEntries) {
+		System.out.println("----------RESULTS----------\n");
+		System.out.print("Parameters: \nmaxEmptyHolders = "+params.maxEmptyHolders + "\n& numCellMachines = ");
+		System.out.print("< "+params.numCellMachines[0]);
+		for(int j = 1; j < 6; j++){
+			System.out.print(", " + params.numCellMachines[j]);
+		}
+		System.out.println(" >\n");
+		System.out.println("Number of Runs= "+ NUM_RUNS);
+		System.out.println("-----------");
 
-	        		  runs.add(run);
 
-	        		  System.out.println(j);
-	        	  }
-	          });
-	          
+		System.out.print("< "+missedEntries[0]);
+		for(int j = 1; j < 6; j++){
+			System.out.print(", " + missedEntries[j]);
+		}
+		System.out.println(" >");
+		System.out.println("Run #\t%LateRegularSample\t%LateRushSample");
+		for(int i = 0; i < NUM_RUNS; i++){
+			System.out.println((i+1)+"\t"+percentagesLateRegularSamples[i]+"\t"+percentagesLateRushSamples[i]);
+		}
+		double avgLateRegSamples = 0;
+		double avgLateRushSamples = 0;
 
-	          //          model.printOutputs();
-	       }
-	       
-	       try {
-	           executor.shutdown();
-	    	   executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
-	       } catch (InterruptedException e) {
-	    	   // TODO Auto-generated catch block
-	    	   e.printStackTrace();
-	       }
-	       
-	       runs.printAverages(interval);
-	       
-	       long end = System.currentTimeMillis();
-	       System.out.println(end - start);
+		for(int i = 0; i < NUM_RUNS; i++){
+			avgLateRegSamples += percentagesLateRegularSamples[i] / (double) NUM_RUNS;
+			avgLateRushSamples += percentagesLateRushSamples[i] / (double) NUM_RUNS;
+		}
+
+		SuperConfidenceInterval intervalReg = new SuperConfidenceInterval(percentagesLateRegularSamples, CONFIDENCE_LEVEL);
+		SuperConfidenceInterval intervalRush = new SuperConfidenceInterval(percentagesLateRushSamples, CONFIDENCE_LEVEL);
+
+		if(avgLateRegSamples <= 0.1 && avgLateRushSamples <= 0.02){
+			System.out.println("WOOHOO percent late OK");
+		}else{
+			System.out.println("Percent late too high.");
+		}
+
+		System.out.printf("-------------------------------------------------------------------------------------\n");
+		System.out.printf("Comparison    Point estimate(ybar(n))  s(n)     zeta   CI Min   CI Max |zeta/ybar(n)|\n");
+		System.out.printf("-------------------------------------------------------------------------------------\n");
+		System.out.printf("    intervalReg %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n",
+				intervalReg.getMean(), intervalReg.getStandardDeviation(), intervalReg.getZeta(), 
+				intervalReg.getLowerCI(), intervalReg.getUpperCI(),
+				intervalRush.getR());
+		System.out.printf("    intervalRush %13.6f %18.6f %8.6f %8.6f %8.6f %14.6f\n", 
+				intervalRush.getMean(), intervalRush.getStandardDeviation(), intervalRush.getZeta(), 
+				intervalRush.getLowerCI(), intervalRush.getUpperCI(),
+				intervalRush.getR());
+		System.out.printf("-------------------------------------------------------------------------------------\n");
 	}
 }
