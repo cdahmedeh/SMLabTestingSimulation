@@ -31,6 +31,7 @@ public class AutomatedExperiment {
 		for (int i = 5; i >= 1; i--) {
 			System.out.println("=============== Maximum Empty Sample Holders: " + i);
 			parameters.maxEmptyHolders = i;
+			parameters.numCellMachines = new int[]{-1, 1, 1, 1, 1, 1};
 		
 			// Try adding 20 times or until we get good lateness.
 			for (int j = 0; j < 20; j++) {
