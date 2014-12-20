@@ -2,6 +2,9 @@ package org.smlabtesting.simabs.model;
 
 import static org.smlabtesting.simabs.entity.QNewSamples.REGULAR;
 import static org.smlabtesting.simabs.entity.QNewSamples.RUSH;
+import static org.smlabtesting.simabs.model.ModelPrinter.printOutputs;
+import static org.smlabtesting.simabs.model.ModelPrinter.printRacetrackView;
+import static org.smlabtesting.simabs.model.ModelPrinter.showBasicModelInfo;
 import static org.smlabtesting.simabs.variable.Constants.C1;
 import static org.smlabtesting.simabs.variable.Constants.LU;
 import static org.smlabtesting.simabs.variable.Constants.STATION_COUNT;
@@ -23,7 +26,6 @@ import org.smlabtesting.simabs.entity.RCTestingMachine;
 import org.smlabtesting.simabs.entity.RLoadUnloadMachine;
 import org.smlabtesting.simabs.entity.RQRacetrack;
 import org.smlabtesting.simabs.entity.RSampleHolder;
-import org.smlabtesting.simabs.variable.Constants;
 import org.smlabtesting.simabs.variable.DVPs;
 import org.smlabtesting.simabs.variable.Output;
 import org.smlabtesting.simabs.variable.Parameters;
@@ -81,9 +83,6 @@ public class SMLabModel extends AOSimulationModel {
 	public QTestCellBuffer[] qTestCellBuffer;
 	public RCTestingMachine[][] rcTestingMachine;
 
-	/* Input Variables */
-	// TODO: Put inputs here.
-	
 	/* RVP, DVP and UDP */
 	public RVPs rvp;  
 	public DVPs dvp = new DVPs(this); 
@@ -91,8 +90,6 @@ public class SMLabModel extends AOSimulationModel {
 
 	/* Output container */
 	public Output output = new Output(this);
-	// TODO: Define any methods to read some output.
-	
 	
 
 	/**
@@ -244,105 +241,9 @@ public class SMLabModel extends AOSimulationModel {
 	protected void showSBL() {
 		super.showSBL();
 		
-		System.out.println("-------- Model Information -------- \n");
-		System.out
-				.print(String.format(
-						"Clock: %f, \n"
-						+ "Q.NewSamples[REGULAR].n: %d \n"
-						+ "Q.NewSamples[RUSH].n: %d \n"
-						+ "\n"
-						+ "Station(L/U): \n"
-						+ "   Q.UnloadBuffer.n: %d, Q.UnloadBuffer.nEmpty: %d, \n"
-						+ "      numFailedStationEntries[0]: %d \n"
-						+ "   R.LoadUnloadMachine.busy: %b \n"
-						+ "   Q.RacetrackLine[UL].n:  %d \n",
-						this.getClock(),
-						this.qNewSamples[REGULAR].n(),
-						this.qNewSamples[RUSH].n(),
-
-						this.qUnloadBuffer.n(), 
-						this.qUnloadBuffer.nEmpty,
-						this.output.totalFailedStationEntries[0],
-						this.rLoadUnloadMachine.busy,
-						this.qRacetrackLine[0].n()));
-		for (int stationId = 1; stationId < 6; stationId++) {
-			System.out.print(String.format(
-					"Station(%d): \n"
-					+ "   Q.TestCellBuffer.n: %d, totalFailedStationEntries: %d\n"
-					,
-					stationId,
-					this.qTestCellBuffer[stationId].n(),
-					this.output.totalFailedStationEntries[stationId])
-			);
-
-			for (int machineId = 0; machineId < this.parameters.numCellMachines[stationId]; machineId++) {
-				System.out.print(String.format(
-					"   RC.TestingMachine[%d][%d].status: %s \n"
-					,
-					stationId, 
-					machineId,
-					rcTestingMachine[stationId][machineId].status)
-				);
-			}
-
-			System.out.println(String.format(
-				"   Q.RacetrackLine[%d].n: %d"
-				, 
-				stationId,
-				this.qRacetrackLine[stationId].n())
-			);
-		}
-
-		printRacetrackView();
-		System.out.println();
-		
-		//Print outputs:
-		printOutputs();
-	} 
-	
-	/**
-	 * Prints a visual representation of the 48 racetrack slots, for logging purposes.
-	 */
-	private void printRacetrackView() {
-		//Print the 'top' row, so belt indexes 15-36
-		System.out.println(" ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___");
-		for(int i = 15; i < 37; i++){
-			String sHolder = getSlotRepresentation(i);
-			System.out.print("|"+sHolder);
-		}
-		System.out.println("|");
-		System.out.println("|___|Ex4|___|___|___|In4|___|___|___|Ex3|___|___|___|In3|___|___|___|Ex2|___|___|___|In2|");
-		//Print the left and right sides of the belt, so right belt indexes = 37, 38, and left belt indexes = 14, 13
-		String innerBeltSpace = "                                                                               ";
-		System.out.println("|"+getSlotRepresentation(14)+"|"+innerBeltSpace+"|"+getSlotRepresentation(37)+"|");
-		System.out.println("|___|"+innerBeltSpace+"|___|");
-		System.out.println("|"+getSlotRepresentation(13)+"|"+innerBeltSpace+"|"+getSlotRepresentation(38)+"|");
-
-		//Print the bottom side of the belt, so belt indexes 39-47 and 0-12
-		String bottom = "";
-		System.out.println("|___|___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___|___|");
-		for(int i = 39; i < (47 + 13 + 1); ++i){
-			String sHolder = getSlotRepresentation(i%48);
-			bottom =sHolder +"|" + bottom;
-		}
-		System.out.println("|"+bottom);
-		System.out.println("|In5|___|___|___|Ex5|___|___|___|In0|___|___|___|Ex0|___|___|___|In1|___|___|___|Ex1|___|");
-	}
-	
-	/**
-	 * Determines whether a slot on the racetrack (at index slotId) has nothing ("   "), an empty sample holder ("[ ]"), or a sample holder with a sample ("[x]")
-	 * @param slotId index of the slot
-	 * @return the string representing the slot content (or lack thereof)
-	 */
-	private String getSlotRepresentation(int slotId){
-		String sHolder = "   ";
-		RSampleHolder sampleHolder = this.udp.getSampleHolder(this.rqRacetrack.slots.get(slotId));
-		if(sampleHolder != null && sampleHolder.sample != null){
-			sHolder = "[x]";
-		} else if(sampleHolder != null && sampleHolder.sample == null){
-			sHolder = "[ ]";
-		}
-		return sHolder;
+		showBasicModelInfo(this);
+		printRacetrackView(this);
+		printOutputs(this);
 	}
 
 	/**
@@ -352,38 +253,6 @@ public class SMLabModel extends AOSimulationModel {
 	@Override
 	public double getClock() {
 		return super.getClock();
-	}
-
-	public void printOutputs() {
-		this.output.percentageLateRegularSamples();
-		this.output.percentageLateRushSamples();
-		System.out.println("Regular percentage late: "+this.output.percentageLateRegularSamples);
-		System.out.println("Rush percentage late: "+this.output.percentageLateRushSamples);
-		
-		//Print failed station entries
-		System.out.print("Total Failed Station Entries: < ");
-		System.out.print(output.totalFailedStationEntries[0]);
-		for(int i = 1; i < 6; i++){
-			System.out.print(", "+ output.totalFailedStationEntries[i]);
-		}
-		System.out.print(" > ");
-		System.out.println();
-	}
-
-	public void printTabulatedOutputs() {
-		this.output.percentageLateRegularSamples();
-		this.output.percentageLateRushSamples();
-		System.out.print(this.getClock());
-		System.out.print("\t");
-		System.out.print(this.output.percentageLateRegularSamples);
-		System.out.print("\t");
-		System.out.print(this.output.percentageLateRushSamples);
-		System.out.print("\t");
-		System.out.print(output.totalFailedStationEntries[0]);
-		for(int i = 1; i < 6; i++){
-			System.out.print("\t"+ output.totalFailedStationEntries[i]);
-		}		
-		System.out.println();
 	}
 }
 
