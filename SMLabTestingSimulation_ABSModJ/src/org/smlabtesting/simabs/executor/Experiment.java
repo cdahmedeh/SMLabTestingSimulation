@@ -1,7 +1,7 @@
 package org.smlabtesting.simabs.executor;
 
 import org.smlabtesting.simabs.model.SMLabModel;
-import org.smlabtesting.simabs.types.SuperConfidenceInterval;
+import org.smlabtesting.simabs.types.ConfidenceInterval;
 import org.smlabtesting.simabs.variable.Parameters;
 import org.smlabtesting.simabs.variable.Seeds;
 
@@ -97,8 +97,8 @@ public class Experiment {
 			avgLateRushSamples += percentagesLateRushSamples[i] / (double) NUM_RUNS;
 		}
 
-		SuperConfidenceInterval intervalReg = new SuperConfidenceInterval(percentagesLateRegularSamples, CONFIDENCE_LEVEL);
-		SuperConfidenceInterval intervalRush = new SuperConfidenceInterval(percentagesLateRushSamples, CONFIDENCE_LEVEL);
+		ConfidenceInterval intervalReg = new ConfidenceInterval(percentagesLateRegularSamples, CONFIDENCE_LEVEL);
+		ConfidenceInterval intervalRush = new ConfidenceInterval(percentagesLateRushSamples, CONFIDENCE_LEVEL);
 
 		if(avgLateRegSamples <= 0.1 && avgLateRushSamples <= 0.02){
 			System.out.println("WOOHOO percent late OK");

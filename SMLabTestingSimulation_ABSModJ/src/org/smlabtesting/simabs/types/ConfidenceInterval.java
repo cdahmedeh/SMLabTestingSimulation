@@ -6,13 +6,14 @@ import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 
-//TODO: Change to a newer joke.
-//TODO: cache zeta
-public class SuperConfidenceInterval {
+/**
+ * Wraps Apache Math for CI calculations. 
+ */
+public class ConfidenceInterval {
 	private StatisticalSummary stats;
 	private double confidence = 0.0;
 
-	public SuperConfidenceInterval(double[] values, double confidence) {
+	public ConfidenceInterval(double[] values, double confidence) {
 		this.confidence = confidence;
 		stats = new DescriptiveStatistics(values); 
 		
