@@ -13,9 +13,9 @@ public class Experiment {
 	private static final int NUM_RUNS = 10;					// Number of runs.
 	private static final double CONFIDENCE_LEVEL = 0.90;	// Desired confidence level.
 
-	private static final double startTime = 0;				// When to start
-	private static final double endTime = 3600 * 24 * 4;	// When to stop. (5 days)
-	private static final double warmUp = 3600 * 24 * 1;		// Warm up cut off point.
+	private static final double START_TIME = 0;				// When to start
+	private static final double END_TIME = 3600 * 24 * 4;	// When to stop. (5 days)
+	private static final double WARM_UP = 3600 * 24 * 1;		// Warm up cut off point.
 
 	private static final Parameters params = new Parameters(// Simulation parameters. To be changed per experiment.
 			3,												// Number of empty allowed holders in the unload buffer
@@ -41,19 +41,19 @@ public class Experiment {
 
 		// Run the experiment multiple times.
 		for(int i = 0; i < NUM_RUNS; i++){
-			SMLabModel model = new SMLabModel(startTime, endTime, sds[i], params, false);
+			SMLabModel model = new SMLabModel(START_TIME, END_TIME, sds[i], params, false);
 			
 			// Prepare the sim for the cut-off point to reset some results after
 			// the warmup time is reached.
-			if (warmUp > 0) {
-				model.setTimef(warmUp);			
+			if (WARM_UP > 0) {
+				model.setTimef(WARM_UP);			
 				model.runSimulation();
 			}
 
 			// Once the warmup time is reached, reset outputs and 
 			// finish off the rest of the sim.
 			model.output.reset();
-			model.setTimef(endTime);
+			model.setTimef(END_TIME);
 			model.runSimulation();
 			
 			// Collect results.
