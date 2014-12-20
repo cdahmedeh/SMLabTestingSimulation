@@ -53,6 +53,11 @@ public class AutomatedExperiment {
 					break;
 				}
 
+				// If the largest is zero, that also means that we can't improve our results anymore
+				if(largest == 0){
+					System.out.println("Cannot improve results anymore. No more bottlenecks in test cells!");
+					break;
+				}
 				
 				// Increase number of stations for that one.
 				parameters.numCellMachines[largestIndex]++;
