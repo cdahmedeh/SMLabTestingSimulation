@@ -14,12 +14,12 @@ public class Experiment {
 	private static final double CONFIDENCE_LEVEL = 0.90;	// Desired confidence level.
 
 	private static final double startTime = 0;				// When to start
-	private static final double endTime = 3600 * 24 * 5;	// When to stop. (5 days)
+	private static final double endTime = 3600 * 24 * 4;	// When to stop. (5 days)
 	private static final double warmUp = 3600 * 24 * 1;		// Warm up cut off point.
 
 	private static final Parameters params = new Parameters(// Simulation parameters. To be changed per experiment.
-			5,												// Number of empty allowed holders in the unload buffer
-			new int[]{-1, 1, 1, 1, 1, 1}					// Number of machines per cell. First value is ignored
+			3,												// Number of empty allowed holders in the unload buffer
+			new int[]{-1, 4, 5, 6, 7, 8}					// Number of machines per cell. First value is ignored
 															// as LU machine has no testing machines.								
 	);
 		
@@ -42,8 +42,20 @@ public class Experiment {
 		// Run the experiment multiple times.
 		for(int i = 0; i < NUM_RUNS; i++){
 			SMLabModel model = new SMLabModel(startTime, endTime, sds[i], params, false);
-			model.runSimulation();
+			
+			// Prepare the sim for the cut-off point to reset some results after
+			// the warmup time is reached.
+			if (warmUp > 0) {
+				model.setTimef(warmUp);			
+				model.runSimulation();
+			}
 
+			// Once the warmup time is reached, reset outputs and 
+			// finish off the rest of the sim.
+			model.output.reset();
+			model.setTimef(endTime);
+			model.runSimulation();
+			
 			// Collect results.
 			percentagesLateRegularSamples[i] += model.output.percentageLateRegularSamples();
 			percentagesLateRushSamples[i] += model.output.percentageLateRushSamples();
