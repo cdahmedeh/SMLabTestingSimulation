@@ -21,6 +21,11 @@ import org.smlabtesting.simabs.entity.RSampleHolder;
 import absmodJ.ScheduledAction;
 
 
+/**
+ * Used to setup the simulation for the first time. Using action mechanism, but
+ * technically not an action as per the CM definition.
+ *
+ */
 public class SetupSimulation extends ScheduledAction
 {
 	SMLabModel model;
@@ -30,6 +35,7 @@ public class SetupSimulation extends ScheduledAction
 	}
 
 	// BEGIN - From template project
+	// This ensures that this action is only run once.
 	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
 	int tsix = 0;  // set index to first entry.
 	public double timeSequence() {
